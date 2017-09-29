@@ -1,0 +1,13 @@
+{
+  "name": "agora-frontend",
+  "version": "1.0.0",
+  "description": "frontend for Agora",
+  "main": "server.js",
+  "author": "Samuel Sutherland",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.0",
+    "morgan": "^1.9.0"
+  }
+}
