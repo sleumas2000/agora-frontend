@@ -9,9 +9,9 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(bodyParser.json({limit: '50mb'}));
 
-var PORT = process.env.PORT || 24672;
+var PORT = process.env.PORT || 24673;
 
 app.use(express.static(__dirname+'/www/'));
 
 app.listen(PORT);
-console.log('Serving thm juicy webpages on localhost:'+PORT);
+console.log('Serving them juicy webpages on localhost:'+PORT);

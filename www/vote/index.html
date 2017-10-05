@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" ng-app="agora-vote">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Agora</title>
+  <meta name="description" content="A voting system thingy">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js" integrity="sha256-IMA0EIgLE53aSU7jFyLtX6u4hqMZ6AeSxlSgiBQ+620=" crossorigin="anonymous"></script>
+  <script src="vote.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body ng-controller="BallotController as ballot">
+  <header>
+    <h1 class="text-center">Voting</h1>
+    <h2 class="text-center">– A test frontend –</h2>
+  </header>
+  <main ng-repeat="page in ballot.pages" ng-show="page.name == ballot.currentPage">
+    {{page.name}}
+    {{ballot.testString}}
+    <ballot-panel pageName="{{ballot.testString}}"></ballot-panel>
+  </main>
+</body>
