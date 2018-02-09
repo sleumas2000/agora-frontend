@@ -1,0 +1,23 @@
+<div class=container>
+
+  <h1>Yo Yo Yo, gansta man</h1>
+  <p>My vocal chords is my gun</p>
+  <p><strong>You are signed in as: </strong><em>{{user.salutation}}</p>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>Forename</th>
+      <th>Surname</th>
+      <th>Email Address</th>
+    </tr>
+    <tr ng-repeat="user in users">
+      <td>{{user.UserID}}</td>
+      <td>{{user.Username}}</td>
+      <td>{{user.Forename}}</td>
+      <td>{{user.Surname}}</td>
+      <td>{{user.Email}}</td>
+    </tr>
+  </table>
+
+</div>

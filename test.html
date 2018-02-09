@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)file:///F:/Programming/School/CS/Agora-Frontend/test.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title></title>
+
+</head>
+
+<body ng-app="agora-vote" ng-controller="PageController as ctrl">
+    [...]
+    <div ng-repeat="page in ctrl.pages" ng-show="page.name == ballot.currentPage">
+        {{page.name}}
+        <page-panel pagename="{{page.name}}" my-text="hello {{ page.name }}"></page-panel>
+    </div>
+
+
+    <script src="./test_files/angular.js.download"></script>
+    <script>
+        var app = angular.module('agora-vote', []);
+        app.controller('PageController', function ($scope) {
+            this.pages = [{ name: "Page1" }, { name: "Page2" }];
+            this.currentPage = "Page1";
+        });
+        app.directive('pagePanel', function () {
+          return {
+            scope: {
+              text: "@myText"
+            },
+            templateUrl: function (elem, attr) {
+              console.log(attr)
+              console.log($scope.text)
+              return 'page-' + attr.$attr.pagename + '.html';
+            }
+          };
+        });
+    </script>
+
+
+</body></html>

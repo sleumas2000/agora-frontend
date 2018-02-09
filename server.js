@@ -13,5 +13,9 @@ var PORT = process.env.PORT || 24673;
 
 app.use(express.static(__dirname+'/www/'));
 
+app.use(function(req,res){
+  res.sendfile(__dirname+'/www/agora.html');
+})
+
 app.listen(PORT);
 console.log('Serving them juicy webpages on localhost:'+PORT);
