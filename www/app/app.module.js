@@ -13,6 +13,13 @@
            method: 'PUT'
          }
        });
+    })
+    .factory('Group', function($resource){
+       return $resource("http://localhost:24672/api/v1/users/groups/:id", {id: '@_i'}, {
+         update: {
+           method: 'PUT'
+         }
+       });
     });
 })();''
 

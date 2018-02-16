@@ -1,0 +1,37 @@
+<div class=container>
+
+  <h1>User Management Panel</h1>
+  <p>Use this page to manage users of the system.</p>
+  <p><strong>You are signed in as: </strong><em>{{user.DisplayName}}</p>
+  <form>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Forename</th>
+        <th>Surname</th>
+        <th>Email Address</th>
+        <th>Preferred Name</th>
+        <th>Display Name</th>
+      </tr>
+      <tr ng-repeat="user in users">
+        <td>{{user.UserID}}</td>
+        <td>{{user.Username}}</td>
+        <td>{{user.Forename}}</td>
+        <td>{{user.Surname}}</td>
+        <td>{{user.Email}}</td>
+        <td>{{user.PreferredName}}</td>
+        <td>{{user.DisplayName}}</td>
+      </tr>
+      <tr>
+        <td>New User:</td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+      </tr>
+    </table>
+  </form>
+</div>
