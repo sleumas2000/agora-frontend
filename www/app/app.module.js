@@ -8,14 +8,28 @@
     ])
 
     .factory('User', function($resource){
-       return $resource("http://localhost:24672/api/v1/users/:id", {id: '@_i'}, {
+       return $resource("http://localhost:24672/api/v1/users/:id", {id: '@id'}, {
          update: {
            method: 'PUT'
          }
        });
     })
     .factory('Group', function($resource){
-       return $resource("http://localhost:24672/api/v1/users/groups/:id", {id: '@_i'}, {
+       return $resource("http://localhost:24672/api/v1/users/groups/:id", {id: '@id'}, {
+         update: {
+           method: 'PUT'
+         }
+       });
+    })
+    .factory('GroupType', function($resource){
+       return $resource("http://localhost:24672/api/v1/users/groups/types/:id", {id: '@id'}, {
+         update: {
+           method: 'PUT'
+         }
+       });
+    })
+    .factory('GroupUserList', function($resource){
+       return $resource("http://localhost:24672/api/v1/users/bygroup/:id", {id: '@id'}, {
          update: {
            method: 'PUT'
          }

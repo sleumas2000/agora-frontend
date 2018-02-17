@@ -8,30 +8,22 @@
       <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>Forename</th>
-        <th>Surname</th>
-        <th>Email Address</th>
-        <th>Preferred Name</th>
-        <th>Display Name</th>
+        <th>Type</th>
       </tr>
       <tr ng-repeat="group in groups">
-        <td>{{user.UserID}}</td>
-        <td>{{user.Username}}</td>
-        <td>{{user.Forename}}</td>
-        <td>{{user.Surname}}</td>
-        <td>{{user.Email}}</td>
-        <td>{{user.PreferredName}}</td>
-        <td>{{user.DisplayName}}</td>
+        <td>{{group.GroupID}}</td>
+        <td>{{group.GroupName}}</td>
+        <td>{{group.GroupTypeName}}</td>
       </tr>
       <tr>
-        <td>New User:</td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
+        <td>New Group:</td>
+        <td><input ng-model="newGroupName"></td>
+        <td>
+          <select ng-model="newGroupType" ng-options="x.GroupTypeName for x in groupTypes">
+          </select>
+        </td>
       </tr>
     </table>
   </form>
+
 </div>
