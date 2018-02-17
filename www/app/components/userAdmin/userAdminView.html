@@ -2,11 +2,15 @@
 
   <h1>User Management Panel</h1>
   <p>Use this page to manage users of the system.</p>
-  <p><strong>You are signed in as: </strong><em>{{user.DisplayName}}</p>
-  <select ng-model="groupFilter" ng-options="x.GroupName for x in groups">
-    <option value="">Show All</option>
-  </select>
-  <form>
+  <p><strong>You are signed in as: </strong><em>{{user.DisplayName}}</em></p>
+  Filter by Group:
+    <select ng-model="typeFilter" ng-options="x.GroupTypeName for x in groupTypes">
+      <option value="">Show All</option>
+    </select>
+    <select ng-model="groupFilter" ng-options="x.GroupName for x in groups" ng-show="typeFilter">
+      <option value="">All</option>
+    </select>
+  <form ng-submit="addUser()">
     <table>
       <tr>
         <th>ID</th>
@@ -28,13 +32,14 @@
       </tr>
       <tr>
         <td>New User:</td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
+        <td><input ng-model="newUser.Username"></td>
+        <td><input ng-model="newUser.Forename"></td>
+        <td><input ng-model="newUser.Surname"></td>
+        <td><input ng-model="newUser.Email"></td>
+        <td><input ng-model="newUser.PreferredName"></td>
+        <td><input ng-model="newUser.DisplayName"></td>
       </tr>
     </table>
+    <input type="submit"></input>
   </form>
 </div>
