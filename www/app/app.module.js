@@ -34,6 +34,13 @@
            method: 'PUT'
          }
        });
+    })
+    .factory('GroupTypeGroupList', function($resource){
+       return $resource("http://localhost:24672/api/v1/users/groups/bygrouptype/:id", {id: '@id'}, {
+         update: {
+           method: 'PUT'
+         }
+       });
     });
 })();''
 
