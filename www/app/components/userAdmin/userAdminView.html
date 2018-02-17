@@ -3,10 +3,9 @@
   <h1>User Management Panel</h1>
   <p>Use this page to manage users of the system.</p>
   <p><strong>You are signed in as: </strong><em>{{user.DisplayName}}</p>
-    <!--<input ng-model="groupFilter">-->
-    <select ng-model="groupFilter" ng-options="x.GroupName for x in groups">
-      <option value="">Show All</option>
-    </select>
+  <select ng-model="groupFilter" ng-options="x.GroupName for x in groups">
+    <option value="">Show All</option>
+  </select>
   <form>
     <table>
       <tr>
