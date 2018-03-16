@@ -13,7 +13,9 @@
         ElectionID: 1,
         ElectionName: '2018 Test Election'
       };
-      $rootScope.election.systems = Election.getSystems({id:$rootScope.election.ElectionID})
+      $rootScope.election.systems = Election.getSystems({id:$rootScope.election.ElectionID});
+      $rootScope.election.candidates = Candidate.query({electionID:$rootScope.election.ElectionID});
+      console.log($rootScope.election.candidates)
       $rootScope.voteViewGoTo = function(page) {
       //  $state.go('vote.fptp');
       }

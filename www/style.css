@@ -1,10 +1,10 @@
-td {
+.admin td {
   max-width: 150px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-td.right {
+.admin td.right {
   max-width: 250px;
 }
 input {
@@ -24,9 +24,18 @@ input.checkbox {
 h2 {
   text-align: center;
 }
-.containerWing {
+/*.containerWing {
   min-height: 20px;
   background-color: red;
+}*/
+.partyLogo {
+  max-height: 100px;
+  max-width: 100px;
+  width: 100px;
+  height: 100px;
+}
+.candidateList td, .candidateList tr {
+  padding: 20px;
 }
 .nextButton {
   margin: auto;
