@@ -1,0 +1,11 @@
+<h3>Welcome to Agora</h3>
+
+On the following pages, you will be presented with the same set of candidates, but each time, you will be asked to vote under a different voting system. At the top of each page is a box with instructions on how that voting system works. <strong>Please read this box before voting</strong> and then make your decision.
+
+This election uses the following systems:
+<ul>
+  <li ng-repeat="system in election.systems">{{$index}}: {{system.SystemName}}</li>
+</ul>
+<div class="row">
+  <div ng-click="voteViewGoTo(1)" ui-sref="fptp" class="nextButton">Go<i class="fas fa-angle-right fa-pull-right"></i></div>
+</div>

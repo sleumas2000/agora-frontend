@@ -14,6 +14,7 @@ var PORT = process.env.PORT || 24673;
 app.use(express.static(__dirname+'/www/'));
 
 app.use(function(req,res){
+  console.log(404,req.originalUrl)
   res.sendfile(__dirname+'/www/agora.html');
 })
 

@@ -10,36 +10,41 @@
     <select ng-model="groupFilter" ng-options="x.GroupName for x in groups" ng-show="typeFilter">
       <option value="">All</option>
     </select>
-  <form ng-submit="addUser()">
+  <form ng-submit="addUser()" class="col-xl">
     <table>
       <tr>
+        <th class="select narrow"><input type="checkbox" ng-model="usersSelected" ng-change="selectAllUsers(usersSelected)"></input></th>
         <th>ID</th>
         <th>Username</th>
+        <th>Display Name</th>
         <th>Forename</th>
         <th>Surname</th>
         <th>Email Address</th>
         <th>Preferred Name</th>
-        <th>Display Name</th>
+        <th class="right">Delete</th>
       </tr>
       <tr ng-repeat="user in users">
+        <td class="select narrow"><input type="checkbox" ng-model="user.isSelected" ng-change="validateCheckBoxes()"></input></th>
         <td>{{user.UserID}}</td>
         <td>{{user.Username}}</td>
+        <td>{{user.DisplayName}}</td>
         <td>{{user.Forename}}</td>
         <td>{{user.Surname}}</td>
         <td>{{user.Email}}</td>
         <td>{{user.PreferredName}}</td>
-        <td>{{user.DisplayName}}</td>
+        <td class="right"><button class="right" type="button" ng-click="deleteUser(user.UserID,$index)">Delete {{user.DisplayName}}</button></td>
       </tr>
       <tr>
+        <th class="narrow"></th>
         <td>New User:</td>
         <td><input ng-model="newUser.Username"></td>
+        <td><input ng-model="newUser.DisplayName"></td>
         <td><input ng-model="newUser.Forename"></td>
         <td><input ng-model="newUser.Surname"></td>
         <td><input ng-model="newUser.Email"></td>
         <td><input ng-model="newUser.PreferredName"></td>
-        <td><input ng-model="newUser.DisplayName"></td>
+        <td class="right"><input class="right" type="submit">Add User</input></td>
       </tr>
     </table>
-    <input type="submit"></input>
   </form>
 </div>

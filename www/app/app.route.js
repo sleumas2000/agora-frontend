@@ -9,19 +9,52 @@
       $stateProvider
         .state('vote', {
           url: '/vote',
-          templateUrl: 'app/components/vote/voteView.html',
-          controller: 'voteController'
+          views: {
+            'content@': {
+              templateUrl: '/app/components/vote/voteView.html',
+              controller: 'voteController'
+            },
+            'voteContainer@vote': {
+              templateUrl: '/app/components/vote/votingSystems/welcomeView.html',
+              controller: 'welcomeController'
+            }
+          }
         })
         .state('userAdmin', {
           url: '/useradmin',
-          templateUrl: 'app/components/userAdmin/userAdminView.html',
-          controller: 'userAdminController'
+          views: {
+            'content@': {
+              templateUrl: '/app/components/userAdmin/userAdminView.html',
+              controller: 'userAdminController'
+            }
+          }
         })
         .state('groupAdmin', {
           url: '/groupadmin',
-          templateUrl: 'app/components/groupAdmin/groupAdminView.html',
-          controller: 'groupAdminController'
-        });
+          views: {
+            'content@': {
+              templateUrl: '/app/components/groupAdmin/groupAdminView.html',
+              controller: 'groupAdminController'
+            }
+          }
+        })
+
+        // Voting systems
+
+        .state('fptp', {
+          url: '/vote/fptp',
+          views: {
+            'content@': {
+              templateUrl: '/app/components/vote/voteView.html',
+              controller: 'voteController'
+            },
+            'voteContainer@fptp': {
+              templateUrl: '/app/components/vote/votingSystems/fptpView.html',
+              controller: 'fptpController'
+            }
+          }
+        })
+        ;
       if(window.history && window.history.pushState){
         $locationProvider.html5Mode({
           enabled: true,

@@ -6,18 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Agora Single Page Application Test</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <link href="style.css" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
   </head>
   <body>
-    <div ui-view></div>
-
+    <div ui-view="content"></div>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.9/angular.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.9/angular-resource.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.js"></script>
-    <script src="app/app.module.js"></script>
-    <script src="app/app.route.js"></script>
-    <script src="app/components/vote/voteController.js"></script>
-    <script src="app/components/userAdmin/userAdminController.js"></script>
-    <script src="app/components/groupAdmin/groupAdminController.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/angular-ui-indeterminate@1.0.0/dist/indeterminate.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.js" integrity="sha256-FJnwuQv+FZqA9vMnFwe3QhipH+NPiplOYEeGTS9y5cQ=" crossorigin="anonymous"></script>
+    <script src="/app/app.module.js"></script>
+    <script src="/app/app.route.js"></script>
+    <script src="/app/components/vote/voteController.js"></script>
+    <script src="/app/components/userAdmin/userAdminController.js"></script>
+    <script src="/app/components/groupAdmin/groupAdminController.js"></script>
+    <script src="/app/components/vote/votingSystems/welcomeController.js"></script>
+    <script src="/app/components/vote/votingSystems/fptpController.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js" integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l" crossorigin="anonymous"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>
   </body>
 </html>

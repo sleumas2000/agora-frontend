@@ -1,32 +1,56 @@
 <div class=container>
 
   <h1>Group Management Panel</h1>
-  <p>Use this page to manage system usergroups.</p>
-  <p><strong>You are signed in as: </strong><em>{{user.DisplayName}}</p>
-  <select ng-model="typeFilter" ng-options="x.GroupTypeName for x in groupTypes">
-    <option value="">Show All</option>
-  </select>
-  <form>
-    <table>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Type</th>
-      </tr>
-      <tr ng-repeat="group in groups">
-        <td>{{group.GroupID}}</td>
-        <td>{{group.GroupName}}</td>
-        <td>{{group.GroupTypeName}}</td>
-      </tr>
-      <tr>
-        <td>New Group:</td>
-        <td><input ng-model="newGroupName"></td>
-        <td>
-          <select ng-model="newGroupType" ng-options="x.GroupTypeName for x in groupTypes">
-          </select>
-        </td>
-      </tr>
-    </table>
-  </form>
-
+  <div class="col-12">
+    <p>Use this page to manage system usergroups.</p>
+    <p><strong>You are signed in as: </strong><em>{{user.DisplayName}}</p>
+    <select ng-model="typeFilter" ng-options="x.GroupTypeName for x in groupTypes">
+      <option value="">Show All</option>
+    </select>
+  </div>
+  <div class="row">
+    <form ng-submit="addGroup()" class="col-lg">
+      <h2>Groups</h2>
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Type</th>
+          <th class="right">Delete</th>
+        </tr>
+        <tr ng-repeat="group in groups">
+          <td>{{group.GroupID}}</td>
+          <td>{{group.GroupName}}</td>
+          <td>{{group.GroupTypeName}}</td>
+          <td class="right"><button class="right" type="button" ng-click="deleteGroup(group.GroupID,$index)">Delete {{group.GroupTypeName}}: {{group.GroupName}}</button></td>
+        </tr>
+        <tr>
+          <td>New Group:</td>
+          <td><input ng-model="newGroup.GroupName"></td>
+          <td><select ng-model="newGroup.GroupType" ng-options="x.GroupTypeName for x in groupTypes"></select></td>
+          <td class="right"><button class="right" type="submit">Add Group</button></td>
+        </tr>
+      </table>
+    </form>
+    <form ng-submit="addGroupType()" class="col-lg">
+      <h2>Group Types</h2>
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th class="right">Delete</th>
+        </tr>
+        <tr ng-repeat="groupType in groupTypes">
+          <td>{{groupType.GroupTypeID}}</td>
+          <td>{{groupType.GroupTypeName}}</td>
+          <td class="right"><button class="right" type="button" ng-click="deleteGroupType(groupType.GroupTypeID,$index)">Delete {{groupType.GroupTypeName}}</button></td>
+        </tr>
+        <tr>
+          <td>New Group Type:</td>
+          <td><input ng-model="newGroupType.GroupTypeName"></td>
+          <td class="right"><button class="right" type="submit">Add Group Type</button></td>
+        </tr>
+      </table>
+    </form>
+  </div>
 </div>

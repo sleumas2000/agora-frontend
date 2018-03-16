@@ -4,6 +4,44 @@ td {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+td.right {
+  max-width: 250px;
+}
 input {
   width: 100%;
+}
+button.right {
+  width: 100%;
+  max-width: 250px;
+}
+.narrow {
+  max-width: 30px;
+  width: 30px
+}
+input.checkbox {
+  width: 13px
+}
+h2 {
+  text-align: center;
+}
+.containerWing {
+  min-height: 20px;
+  background-color: red;
+}
+.nextButton {
+  margin: auto;
+  width: 100px;
+  align-items:
+}
+.fa.pull-right,
+.fa.fa-pull-right,
+[class*=" fa-"].pull-right,
+[class*=" fa-"].fa-pull-right {
+  line-height: inherit;
+}
+i {
+    margin-left: 10px;
+    font-size: 30px;
+    height: 30px;
+    vertical-align: middle;
 }
