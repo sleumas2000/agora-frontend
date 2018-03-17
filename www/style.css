@@ -7,7 +7,7 @@
 .admin td.right {
   max-width: 250px;
 }
-input {
+input.admin {
   width: 100%;
 }
 button.right {
@@ -18,7 +18,7 @@ button.right {
   max-width: 30px;
   width: 30px
 }
-input.checkbox {
+input.checkbox.admin {
   width: 13px
 }
 h2 {

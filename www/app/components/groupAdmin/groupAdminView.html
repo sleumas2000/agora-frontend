@@ -22,13 +22,13 @@
           <td>{{group.GroupID}}</td>
           <td>{{group.GroupName}}</td>
           <td>{{group.GroupTypeName}}</td>
-          <td class="right"><button class="right" type="button" ng-click="deleteGroup(group.GroupID,$index)">Delete {{group.GroupTypeName}}: {{group.GroupName}}</button></td>
+          <td class="right"><button class="right admin" type="button" ng-click="deleteGroup(group.GroupID,$index)">Delete {{group.GroupTypeName}}: {{group.GroupName}}</button></td>
         </tr>
         <tr>
           <td>New Group:</td>
-          <td><input ng-model="newGroup.GroupName"></td>
+          <td><input class="admin" ng-model="newGroup.GroupName"></td>
           <td><select ng-model="newGroup.GroupType" ng-options="x.GroupTypeName for x in groupTypes"></select></td>
-          <td class="right"><button class="right" type="submit">Add Group</button></td>
+          <td class="right"><button class="right admin" type="submit">Add Group</button></td>
         </tr>
       </table>
     </form>
@@ -43,12 +43,12 @@
         <tr ng-repeat="groupType in groupTypes">
           <td>{{groupType.GroupTypeID}}</td>
           <td>{{groupType.GroupTypeName}}</td>
-          <td class="right"><button class="right" type="button" ng-click="deleteGroupType(groupType.GroupTypeID,$index)">Delete {{groupType.GroupTypeName}}</button></td>
+          <td class="right admin"><button class="right admin" type="button" ng-click="deleteGroupType(groupType.GroupTypeID,$index)">Delete {{groupType.GroupTypeName}}</button></td>
         </tr>
         <tr>
           <td>New Group Type:</td>
           <td><input ng-model="newGroupType.GroupTypeName"></td>
-          <td class="right"><button class="right" type="submit">Add Group Type</button></td>
+          <td class="right"><button class="right admin" type="submit">Add Group Type</button></td>
         </tr>
       </table>
     </form>

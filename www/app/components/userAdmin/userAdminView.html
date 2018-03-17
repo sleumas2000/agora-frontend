@@ -13,7 +13,7 @@
   <form ng-submit="addUser()" class="col-xl">
     <table class="admin">
       <tr>
-        <th class="select narrow"><input type="checkbox" ng-model="usersSelected" ng-change="selectAllUsers(usersSelected)"></input></th>
+        <th class="select narrow"><input class="admin" type="checkbox" ng-model="usersSelected" ng-change="selectAllUsers(usersSelected)"></input></th>
         <th>ID</th>
         <th>Username</th>
         <th>Display Name</th>
@@ -24,7 +24,7 @@
         <th class="right">Delete</th>
       </tr>
       <tr ng-repeat="user in users">
-        <td class="select narrow"><input type="checkbox" ng-model="user.isSelected" ng-change="validateCheckBoxes()"></input></th>
+        <td class="select narrow"><input class="admin" type="checkbox" ng-model="user.isSelected" ng-change="validateCheckBoxes()"></input></th>
         <td>{{user.UserID}}</td>
         <td>{{user.Username}}</td>
         <td>{{user.DisplayName}}</td>
@@ -32,18 +32,18 @@
         <td>{{user.Surname}}</td>
         <td>{{user.Email}}</td>
         <td>{{user.PreferredName}}</td>
-        <td class="right"><button class="right" type="button" ng-click="deleteUser(user.UserID,$index)">Delete {{user.DisplayName}}</button></td>
+        <td class="right"><button class="right admin" type="button" ng-click="deleteUser(user.UserID,$index)">Delete {{user.DisplayName}}</button></td>
       </tr>
       <tr>
         <th class="narrow"></th>
         <td>New User:</td>
-        <td><input ng-model="newUser.Username"></td>
-        <td><input ng-model="newUser.DisplayName"></td>
-        <td><input ng-model="newUser.Forename"></td>
-        <td><input ng-model="newUser.Surname"></td>
-        <td><input ng-model="newUser.Email"></td>
-        <td><input ng-model="newUser.PreferredName"></td>
-        <td class="right"><input class="right" type="submit">Add User</input></td>
+        <td><input class="admin" ng-model="newUser.Username"></td>
+        <td><input class="admin" ng-model="newUser.DisplayName"></td>
+        <td><input class="admin" ng-model="newUser.Forename"></td>
+        <td><input class="admin" ng-model="newUser.Surname"></td>
+        <td><input class="admin" ng-model="newUser.Email"></td>
+        <td><input class="admin" ng-model="newUser.PreferredName"></td>
+        <td class="right"><input class="right admin" type="submit">Add User</input></td>
       </tr>
     </table>
   </form>
