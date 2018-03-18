@@ -9,12 +9,20 @@
         displayName: 'Mr S Balderson'
       };
       $scope.users = User.query();
+      //$rootScope.election = JSON.parse(localStorage.getItem('election'));
+      //console.log($rootScope.election)
       $rootScope.election = {
         ElectionID: 1,
         ElectionName: '2018 Test Election'
       };
-      $rootScope.election.systems = Election.getSystems({id:$rootScope.election.ElectionID});
-      $rootScope.election.candidates = Candidate.query({electionID:$rootScope.election.ElectionID});
+      //localStorage.setItem('election', JSON.stringify($rootScope.election));
+      var afterSystems = function(){
+        $rootScope.nextPage = $rootScope.election.systems[0]
+      //  localStorage.setItem('election', JSON.stringify($rootScope.election));
+        console.log($rootScope.nextPage)
+      }
+      $rootScope.election.systems = Election.getSystems({id:$rootScope.election.ElectionID}, afterSystems);
+      $rootScope.election.candidates = Candidate.query({electionID:$rootScope.election.ElectionID}/*, function() { localStorage.setItem('election', JSON.stringify($rootScope.election)); }*/);
       $rootScope.voteViewGoTo = function(page) {
         $rootScope.currentPage=page
       //  $state.go('vote.fptp');

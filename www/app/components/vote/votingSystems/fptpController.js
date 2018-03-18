@@ -17,8 +17,5 @@
         }
       }
       $scope.setChoice(0)
-      $scope.testFunction = function() {
-        console.log("yo")
-      }
     })
 })();

@@ -14,5 +14,11 @@
   </tr>
 </table>
 <div class="row">
-  <div ng-click="voteViewGoTo(0)" ui-sref="fptp" class="nextButton">Go<i class="fas fa-angle-right fa-pull-right"></i></div>
+  <div ng-click="voteViewGoTo(0)" class="nextButton">
+    <a ng-href="/vote/{{nextPage.SystemShortName}}" style="text-decorations:none; color:inherit;">
+      <div style="width:100%">
+        Go<i class="fas fa-angle-right fa-pull-right"></i>
+      </div>
+    </a>
+  </div>
 </div>
