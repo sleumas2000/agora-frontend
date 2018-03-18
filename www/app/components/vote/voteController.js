@@ -15,8 +15,8 @@
       };
       $rootScope.election.systems = Election.getSystems({id:$rootScope.election.ElectionID});
       $rootScope.election.candidates = Candidate.query({electionID:$rootScope.election.ElectionID});
-      console.log($rootScope.election.candidates)
       $rootScope.voteViewGoTo = function(page) {
+        $rootScope.currentPage=page
       //  $state.go('vote.fptp');
       }
     })

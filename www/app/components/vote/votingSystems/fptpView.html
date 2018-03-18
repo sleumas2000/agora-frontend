@@ -1,2 +1,20 @@
-<h1>Test</h1>
-Test Contents of the Div
+<h1>First Past the Post</h1>
+
+<div class="explanation_box">
+  First Past the Post is
+</div>
+<form>
+  <table class="candidateList vote">
+    <tr ng-repeat="candidate in election.candidates" ng-click="setChoice(candidate.CandidateID)">
+      <td>{{candidate.CandidateName}}</td>
+      <td>{{candidate.PartyName}}</td>
+      <td><img class="partyLogo" ng-src="{{candidate.PathToLogo}}"></img></td>
+      <td>
+        <div class="ballot_box">
+          <div ng-show="fptpChoice.CandidateID == candidate.CandidateID" class="ballot_cross">✘</div>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <p ng-hide="fptpChoice.CandidateName == 0">Your choice: {{fptpChoice.CandidateName}} ({{fptpChoice.PartyName}})</p>
+</form>
