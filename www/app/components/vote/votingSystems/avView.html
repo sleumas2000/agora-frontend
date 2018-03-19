@@ -1,7 +1,7 @@
-<h1>First Past the Post</h1>
+<h1>Alternative Vote</h1>
 
 <div class="explanation_box">
-  First Past the Post is
+Alternative Vote is
 </div>
 <form>
   <table class="candidateList vote">
@@ -16,7 +16,10 @@
       </td>
     </tr>
   </table>
-  <p ng-hide="fptpChoice.CandidateName == 0">Your choice: {{fptpChoice.CandidateName}} ({{fptpChoice.PartyName}})</p>
+  <p ng-hide="avChoices.length == 0">Your choices:</p>
+  <ol ng-hide="avChoices.length == 0">
+    <li ng-repeat="candidate in avChoices">{{candidate.CandidateName}} ({{candidate.PartyName}})</li>
+  </ol>
 </form>
 <div class="row">
   <div ng-click="voteViewGoTo(currentPage+1)" class="nextButton">
