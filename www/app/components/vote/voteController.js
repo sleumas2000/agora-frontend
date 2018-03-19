@@ -17,14 +17,15 @@
       };
       //localStorage.setItem('election', JSON.stringify($rootScope.election));
       var afterSystems = function(){
-        $rootScope.nextPage = $rootScope.election.systems[0]
+        console.log("sl");
+        $scope.$broadcast('systemsLoaded')
+      //  $rootScope.nextPage = $rootScope.election.systems[currentPage+1 || 0]
       //  localStorage.setItem('election', JSON.stringify($rootScope.election));
-        console.log($rootScope.nextPage)
+      //  console.log($rootScope.nextPage)
       }
       $rootScope.election.systems = Election.getSystems({id:$rootScope.election.ElectionID}, afterSystems);
       $rootScope.election.candidates = Candidate.query({electionID:$rootScope.election.ElectionID}/*, function() { localStorage.setItem('election', JSON.stringify($rootScope.election)); }*/);
       $rootScope.voteViewGoTo = function(page) {
-        $rootScope.currentPage=page
       //  $state.go('vote.fptp');
       }
     })

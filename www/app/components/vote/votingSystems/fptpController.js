@@ -17,5 +17,12 @@
         }
       }
       $scope.setChoice(0)
+      $scope.$on('systemsLoaded', function() {
+        $rootScope.currentPage = $rootScope.currentPage + 1
+        console.log("goingfptp")
+        $scope.nextSystem = $rootScope.election.systems[$rootScope.currentPage+1]
+        console.log($rootScope.election.systems[$rootScope.currentPage+1])
+        $scope.nextPage=$rootScope.election.systems[$rootScope.currentPage+1]
+      })
     })
 })();
