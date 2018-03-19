@@ -3,6 +3,7 @@
 
   angular.module('agora')
     .controller('voteController', function($scope, $rootScope, $state, User, Election, Candidate){
+
       $rootScope.$on('goBackHome', function() {
         $state.go('vote');
       })
@@ -29,6 +30,16 @@
       $rootScope.election.candidates = Candidate.query({electionID:$rootScope.election.ElectionID}/*, function() { localStorage.setItem('election', JSON.stringify($rootScope.election)); }*/);
       $rootScope.voteViewGoTo = function(page) {
       //  $state.go('vote.fptp');
+    };
+      $rootScope.sortNextPage = function(scope) {
+        scope.$on('systemsLoaded', function() {
+          $rootScope.currentPage = $rootScope.currentPage + 1
+          if ($rootScope.currentPage +1 < $rootScope.election.systems.length) {
+            scope.nextPage=$rootScope.election.systems[$rootScope.currentPage+1]
+          } else {
+            $rootScope.nextPage={SystemShortName: "thanks"}
+          }
+        })
       }
     })
 })();

@@ -3,7 +3,7 @@
 
   angular.module('agora')
     .controller('avController', function($scope, $rootScope, User, Election){
-      if (!$rootScope.isGoing) $state.go('vote');
+      if (!$rootScope.isGoing) $rootScope.$broadcast('goBackHome');
       $rootScope.avChoices = []
       $scope.isChosen = function(candidate) {
         var i;
@@ -25,11 +25,12 @@
           $rootScope.avChoices.push(candidate)
         }
       }
-      $scope.$on('systemsLoaded', function() {
+      $rootScope.sortNextPage($scope)
+      /*$scope.$on('systemsLoaded', function() {
         $rootScope.currentPage = $rootScope.currentPage + 1
         console.log("goingav")
         console.log($rootScope.election.systems[$rootScope.currentPage+1])
         $scope.nextPage=$rootScope.election.systems[$rootScope.currentPage+1]
-      })
+      })*/
     })
 })();

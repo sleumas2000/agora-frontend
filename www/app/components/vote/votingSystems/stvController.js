@@ -25,11 +25,12 @@
           $rootScope.stvChoices.push(candidate)
         }
       }
-      $scope.$on('systemsLoaded', function() {
+      $rootScope.sortNextPage($scope)
+      /*$scope.$on('systemsLoaded', function() {
         $rootScope.currentPage = $rootScope.currentPage + 1
         console.log("goingstv")
         console.log($rootScope.election.systems[$rootScope.currentPage+1])
         $scope.nextPage=$rootScope.election.systems[$rootScope.currentPage+1]
-      })
+      })*/
     })
 })();
