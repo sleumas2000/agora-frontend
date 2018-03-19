@@ -1,2 +1,2 @@
-# agora-frontent
+# agora-frontend
 A frontend for Agora
