@@ -1,0 +1,29 @@
+<h1>Single Transferable Vote</h1>
+
+<div class="explanation_box">
+  Single Transferable Vote is
+</div>
+<form>
+  <table class="candidateList vote">
+    <tr ng-repeat="candidate in election.candidates" ng-click="setChoice(candidate)">
+      <td>{{candidate.CandidateName}}</td>
+      <td>{{candidate.PartyName}}</td>
+      <td><img class="partyLogo" ng-src="{{candidate.PathToLogo}}"></img></td>
+      <td>
+        <div class="ballot_box">
+          <div ng-show="isChosen(candidate)" class="ballot_number">{{positionOf(candidate)}}</div>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <p ng-hide="fptpChoice.CandidateName == 0">Your choice: {{fptpChoice.CandidateName}} ({{fptpChoice.PartyName}})</p>
+</form>
+<div class="row">
+  <div ng-click="voteViewGoTo(currentPage+1)" class="nextButton">
+    <a ng-href="/vote/{{nextPage.SystemShortName}}" style="text-decorations:none; color:inherit;">
+      <div style="width:100%">
+        Go<i class="fas fa-angle-right fa-pull-right"></i>
+      </div>
+    </a>
+  </div>
+</div>

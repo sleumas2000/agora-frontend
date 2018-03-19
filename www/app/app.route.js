@@ -67,6 +67,19 @@
             }
           }
         })
+        .state('stv', {
+          url: '/vote/stv',
+          views: {
+            'content@': {
+              templateUrl: '/app/components/vote/voteView.html',
+              controller: 'voteController'
+            },
+            'voteContainer@stv': {
+              templateUrl: '/app/components/vote/votingSystems/stvView.html',
+              controller: 'stvController'
+            }
+          }
+        })
         ;
       if(window.history && window.history.pushState){
         $locationProvider.html5Mode({
