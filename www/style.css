@@ -56,10 +56,12 @@ h2 {
   align-self: center;
 }
 .ballot_number {
+  width: 70px;
   font-size: 70px;
   font-family: marker;
   margin-top: -20px;
   position: absolute;
+  text-align: center;
 }
 
 .nextButton {

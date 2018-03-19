@@ -54,6 +54,19 @@
             }
           }
         })
+        .state('av', {
+          url: '/vote/av',
+          views: {
+            'content@': {
+              templateUrl: '/app/components/vote/voteView.html',
+              controller: 'voteController'
+            },
+            'voteContainer@av': {
+              templateUrl: '/app/components/vote/votingSystems/avView.html',
+              controller: 'avController'
+            }
+          }
+        })
         ;
       if(window.history && window.history.pushState){
         $locationProvider.html5Mode({
