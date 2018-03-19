@@ -1,0 +1,45 @@
+<h1>Supplementary Vote</h1>
+
+<div class="explanation_box">
+  Supplementary Vote is
+</div>
+<form>
+  <table class="candidateList vote">
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th class="choiceHeader">First Choice</th>
+      <th>Second Choice</th>
+    <tr ng-repeat="candidate in election.candidates">
+      <td>{{candidate.CandidateName}}</td>
+      <td>{{candidate.PartyName}}</td>
+      <td><img class="partyLogo" ng-src="{{candidate.PathToLogo}}"></img></td>
+      <td ng-click="setChoice(0,candidate.CandidateID)">
+        <div class="ballot_box">
+          <div ng-show="svChoices[0].CandidateID == candidate.CandidateID" class="ballot_cross">✘</div>
+        </div>
+      </td>
+      <td ng-click="setChoice(1,candidate.CandidateID)">
+        <div class="ballot_box">
+          <div ng-show="svChoices[1].CandidateID == candidate.CandidateID" class="ballot_cross">✘</div>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <p ng-hide="svChoices[0].CandidateName == 0">Your choices:
+    <ul>
+      <li>{{svChoices[0].CandidateName}} ({{svChoices[0].PartyName}})</li>
+      <li ng-hide="svChoices[1].CandidateName == 0">{{svChoices[1].CandidateName}} ({{svChoices[1].PartyName}})</li>
+    </ul>
+  </p>
+</form>
+<div class="row">
+  <div ng-click="voteViewGoTo(currentPage+1)" class="nextButton">
+    <a ng-href="/vote/{{nextPage.SystemShortName}}" style="text-decorations:none; color:inherit;">
+      <div style="width:100%">
+        Go<i class="fas fa-angle-right fa-pull-right"></i>
+      </div>
+    </a>
+  </div>
+</div>

@@ -93,6 +93,19 @@
             }
           }
         })
+        .state('sv', {
+          url: '/vote/sv',
+          views: {
+            'content@': {
+              templateUrl: '/app/components/vote/voteView.html',
+              controller: 'voteController'
+            },
+            'voteContainer@sv': {
+              templateUrl: '/app/components/vote/votingSystems/svView.html',
+              controller: 'svController'
+            }
+          }
+        })
         ;
       if(window.history && window.history.pushState){
         $locationProvider.html5Mode({
