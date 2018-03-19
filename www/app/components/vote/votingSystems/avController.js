@@ -19,7 +19,7 @@
       $scope.setChoice = function(candidate){
         console.log(candidate)
         if ($scope.isChosen(candidate)) {
-          $scope.avChoices.splice($rootScope.avChoices.findIndex(x => x.CandidateID==candidate.CandidateID),1);
+          $rootScope.avChoices.splice($rootScope.avChoices.findIndex(x => x.CandidateID==candidate.CandidateID),1);
         } else {
           $rootScope.avChoices.push(candidate)
         }

@@ -11,9 +11,9 @@
       $scope.setChoice = function(choice) {
         var choiceList = $rootScope.election.candidates.filter(makeFilter(choice))
         if (choiceList.length === 1) {
-          $scope.prChoice = choiceList[0]
+          $rootScope.prChoice = choiceList[0]
         } else {
-          $scope.prChoice = {CandidateID:0,CandidateName:"",PartyID:"",PartyName:""}
+          $rootScope.prChoice = {CandidateID:0,CandidateName:"",PartyID:"",PartyName:""}
         }
       }
       $scope.setChoice(0)
