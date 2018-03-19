@@ -22,6 +22,7 @@
       var afterSystems = function(){
         console.log("sl");
         $scope.$broadcast('systemsLoaded')
+        console.log($rootScope)
       //  $rootScope.nextPage = $rootScope.election.systems[currentPage+1 || 0]
       //  localStorage.setItem('election', JSON.stringify($rootScope.election));
       //  console.log($rootScope.nextPage)
@@ -37,7 +38,7 @@
           if ($rootScope.currentPage +1 < $rootScope.election.systems.length) {
             scope.nextPage=$rootScope.election.systems[$rootScope.currentPage+1]
           } else {
-            $rootScope.nextPage={SystemShortName: "thanks"}
+            $rootScope.nextPage={SystemShortName: "thankyou"}
           }
         })
       }

@@ -106,6 +106,20 @@
             }
           }
         })
+
+        .state('thankyou', {
+          url: '/vote/thankyou',
+          views: {
+            'content@': {
+              templateUrl: '/app/components/vote/voteView.html',
+              controller: 'voteController'
+            },
+            'voteContainer@thankyou': {
+              templateUrl: '/app/components/vote/votingSystems/thankyouView.html',
+              controller: 'thankyouController'
+            }
+          }
+        })
         ;
       if(window.history && window.history.pushState){
         $locationProvider.html5Mode({
