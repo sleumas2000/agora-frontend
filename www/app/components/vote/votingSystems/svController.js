@@ -3,6 +3,7 @@
 
   angular.module('agora')
     .controller('svController', function($scope, $rootScope, User, Election){
+      if (!$rootScope.isGoing) $rootScope.$broadcast('goBackHome');
       $rootScope.svChoices = [{CandidateID:0,CandidateName:"",PartyID:"",PartyName:""},{CandidateID:0,CandidateName:"",PartyID:"",PartyName:""}]
       var makeFilter = function(choice) {
         return function(candidate) {

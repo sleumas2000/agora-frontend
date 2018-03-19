@@ -3,7 +3,9 @@
 
   angular.module('agora')
     .controller('voteController', function($scope, $rootScope, $state, User, Election, Candidate){
-
+      $rootScope.$on('goBackHome', function() {
+        $state.go('vote');
+      })
       $scope.currentUser = {
         id: 125,
         displayName: 'Mr S Balderson'

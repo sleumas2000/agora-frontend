@@ -8,6 +8,7 @@
         console.log($rootScope.election.systems[0])
         $rootScope.currentPage=-1
         $scope.nextPage=$rootScope.election.systems[$rootScope.currentPage+1]
+        $rootScope.isGoing = true
       })
     })
 })();

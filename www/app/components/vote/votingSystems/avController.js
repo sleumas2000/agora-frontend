@@ -3,6 +3,7 @@
 
   angular.module('agora')
     .controller('avController', function($scope, $rootScope, User, Election){
+      if (!$rootScope.isGoing) $state.go('vote');
       $rootScope.avChoices = []
       $scope.isChosen = function(candidate) {
         var i;

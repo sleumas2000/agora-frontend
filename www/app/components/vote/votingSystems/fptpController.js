@@ -3,6 +3,7 @@
 
   angular.module('agora')
     .controller('fptpController', function($scope, $rootScope, User, Election){
+      if (!$rootScope.isGoing) $rootScope.$broadcast('goBackHome');
       var makeFilter = function(choice) {
         return function(candidate) {
           return candidate.CandidateID == choice

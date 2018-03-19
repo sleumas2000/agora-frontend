@@ -3,6 +3,7 @@
 
   angular.module('agora')
     .controller('stvController', function($scope, $rootScope, User, Election){
+      if (!$rootScope.isGoing) $rootScope.$broadcast('goBackHome');
       $rootScope.stvChoices = []
       $scope.isChosen = function(candidate) {
         var i;
@@ -19,7 +20,7 @@
       $scope.setChoice = function(candidate){
         console.log(candidate)
         if ($scope.isChosen(candidate)) {
-          $scope.stvChoices.splice($rootScope.stvChoices.findIndex(x => x.CandidateID==candidate.CandidateID),1);
+          $rootScope.stvChoices.splice($rootScope.stvChoices.findIndex(x => x.CandidateID==candidate.CandidateID),1);
         } else {
           $rootScope.stvChoices.push(candidate)
         }
