@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-
+  const apiRoot="http://localhost:24672/api/v1";
   angular
     .module('agora', [
       'ui.router',
@@ -10,7 +10,7 @@
     ])
 
     .factory('User', function($resource){
-       return $resource("http://localhost:24672/api/v1/users/:id", {id: '@id'}, {
+       return $resource(apiRoot+"/users/:id", {id: '@id'}, {
          update: {
            method: 'PUT'
          },
@@ -21,12 +21,12 @@
        });
     })
     .factory('Group', function($resource){
-       return $resource("http://localhost:24672/api/v1/users/groups/:id", {id: '@id'}, {
+       return $resource(apiRoot+"/users/groups/:id", {id: '@id'}, {
          update: {
            method: 'PUT'
          },
          getUsers: {
-            url: "http://localhost:24672/api/v1/users/groups/:id/members",
+            url: apiRoot+"/users/groups/:id/members",
             method: 'GET',
             isArray: true
          },
@@ -37,12 +37,12 @@
        });
     })
     .factory('GroupType', function($resource){
-       return $resource("http://localhost:24672/api/v1/users/groups/types/:id", {id: '@id'}, {
+       return $resource(apiRoot+"/users/groups/types/:id", {id: '@id'}, {
          update: {
            method: 'PUT'
          },
          getGroups: {
-            url: "http://localhost:24672/api/v1/users/groups/types/:id/members",
+            url: apiRoot+"/users/groups/types/:id/members",
             method: 'GET',
             isArray: true
          },
@@ -53,33 +53,33 @@
        });
     })
     .factory('GroupUserList', function($resource){
-       return $resource("http://localhost:24672/api/v1/users/bygroup/:id", {id: '@id'}, {
+       return $resource(apiRoot+"/users/bygroup/:id", {id: '@id'}, {
          update: {
            method: 'PUT'
          }
        });
     })
     .factory('GroupTypeGroupList', function($resource){
-       return $resource("http://localhost:24672/api/v1/users/groups/bygrouptype/:id", {id: '@id'}, {
+       return $resource(apiRoot+"/users/groups/bygrouptype/:id", {id: '@id'}, {
          update: {
            method: 'PUT'
          }
        });
     })
     .factory('Election', function($resource){
-       return $resource("http://localhost:24672/api/v1/elections/:id", {id: '@id'}, {
+       return $resource(apiRoot+"/elections/:id", {id: '@id'}, {
          update: {
            method: 'PUT'
          },
          getSystems: {
-            url: "http://localhost:24672/api/v1/elections/:id/systems",
+            url: apiRoot+"/elections/:id/systems",
             method: 'GET',
             isArray: true
          },
        });
     })
     .factory('Candidate', function($resource){
-       return $resource("http://localhost:24672/api/v1/elections/:electionID/candidates/:id", {id: '@id', electionID: '@electionID'}, {
+       return $resource(apiRoot+"/elections/:electionID/candidates/:id", {id: '@id', electionID: '@electionID'}, {
          update: {
            method: 'PUT'
          },
