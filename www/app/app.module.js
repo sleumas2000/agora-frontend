@@ -5,7 +5,6 @@
     .module('agora', [
       'ui.router',
       'ngResource',
-      'ui.indeterminate',
       'ui.bootstrap'
     ])
 
