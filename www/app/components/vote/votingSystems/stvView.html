@@ -16,7 +16,10 @@
       </td>
     </tr>
   </table>
-  <p ng-hide="stvChoice.CandidateName == 0">Your choice: {{stvChoice.CandidateName}} ({{stvChoice.PartyName}})</p>
+  <p ng-hide="stvChoices.length == 0">Your choices:</p>
+  <ol ng-hide="stvChoices.length == 0">
+    <li ng-repeat="candidate in stvChoices">{{candidate.CandidateName}} ({{candidate.PartyName}})</li>
+  </ol>
 </form>
 <div class="row">
   <div ng-click="voteViewGoTo(currentPage+1)" class="nextButton">

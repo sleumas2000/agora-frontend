@@ -27,10 +27,10 @@
       </td>
     </tr>
   </table>
-  <p ng-hide="svChoices[0].CandidateName == 0">Your choices:
+  <p ng-hide="svChoices[0].CandidateID == 0">Your choices:
     <ul>
-      <li>{{svChoices[0].CandidateName}} ({{svChoices[0].PartyName}})</li>
-      <li ng-hide="svChoices[1].CandidateName == 0">{{svChoices[1].CandidateName}} ({{svChoices[1].PartyName}})</li>
+      <li ng-hide="svChoices[0].CandidateID == 0">{{svChoices[0].CandidateName}} ({{svChoices[0].PartyName}})</li>
+      <li ng-hide="svChoices[1].CandidateID == 0">{{svChoices[1].CandidateName}} ({{svChoices[1].PartyName}})</li>
     </ul>
   </p>
 </form>
