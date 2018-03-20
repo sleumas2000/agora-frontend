@@ -7,9 +7,9 @@
       $rootScope.$on('goBackHome', function() {
         $state.go('vote');
       })
-      $scope.currentUser = {
-        id: 125,
-        displayName: 'Mr S Balderson'
+      $rootScope.currentUser = {
+        UserID: 2,
+        DisplayName: 'Mr S Balderson'
       };
       $scope.users = User.query();
       //$rootScope.election = JSON.parse(localStorage.getItem('election'));

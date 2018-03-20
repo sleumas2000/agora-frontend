@@ -84,6 +84,14 @@
            method: 'PUT'
          },
        });
+    })
+    .factory('Vote', function($resource){
+       return $resource(apiRoot+"/elections/:electionID/systems/:systemShortName/votes/user/:userID", {electionID: '@electionID', systemShortName: '@systemShortName', userID: '@userID'}, {
+         record: {
+           method: 'POST',
+           headers: {'x-confirm-delete': true}
+         },
+       });
     });
 })();''
 
