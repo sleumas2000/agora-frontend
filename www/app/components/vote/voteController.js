@@ -40,6 +40,7 @@
           } else {
             $rootScope.nextPage={SystemShortName: "thankyou"}
           }
+          document.body.scrollTop = document.documentElement.scrollTop = 0;
         })
       }
     })
