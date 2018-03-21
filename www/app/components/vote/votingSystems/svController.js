@@ -10,6 +10,15 @@
           return candidate.CandidateID == choice
         }
       }
+      $scope.isChosen = function(candidate) {
+        var i;
+        for (i = 0; i < $rootScope.svChoices.length; i++) {
+          if ($rootScope.svChoices[i].CandidateID === candidate.CandidateID) {
+            return true;
+          }
+        }
+        return false;
+      }
       $scope.setChoice = function(which,choice) {
         console.log(which,choice);
         var choiceList = $rootScope.election.candidates.filter(makeFilter(choice))

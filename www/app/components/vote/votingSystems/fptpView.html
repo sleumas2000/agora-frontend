@@ -1,11 +1,10 @@
-<h1>First Past the Post</h1>
-
 <div class="explanation_box">
-  First Past the Post is
+  <h3 class="voteHeader">First Past the Post</h1>
+  </div>
 </div>
 <form>
   <table class="candidateList vote">
-    <tr ng-repeat="candidate in election.candidates" ng-click="setChoice(candidate.CandidateID)">
+    <tr ng-repeat="candidate in election.candidates" ng-click="setChoice(candidate.CandidateID)" ng-class="fptpChoice.CandidateID == candidate.CandidateID ? 'candidateSelected' : ''">
       <td>{{candidate.CandidateName}}</td>
       <td>{{candidate.PartyName}}</td>
       <td><img class="partyLogo" ng-src="{{candidate.PathToLogo}}"></img></td>
@@ -15,10 +14,19 @@
         </div>
       </td>
     </tr>
+    <tr class="nextButton">
+      <td colspan="4">
+        <a ng-href="/vote/{{nextPage.SystemShortName}}" style="text-decorations:none; color:inherit;">
+          <div ng-click="voteViewGoTo(0)" class="nextButton">
+            Go<div class="rightIcon"><i class="fas fa-angle-right fa-lg"></i></div>
+          </div>
+        </a>
+      </td>
+    </tr>
   </table>
-  <p ng-hide="fptpChoice.CandidateName == 0">Your choice: {{fptpChoice.CandidateName}} ({{fptpChoice.PartyName}})</p>
+<!--  <p ng-hide="fptpChoice.CandidateName == 0">Your choice: {{fptpChoice.CandidateName}} ({{fptpChoice.PartyName}})</p>-->
 </form>
-<div class="row">
+<!--<div class="row">
   <div ng-click="voteViewGoTo(currentPage+1)" class="nextButton">
     <a ng-href="/vote/{{nextPage.SystemShortName}}" style="text-decorations:none; color:inherit;">
       <div style="width:100%">
@@ -26,4 +34,4 @@
       </div>
     </a>
   </div>
-</div>
+</div>-->

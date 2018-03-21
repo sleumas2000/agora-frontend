@@ -1,14 +1,18 @@
+<div id="topBar">
+  <div class=container>
+    <p id="userSignInBar"><strong>You are signed in as: </strong><em>{{currentUser.DisplayName}}</em></p>
+  </div>
+</div>
 <div class=container>
 
-  <h1>Yo Yo Yo, gangsta man</h1>
-  <p>My vocal chords is my gun</p>
-  <p><strong>You are signed in as: </strong><em>{{currentUser.DisplayName}}</em></p>
+  <!--<h1>Yo Yo Yo, gangsta man</h1>
+  <p>My vocal chords is my gun</p>-->
 
-  <h2><em>{{election.ElectionName}}</em></h2>
+  <h1><em>{{election.ElectionName}}</em></h1>
   <div class="container">
     <div class="row">
       <div class="col-lg-2 containerWing"></div>
-      <div class="col-lg-8" ui-view="voteContainer"></div>
+      <div class="col-lg-8" ui-view="voteContainer" id="voteContainer"></div>
       <div class="col-lg-2 containerWing"></div>
     </div>
   </div>

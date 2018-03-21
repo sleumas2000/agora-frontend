@@ -3,6 +3,15 @@
     src: url(/fonts/marker.ttf);
 }
 
+/* TEAL:
+#topBar {
+    background-color: #00897b;
+}
+h2, h3, h4 {
+  color: #00897b;
+}
+*/
+
 .admin td {
   max-width: 150px;
   white-space: nowrap;
@@ -26,7 +35,7 @@ button.right {
 input.checkbox.admin {
   width: 13px
 }
-h2 {
+h1 {
   text-align: center;
 }
 /*.containerWing {
@@ -44,11 +53,61 @@ h2 {
 }
 table.candidateList {
   margin: 1em auto;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translate(-50%, 0%);
+  -moz-transform: translate(-50%, 0%);
+  -ms-transform: translate(-50%, 0%);
+  transform: translate(-50%, 0%);
 }
-th.choiceHeader {
+tr.header th {
   text-align: center;
 }
+.explanation_box {
+  background-color: #fafafa;
+  margin: 10px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0px 0px 4px #ccc
+}
+.voteHeader {
+  padding-bottom: 15px
+}
+#topBar {
+  width: 100%;
+  background-color: #eee;
+}
+#userSignInBar {
+  padding: 10px
+}
+.candidateList tr {
+  background-color: #fafafa;
+  border-radius: 4px;
+  box-shadow: 0px 0px 4px #ccc;
+  overflow: hidden;
+}
+.candidateList.vote tr.candidateSelected {
+  background-color: #eee;
+}
+.candidateList.vote tr:hover, .candidateList.vote tr.candidateSelected:hover, div.nextButton:hover {
+  background-color: #e4e4e4;
+}
+.candidateList tr.header, .candidateList tr.nextButton, .candidateList tr.nextButton:hover {
+  background-color: white;
+  border-radius: 0px;
+  box-shadow: 0px 0px 0px
+}
+div.nextButton {
+  margin: auto;
+  padding: 10px;
+  width: 130px;
+  background-color: #fafafa;
+  border-radius: 10px;
+  box-shadow: 0px 0px 4px #ccc
+}
 .ballot_box {
+  background-color: white;
   margin: 10px;
   padding: 10px;
   height: 90px;
@@ -69,21 +128,7 @@ th.choiceHeader {
   position: absolute;
   text-align: center;
 }
-
-.nextButton {
-  margin: auto;
-  width: 100px;
-  align-items:
-}
-.fa.pull-right,
-.fa.fa-pull-right,
-[class*=" fa-"].pull-right,
-[class*=" fa-"].fa-pull-right {
-  line-height: inherit;
-}
-i {
-    margin-left: 10px;
-    font-size: 30px;
-    height: 30px;
-    vertical-align: middle;
+div.rightIcon {
+  width: 20px;
+  float: right;
 }

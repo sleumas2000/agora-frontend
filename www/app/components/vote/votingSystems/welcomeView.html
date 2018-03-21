@@ -1,24 +1,28 @@
-<h3>Welcome to Agora</h3>
+<div class="explanation_box">
+  <h3 class="voteHeader">Welcome to Agora</h3>
 
-<p>On the following pages, you will be presented with the same set of candidates, but each time, you will be asked to vote under a different voting system. At the top of each page is a box with instructions on how that voting system works. <strong>Please read this box before voting</strong> and then make your decision.</p>
-<p>This election uses the following systems:</p>
-<ul>
-  <li ng-repeat="system in election.systems">{{system.SystemName}}</li>
-</ul>
-<p>These are the candidates:</p>
+  <p>On the following pages, you will be presented with the same set of candidates, but each time, you will be asked to vote under a different voting system. At the top of each page is a box with instructions on how that voting system works. <strong>Please read this box before voting</strong> and then make your decision.</p>
+  <p>This election uses the following systems:</p>
+  <ul>
+    <li ng-repeat="system in election.systems">{{system.SystemName}}</li>
+  </ul>
+</div>
 <table class="candidateList">
+  <tr class="header">
+    <th colspan="3"><h3>Candidates</h3></th>
+  </tr>
   <tr ng-repeat="candidate in election.candidates">
     <td>{{candidate.CandidateName}}</td>
     <td>{{candidate.PartyName}}</td>
     <td><img class="partyLogo" ng-src="{{candidate.PathToLogo}}"></img></td>
   </tr>
+  <tr class="nextButton">
+    <td colspan="3">
+      <a ng-href="/vote/{{nextPage.SystemShortName}}" style="text-decorations:none; color:inherit;">
+        <div ng-click="voteViewGoTo(0)" class="nextButton">
+          Go<div class="rightIcon"><i class="fas fa-angle-right fa-lg"></i></div>
+        </div>
+      </a>
+    </td>
+  </tr>
 </table>
-<div class="row">
-  <div ng-click="voteViewGoTo(0)" class="nextButton">
-    <a ng-href="/vote/{{nextPage.SystemShortName}}" style="text-decorations:none; color:inherit;">
-      <div style="width:100%">
-        Go<i class="fas fa-angle-right fa-pull-right"></i>
-      </div>
-    </a>
-  </div>
-</div>

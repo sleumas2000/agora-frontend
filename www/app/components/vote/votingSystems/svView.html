@@ -1,17 +1,17 @@
-<h1>Supplementary Vote</h1>
-
 <div class="explanation_box">
+  <h3 class="voteHeader">Supplementary Vote</h1>
   Supplementary Vote is
 </div>
 <form>
   <table class="candidateList vote">
-    <tr>
+    <tr class="header">
       <th></th>
       <th></th>
       <th></th>
-      <th class="choiceHeader">First Choice</th>
-      <th class="choiceHeader">Second Choice</th>
-    <tr ng-repeat="candidate in election.candidates">
+      <th>First Choice</th>
+      <th>Second Choice</th>
+    </tr>
+    <tr ng-repeat="candidate in election.candidates" ng-class="isChosen(candidate) ? 'candidateSelected' : ''">
       <td>{{candidate.CandidateName}}</td>
       <td>{{candidate.PartyName}}</td>
       <td><img class="partyLogo" ng-src="{{candidate.PathToLogo}}"></img></td>
@@ -26,15 +26,24 @@
         </div>
       </td>
     </tr>
+    <tr class="nextButton">
+      <td colspan="5">
+        <a ng-href="/vote/{{nextPage.SystemShortName}}" style="text-decorations:none; color:inherit;">
+          <div ng-click="voteViewGoTo(0)" class="nextButton">
+            Go<div class="rightIcon"><i class="fas fa-angle-right fa-lg"></i></div>
+          </div>
+        </a>
+      </td>
+    </tr>
   </table>
-  <p ng-hide="svChoices[0].CandidateID == 0">Your choices:
+  <!--<p ng-hide="svChoices[0].CandidateID == 0">Your choices:
     <ul>
       <li ng-hide="svChoices[0].CandidateID == 0">{{svChoices[0].CandidateName}} ({{svChoices[0].PartyName}})</li>
       <li ng-hide="svChoices[1].CandidateID == 0">{{svChoices[1].CandidateName}} ({{svChoices[1].PartyName}})</li>
     </ul>
-  </p>
+  </p>-->
 </form>
-<div class="row">
+<!--<div class="row">
   <div ng-click="voteViewGoTo(currentPage+1)" class="nextButton">
     <a ng-href="/vote/{{nextPage.SystemShortName}}" style="text-decorations:none; color:inherit;">
       <div style="width:100%">
@@ -42,4 +51,4 @@
       </div>
     </a>
   </div>
-</div>
+</div>-->
