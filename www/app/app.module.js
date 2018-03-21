@@ -1,6 +1,8 @@
 (function(){
   'use strict';
-  const apiRoot="http://localhost:24672/api/v1";
+  var params = params = new URLSearchParams(document.location.search.substring(1));
+  const apiRoot= (params.get("ip") || "//localhost")+":24672/api/v1";
+
   angular
     .module('agora', [
       'ui.router',
