@@ -71,6 +71,11 @@ tr.header th {
   border-radius: 10px;
   box-shadow: 0px 0px 4px #ccc
 }
+.explanation_source {
+  opacity: 0.5;
+  text-align: right;
+  font-style: italic;
+}
 .voteHeader {
   padding-bottom: 15px
 }
