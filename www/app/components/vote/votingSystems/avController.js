@@ -18,7 +18,6 @@
         return $rootScope.avChoices.findIndex(x => x.CandidateID==candidate.CandidateID)+1;
       }
       $scope.setChoice = function(candidate){
-        console.log(candidate)
         if ($scope.isChosen(candidate)) {
           $rootScope.avChoices.splice($rootScope.avChoices.findIndex(x => x.CandidateID==candidate.CandidateID),1);
         } else {

@@ -20,7 +20,6 @@
         return false;
       }
       $scope.setChoice = function(which,choice) {
-        console.log(which,choice);
         var choiceList = $rootScope.election.candidates.filter(makeFilter(choice))
         if (choiceList.length === 1 && $rootScope.svChoices[which] != choiceList[0]) {
           if (which == 1) {
