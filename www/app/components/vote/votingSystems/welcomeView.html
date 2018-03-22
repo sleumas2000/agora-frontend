@@ -18,7 +18,7 @@
   </tr>
   <tr class="nextButton">
     <td colspan="3">
-      <a ng-href="/vote/{{nextPage.SystemShortName}}" style="text-decorations:none; color:inherit;">
+      <a ng-click="getGoing()" ng-href="/vote/{{nextPage.SystemShortName}}" style="text-decorations:none; color:inherit;">
         <div ng-click="voteViewGoTo(0)" class="nextButton">
           Go<div class="rightIcon"><i class="fas fa-angle-right fa-lg"></i></div>
         </div>
