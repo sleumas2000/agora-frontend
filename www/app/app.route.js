@@ -120,6 +120,21 @@
             }
           }
         })
+
+        //results
+        .state('results', {
+          url: '/results',
+          views: {
+            'content@': {
+              templateUrl: '/app/components/vote/resultsView.html',
+              controller: 'resultsController'
+            }/*,
+            'resultContainer@results': {
+              templateUrl: '/app/components/vote/votingSystems/resultsView.html',
+              controller: 'resultsController'
+            }*/
+          }
+        })
         ;
       if(window.history && window.history.pushState){
         $locationProvider.html5Mode({

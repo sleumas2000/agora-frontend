@@ -1,0 +1,24 @@
+<div id="topBar">
+  <div class=container>
+    <p id="userSignInBar"><strong>You are signed in as: </strong><em>{{currentUser.DisplayName}}</em></p>
+  </div>
+</div>
+<div class=container>
+
+  <!--<h1>Yo Yo Yo, gangsta man</h1>
+  <p>My vocal chords is my gun</p>-->
+
+  <h1><em>{{election.ElectionName}}</em></h1>
+  <span ng-repeat="p0 in p">p: {{p0}}<br></span>
+  <span ng-repeat="c0 in c">c: {{c0}}<br></span>
+  <span ng-repeat="v0 in v">v: {{v0}}<br></span>
+  {{c}}
+  {{v}}
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-2 containerWing"></div>
+      <div class="col-lg-8" ui-view="resultContainer" id="resultContainer"></div>
+      <div class="col-lg-2 containerWing"></div>
+    </div>
+  </div>
+</div>
