@@ -86,12 +86,24 @@
          },
        });
     })
+    .factory('Party', function($resource){
+       return $resource(apiRoot+"/parties/:id", {id: '@id'}, {
+         update: {
+           method: 'PUT'
+         },
+       });
+    })
     .factory('Vote', function($resource){
        return $resource(apiRoot+"/elections/:electionID/systems/:systemShortName/votes/user/:userID", {electionID: '@electionID', systemShortName: '@systemShortName', userID: '@userID'}, {
          record: {
+           url: apiRoot+"/elections/:electionID/systems/:systemShortName/votes/user/:userID",
            method: 'POST',
-           headers: {'x-confirm-delete': true}
          },
+         getVotes: {
+            url: apiRoot+"/elections/:electionID/votes",
+            method: 'GET',
+            isArray: true
+         }
        });
     });
 })();''
