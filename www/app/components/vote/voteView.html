@@ -8,7 +8,10 @@
   <!--<h1>Yo Yo Yo, gangsta man</h1>
   <p>My vocal chords is my gun</p>-->
 
-  <h1><em>{{election.ElectionName}}</em></h1>
+  <h1 ng-hide="isGoing"><form>
+      <select ng-model="selectedElection" ng-change="setElection()" ng-options="election.ElectionName for election in elections"></select>
+  </form></h1>
+  <h1 ng-show="isGoing"><em>{{election.ElectionName}}</em></h1>
   <div class="container">
     <div class="row">
       <div class="col-lg-2 containerWing"></div>

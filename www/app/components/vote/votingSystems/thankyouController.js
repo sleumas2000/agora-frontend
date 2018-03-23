@@ -21,75 +21,77 @@
         vote.electionID = $rootScope.election.ElectionID
         return vote
       }
-      if ($rootScope.isGoing) {
-        //FPTP
-        var vote = getVote()
-        vote.systemShortName = "fptp"
-        vote.candidateID = $rootScope.fptpChoice.CandidateID
-        console.log("fptp", vote)
-        Vote.save(vote)
-        // AV
-        for (var i = 0; i < $rootScope.avChoices.length; i++) {
-          var vote = getVote()
-          vote.systemShortName = "av"
-          vote.candidateID = $rootScope.avChoices[i].CandidateID
-          vote.position=i+1
-          console.log("av", vote)
-          Vote.save(vote)
-        }
-        if ($rootScope.avChoices.length == 0) {
-          var vote = getVote()
-          vote.systemShortName = "av"
-          vote.candidateID = null
-          console.log("avn", vote)
-          Vote.save(vote)
-        }
-        // STV
-        for (var i = 0; i < $rootScope.stvChoices.length; i++) {
-          var vote = getVote()
-          vote.systemShortName = "stv"
-          vote.candidateID = $rootScope.stvChoices[i].CandidateID
-          vote.position=i+1
-          console.log("stv", vote)
-          Vote.save(vote)
-        }
-        if ($rootScope.stvChoices.length == 0) {
-          var vote = getVote()
-          vote.systemShortName = "stv"
-          vote.candidateID = null
-          console.log("stvn", vote)
-          Vote.save(vote)
-        }
-        // PR
-        var vote = getVote()
-        vote.systemShortName = "pr"
-        vote.candidateID = $rootScope.prChoice.CandidateID
-        console.log("pr", vote)
-        Vote.save(vote)
-        // SV
-        console.log($rootScope.svChoices)
-        if ($rootScope.svChoices[0].CandidateID == 0) {
-          var vote = getVote()
-          vote.systemShortName = "sv"
-          vote.candidateID = null
-          console.log("svn", vote)
-          Vote.save(vote)
-        } else {
-          var vote = getVote()
-          vote.systemShortName = "sv"
-          vote.candidateID = $rootScope.svChoices[0].CandidateID
-          vote.position=1
-          console.log("sv", vote)
-          Vote.save(vote)
-          if ($rootScope.svChoices[1].CandidateID != 0) {
+      $scope.$on("systemsLoaded", function() {
+        if ($rootScope.isGoing) {
+          //FPTP
+          if ($scope.isUsed("fptp")) {
             var vote = getVote()
-            vote.systemShortName = "sv"
-            vote.candidateID = $rootScope.svChoices[1].CandidateID
-            vote.position=2
-            console.log("sv", vote)
-            Vote.save(vote)
+            vote.systemShortName = "fptp"
+            vote.candidateID = $rootScope.fptpChoice.CandidateID
+            Vote.record(vote)
+          }
+          // AV
+          if ($scope.isUsed("av")) {
+            for (var i = 0; i < $rootScope.avChoices.length; i++) {
+              var vote = getVote()
+              vote.systemShortName = "av"
+              vote.candidateID = $rootScope.avChoices[i].CandidateID
+              vote.position=i+1
+              Vote.record(vote)
+            }
+            if ($rootScope.avChoices.length == 0) {
+              var vote = getVote()
+              vote.systemShortName = "av"
+              vote.candidateID = null
+              Vote.record(vote)
+            }
+          }
+          // STV
+          if ($scope.isUsed("stv")) {
+            for (var i = 0; i < $rootScope.stvChoices.length; i++) {
+              var vote = getVote()
+              vote.systemShortName = "stv"
+              vote.candidateID = $rootScope.stvChoices[i].CandidateID
+              vote.position=i+1
+              Vote.record(vote)
+            }
+            if ($rootScope.stvChoices.length == 0) {
+              var vote = getVote()
+              vote.systemShortName = "stv"
+              vote.candidateID = null
+              Vote.record(vote)
+            }
+          }
+          // PR
+          if ($scope.isUsed("pr")) {
+            var vote = getVote()
+            vote.systemShortName = "pr"
+            vote.candidateID = $rootScope.prChoice.CandidateID
+            Vote.record(vote)
+          }
+          // SV
+          if ($scope.isUsed("sv")) {
+            if ($rootScope.svChoices[0].CandidateID == 0) {
+              var vote = getVote()
+              vote.systemShortName = "sv"
+              vote.candidateID = null
+              Vote.record(vote)
+            } else {
+              var vote = getVote()
+              vote.systemShortName = "sv"
+              vote.candidateID = $rootScope.svChoices[0].CandidateID
+              vote.position=1
+              Vote.record(vote)
+              if ($rootScope.svChoices[1].CandidateID != 0) {
+                var vote = getVote()
+                vote.systemShortName = "sv"
+                vote.candidateID = $rootScope.svChoices[1].CandidateID
+                vote.position=2
+                Vote.record(vote)
+              }
+            }
           }
         }
-      }
+      })
     })
 })();

@@ -14,15 +14,31 @@
       $scope.users = User.query();
       //$rootScope.election = JSON.parse(localStorage.getItem('election'));
       //console.log($rootScope.election)
-      $rootScope.election = {
+      /*$rootScope.election = {
         ElectionID: 1,
         ElectionName: '2018 Test Election'
-      };
+      };*/
+      $rootScope.elections = [
+        {
+          ElectionID: 1,
+          ElectionName: '2018 Test Election'
+        },
+        {
+          ElectionID: 2,
+          ElectionName: '2018 Test Election 2'
+        }
+      ]
+      $scope.setElection = function() {
+        $rootScope.election = $scope.selectedElection
+        $rootScope.election.systems = Election.getSystems({id:$rootScope.election.ElectionID}, afterSystems);
+        $rootScope.election.candidates = Candidate.query({electionID:$rootScope.election.ElectionID}/*, function() { localStorage.setItem('election', JSON.stringify($rootScope.election)); }*/);
+
+      }
+      if (!$rootScope.election) {$rootScope.election = $rootScope.elections[0]}
+      if (!$scope.selectedElection) {$scope.selectedElection = $rootScope.elections[0]}
       //localStorage.setItem('election', JSON.stringify($rootScope.election));
       var afterSystems = function(){
-        console.log("sl");
         $scope.$broadcast('systemsLoaded')
-        console.log($rootScope)
       //  $rootScope.nextPage = $rootScope.election.systems[currentPage+1 || 0]
       //  localStorage.setItem('election', JSON.stringify($rootScope.election));
       //  console.log($rootScope.nextPage)
@@ -31,12 +47,12 @@
       $rootScope.election.candidates = Candidate.query({electionID:$rootScope.election.ElectionID}/*, function() { localStorage.setItem('election', JSON.stringify($rootScope.election)); }*/);
       $rootScope.voteViewGoTo = function(page) {
       //  $state.go('vote.fptp');
-    };
+      };
       $rootScope.sortNextPage = function(scope) {
         scope.$on('systemsLoaded', function() {
           $rootScope.currentPage = $rootScope.currentPage + 1
           if ($rootScope.currentPage +1 < $rootScope.election.systems.length) {
-            scope.nextPage=$rootScope.election.systems[$rootScope.currentPage+1]
+            $rootScope.nextPage=$rootScope.election.systems[$rootScope.currentPage+1]
           } else {
             $rootScope.nextPage={SystemShortName: "thankyou"}
           }
