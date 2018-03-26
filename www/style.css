@@ -137,3 +137,8 @@ div.rightIcon {
   width: 20px;
   float: right;
 }
+.election-choice-box {
+  width: 50%;
+  text-align: center;
+  
+}

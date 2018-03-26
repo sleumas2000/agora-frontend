@@ -9,7 +9,7 @@
   <p>My vocal chords is my gun</p>-->
 
   <h1 ng-hide="isGoing"><form>
-      <select ng-model="selectedElection" ng-change="setElection()" ng-options="election.ElectionName for election in elections"></select>
+    <select class="election-choice-box" ng-model="selectedElection" ng-change="setElection()" ng-options="election.ElectionName for election in elections"></select>
   </form></h1>
   <h1 ng-show="isGoing"><em>{{election.ElectionName}}</em></h1>
   <div class="container">
