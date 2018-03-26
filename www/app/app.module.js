@@ -87,10 +87,15 @@
        });
     })
     .factory('Party', function($resource){
-       return $resource(apiRoot+"/parties/:id", {id: '@id'}, {
+       return $resource(apiRoot+"/parties/:id", {id: '@id', electionID: "@electionID"}, {
          update: {
            method: 'PUT'
          },
+         getByElection: {
+           method:  'GET',
+           url: apiRoot+"/elections/:electionID/parties",
+           isArray: true
+         }
        });
     })
     .factory('Vote', function($resource){
