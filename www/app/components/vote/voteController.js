@@ -4,12 +4,12 @@
   angular.module('agora')
     .controller('voteController', function($scope, $rootScope, $state, User, Election, Candidate){
       function onElectionsGot(values) {
-        console.log(values)
-        $rootScope.elections = values
+        console.log(values);
+        $rootScope.elections = values;
 
         $rootScope.$on('goBackHome', function() {
           $state.go('vote');
-        })
+        });
         $rootScope.currentUser = {
           UserID: 2,
           DisplayName: 'Mr S Balderson'
@@ -32,20 +32,20 @@
           }
         ]*/
         $scope.setElection = function() {
-          $rootScope.election = $scope.selectedElection
+          $rootScope.election = $scope.selectedElection;
           $rootScope.election.systems = Election.getSystems({id:$rootScope.election.ElectionID}, afterSystems);
           $rootScope.election.candidates = Candidate.query({electionID:$rootScope.election.ElectionID}/*, function() { localStorage.setItem('election', JSON.stringify($rootScope.election)); }*/);
 
-        }
-        if (!$rootScope.election) {$rootScope.election = $rootScope.elections[0]}
-        if (!$scope.selectedElection) {$scope.selectedElection = $rootScope.elections[0]}
+        };
+        if (!$rootScope.election) {$rootScope.election = $rootScope.elections[0];}
+        if (!$scope.selectedElection) {$scope.selectedElection = $rootScope.elections[0];}
         //localStorage.setItem('election', JSON.stringify($rootScope.election));
         var afterSystems = function(){
-          $scope.$broadcast('systemsLoaded')
+          $scope.$broadcast('systemsLoaded');
         //  $rootScope.nextPage = $rootScope.election.systems[currentPage+1 || 0]
         //  localStorage.setItem('election', JSON.stringify($rootScope.election));
         //  console.log($rootScope.nextPage)
-        }
+      };
         $rootScope.election.systems = Election.getSystems({id:$rootScope.election.ElectionID}, afterSystems);
         $rootScope.election.candidates = Candidate.query({electionID:$rootScope.election.ElectionID}/*, function() { localStorage.setItem('election', JSON.stringify($rootScope.election)); }*/);
         $rootScope.voteViewGoTo = function(page) {
@@ -53,16 +53,16 @@
         };
         $rootScope.sortNextPage = function(scope) {
           scope.$on('systemsLoaded', function() {
-            $rootScope.currentPage = $rootScope.currentPage + 1
+            $rootScope.currentPage ++;
             if ($rootScope.currentPage +1 < $rootScope.election.systems.length) {
-              $rootScope.nextPage=$rootScope.election.systems[$rootScope.currentPage+1]
+              $rootScope.nextPage=$rootScope.election.systems[$rootScope.currentPage+1];
             } else {
-              $rootScope.nextPage={SystemShortName: "thankyou"}
+              $rootScope.nextPage={SystemShortName: "thankyou"};
             }
             document.body.scrollTop = document.documentElement.scrollTop = 0;
-          })
-        }
+          });
+        };
       }
-      Election.query().$promise.then(onElectionsGot)
-    })
+      Election.query().$promise.then(onElectionsGot);
+    });
 })();
