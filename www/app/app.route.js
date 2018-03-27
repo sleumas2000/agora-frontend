@@ -126,7 +126,7 @@
           url: '/results',
           views: {
             'content@': {
-              templateUrl: '/app/components/vote/resultsView.html',
+              templateUrl: '/app/components/results/resultsView.html',
               controller: 'resultsController'
             }/*,
             'resultContainer@results': {

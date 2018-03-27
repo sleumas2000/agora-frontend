@@ -2,7 +2,7 @@
 
   <h1>User Management Panel</h1>
   <p>Use this page to manage users of the system.</p>
-  <p><strong>You are signed in as: </strong><em>{{user.DisplayName}}</em></p>
+  <p><strong>You are signed in as: </strong><em>{{curentUser.DisplayName}}</em></p>
   Filter by Group:
     <select ng-model="typeFilter" ng-options="x.GroupTypeName for x in groupTypes">
       <option value="">Show All</option>

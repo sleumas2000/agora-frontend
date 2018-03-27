@@ -4,6 +4,12 @@
   angular.module('agora')
     .controller('resultsController', function($scope, $rootScope, $q, User, Election, Candidate, Party, Vote){
       // shite goes here
+      // TODO: remove this
+      $scope.currentUser = {
+        id: 125,
+        DisplayName: 'Mr S Balderson'
+      };
+      // end remove
       if (!$rootScope.electionID) $rootScope.electionID=1;
       var promises = {
         votes: Vote.getVotes({electionID:$rootScope.electionID}).$promise,

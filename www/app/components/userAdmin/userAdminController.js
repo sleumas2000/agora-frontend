@@ -12,7 +12,7 @@
         }
       });
       // TODO: remove this
-      $scope.user = {
+      $scope.currentUser = {
         id: 125,
         DisplayName: 'Mr S Balderson'
       };
