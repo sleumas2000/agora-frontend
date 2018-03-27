@@ -4,7 +4,7 @@
   angular.module('agora')
     .controller('avController', function($scope, $rootScope, User, Election){
       if (!$rootScope.isGoing) $rootScope.$broadcast('goBackHome');
-      $rootScope.avChoices = []
+      $rootScope.avChoices = [];
       $scope.isChosen = function(candidate) {
         var i;
         for (i = 0; i < $rootScope.avChoices.length; i++) {
@@ -13,23 +13,23 @@
           }
         }
         return false;
-      }
+      };
       $scope.positionOf = function(candidate) {
         return $rootScope.avChoices.findIndex(x => x.CandidateID==candidate.CandidateID)+1;
-      }
+      };
       $scope.setChoice = function(candidate){
         if ($scope.isChosen(candidate)) {
           $rootScope.avChoices.splice($rootScope.avChoices.findIndex(x => x.CandidateID==candidate.CandidateID),1);
         } else {
-          $rootScope.avChoices.push(candidate)
+          $rootScope.avChoices.push(candidate);
         }
-      }
-      $rootScope.sortNextPage($scope)
+      };
+      $rootScope.sortNextPage($scope);
       /*$scope.$on('systemsLoaded', function() {
         $rootScope.currentPage = $rootScope.currentPage + 1
         console.log("goingav")
         console.log($rootScope.election.systems[$rootScope.currentPage+1])
         $scope.nextPage=$rootScope.election.systems[$rootScope.currentPage+1]
       })*/
-    })
+    });
 })();
