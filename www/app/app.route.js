@@ -128,11 +128,11 @@
             'content@': {
               templateUrl: '/app/components/results/resultsView.html',
               controller: 'resultsController'
-            }/*,
+            },
             'resultContainer@results': {
-              templateUrl: '/app/components/vote/votingSystems/resultsView.html',
+              templateUrl: '/app/components/results/barChart.html',
               controller: 'resultsController'
-            }*/
+            }
           }
         })
         ;
