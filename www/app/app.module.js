@@ -7,7 +7,8 @@
     .module('agora', [
       'ui.router',
       'ngResource',
-      'ui.bootstrap'
+      'ui.bootstrap',
+	  'nvd3'
     ])
 
     .factory('User', function($resource){

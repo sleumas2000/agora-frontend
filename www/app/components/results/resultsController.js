@@ -127,5 +127,65 @@
       function startCounting() {
         console.log($rootScope.countAVs($rootScope.countPRs($rootScope.countFPTPs($rootScope.prepareDict($rootScope.votes, $rootScope.candidates, $rootScope.parties )))));
       }
+        $scope.chart1options = {
+            chart: {
+                type: 'multiBarHorizontalChart',
+                height: 450,
+                x: function(d){return d.label;},
+                y: function(d){return d.value;},
+                //yErr: function(d){ return [-Math.abs(d.value * Math.random() * 0.3), Math.abs(d.value * Math.random() * 0.3)] },
+                showControls: true,
+                showValues: true,
+                duration: 1500,
+                xAxis: {
+                    showMaxMin: false
+                },
+                yAxis: {
+                    axisLabel: 'Percentage of Vote',
+                    tickFormat: function(d){
+                        return d3.format(',.2f')(d);
+                    }
+                }
+            }
+        };
+
+        $scope.chart1data = [
+            {
+                "key": "Labour",
+                "color": "#d62728",
+                "values": [
+                    {
+                        "label" : "Total" ,
+                        "value" : 44
+                    },
+                    {
+                        "label" : "Year 12" ,
+                        "value" : 50
+                    },
+                    {
+                        "label" : "Year 13" ,
+                        "value" : 38
+                    },
+                ]
+            },
+            {
+                "key": "Tory",
+                "color": "#1f77b4",
+                "values": [
+                    {
+                        "label" : "Total" ,
+                        "value" : 56
+                    }
+                    {
+                        "label" : "Year 12" ,
+                        "value" : 50
+                    },
+                    {
+                        "label" : "Year 13" ,
+                        "value" : 62
+                    },
+                ]
+            }
+        ]
     });
 })();
