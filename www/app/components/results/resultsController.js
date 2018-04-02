@@ -165,7 +165,7 @@
                     {
                         "label" : "Year 13" ,
                         "value" : 38
-                    },
+                    }
                 ]
             },
             {
@@ -175,7 +175,7 @@
                     {
                         "label" : "Total" ,
                         "value" : 56
-                    }
+                    },
                     {
                         "label" : "Year 12" ,
                         "value" : 50
@@ -183,9 +183,51 @@
                     {
                         "label" : "Year 13" ,
                         "value" : 62
-                    },
+                    }
                 ]
             }
         ]
+        $scope.changeData = function() {
+            console.log("datachanged")
+            $scope.chart1data = [
+                {
+                    "key": "Labour",
+                    "color": "#d62728",
+                    "values": [
+                        {
+                            "label" : "Troll" ,
+                            "value" : 56
+                        },
+                        {
+                            "label" : "Year 12" ,
+                            "value" : 50
+                        },
+                        {
+                            "label" : "Year 13" ,
+                            "value" : 62
+                        }
+                    ]
+                },
+               {
+                    "key": "Tory",
+                    "color": "#1f77b4",
+                    "values": [
+                        {
+                            "label" : "Troll" ,
+                            "value" : 44
+                        },
+                        {
+                            "label" : "Year 12" ,
+                            "value" : 50
+                        },
+                        {
+                            "label" : "Year 13" ,
+                            "value" : 38
+                        }
+                    ]
+                }
+            ]
+            $scope.api.refresh()
+        }
     });
 })();
