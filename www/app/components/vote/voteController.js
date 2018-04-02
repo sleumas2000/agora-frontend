@@ -10,10 +10,11 @@
         $rootScope.$on('goBackHome', function() {
           $state.go('vote');
         });
-        $rootScope.currentUser = {
-          UserID: 2,
+        $rootScope.currentUser = $rootScope.currentUser || {
+          UserID: Math.floor(Math.random() * (55)) + 3,
           DisplayName: 'Mr S Balderson'
         };
+        console.log($rootScope.currentUser)
         $scope.users = User.query();
         //$rootScope.election = JSON.parse(localStorage.getItem('election'));
         //console.log($rootScope.election)
