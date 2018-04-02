@@ -20,9 +20,8 @@
       <div class="col-lg-8" id="resultContainer" ui-view="resultContainer"></div>
       <div class="col-lg-2 containerWing"></div>
     </div>
-	<div class="row">
-	<p>{{chart1options}}, {{chart1data}}</p>
-		<nvd3 options="chart1options" style="width:100%" api="api" data="chart1data"></nvd3>
-	</div>
+  <div class="row">
+    <nvd3 options="chart1options" style="width:100%" api="graph" data="chart1data"></nvd3>
+  </div>
   </div>
 </div>
