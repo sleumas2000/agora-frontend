@@ -1,15 +1,14 @@
 (function(){
   'use strict';
-
   angular.module('agora')
     .controller('resultsController', function($scope, $rootScope, $q, User, Election, Candidate, Party, Vote){
       // shite goes here
-      console.log("loading controller")
       // TODO: remove this
       $scope.currentUser = {
         id: 125,
         DisplayName: 'Mr S Balderson'
       };
+      console.log($scope.currentUser.values)
       // end remove
       if (!$rootScope.electionID) $rootScope.electionID=1;
       var promises = {
@@ -21,8 +20,9 @@
         $rootScope.parties = values.parties;
         $rootScope.candidates = values.candidates;
         $rootScope.votes = values.votes;
-        console.log("starting counting")
-        startCounting();
+        $rootScope.results = startCounting();
+        $rootScope.chartData = makeChartData($rootScope.results);
+        console.log($rootScope.chartData)
       });
       $rootScope.prepareDict = function(votes,candidates,parties) {
         var candidateDict = {};
@@ -38,7 +38,7 @@
         for (var i = 0; i < parties.length; i++) { //jshint ignore:line
           partyDict[parties[i].PartyID] = parties[i];
           partyDict[parties[i].PartyID].fptpVotes = partyDict[parties[i].PartyID].prVotes = 0;
-          partyDict[parties[i].PartyID].avVotes = {};
+          partyDict[parties[i].PartyID].avVotes = [];
           partyDict[parties[i].PartyID].stvVotes = {};
           partyDict[parties[i].PartyID].svVotes = {};
         }
@@ -218,6 +218,10 @@
           if (i=="length") {continue}
           candidates[i].avVotes=Array.apply(null, Array(j)).map(Number.prototype.valueOf,0)
         }
+        for (i in parties) {
+          if (i=="length") {continue}
+          parties[i].avVotes=Array.apply(null, Array(j)).map(Number.prototype.valueOf,0)
+        }
         spoilt.av = Array.apply(null, Array(j)).map(Number.prototype.valueOf,0)
         for (var r = 0; r < roundResults.length; r++) {
           for (var c in roundResults[r]) {
@@ -225,6 +229,7 @@
               spoilt.av[r] = roundResults[r][c]
             } else {
               candidates[c].avVotes[r] = roundResults[r][c]
+              parties[candidates[c].PartyID].avVotes[r] += roundResults[r][c]
               console.log(c)
             }
           }
@@ -234,8 +239,51 @@
         return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
       };
       function startCounting() {
-        console.log("here we go")
-        console.log($rootScope.countAVs($rootScope.countPRs($rootScope.countFPTPs($rootScope.prepareDict($rootScope.votes, $rootScope.candidates, $rootScope.parties )))));
+        return ($rootScope.countAVs($rootScope.countPRs($rootScope.countFPTPs($rootScope.prepareDict($rootScope.votes, $rootScope.candidates, $rootScope.parties )))));
+      }
+      function makeChartData(results) {
+        function values(obj) {var a = []; for (var k in obj) { if (k != "length") {a.push(obj[k])}}; return a}
+        function scale(list) {var total = list.reduce((a, b) => a + b, 0); return list.map(a => 100*a/total)}
+        var [ckeys, cfptpdata, cavdata, cstvdata, csvdata, cprdata, pkeys, pfptpdata, pavdata, pstvdata, psvdata, pprdata] = [[],[],[],[],[],[],[],[],[],[],[],[]]
+        var cfptplist = values(results.candidates).sort(function(b,a) {return a.fptpVotes-b.fptpVotes})
+        var cavlist = values(results.candidates).sort(function(b,a) {return a.avVotes[0]-b.avVotes[0]})
+        var cstvlist = values(results.candidates).sort(function(b,a) {return a.stvVotes[0]-b.stvVotes[0]})
+        var csvlist = values(results.candidates).sort(function(b,a) {return a.svVotes[0]-b.svVotes[0]})
+        var cprlist = values(results.candidates).sort(function(b,a) {return a.prVotes-b.prVotes})
+        var pfptplist = values(results.parties).sort(function(b,a) {return a.fptpVotes-b.fptpVotes})
+        var pavlist = values(results.parties).sort(function(b,a) {return a.avVotes[0]-b.avVotes[0]})
+        var pstvlist = values(results.parties).sort(function(b,a) {return a.stvVotes[0]-b.stvVotes[0]})
+        var psvlist = values(results.parties).sort(function(b,a) {return a.svVotes[0]-b.svVotes[0]})
+        var pprlist = values(results.parties).sort(function(b,a) {return a.prVotes-b.prVotes})
+        console.log(cfptplist)
+        console.log(scale(pfptplist.map(function(p) {return p.fptpVotes})))
+        var i=0
+        return {
+          parties: {
+            fptpkeys: pfptplist.map(function(p) {return p.PartyName}),
+            fptpdata: scale(pfptplist.map(function(p) {return p.fptpVotes})),
+            avkeys: pavlist.map(function(p) {return p.PartyName}),
+            avdata: scale(pavlist.map(function(p) {return p.avVotes[i]})),
+            stvkeys: pstvlist.map(function(p) {return p.PartyName}),
+            stvdata: scale(pstvlist.map(function(p) {return p.stvVotes[i]})),
+            svkeys: psvlist.map(function(p) {return p.PartyName}),
+            svdata: scale(psvlist.map(function(p) {return p.svVotes[i]})),
+            prkeys: pprlist.map(function(p) {return p.PartyName}),
+            prdata: scale(pprlist.map(function(p) {return p.prVotes})),
+          },
+          candidates: {
+            fptpkeys: cfptplist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}),
+            fptpdata: cfptpdata,
+            avkeys: cavlist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}),
+            avdata: cavdata,
+            stvkeys: cstvlist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}),
+            stvdata: cstvdata,
+            svkeys: csvlist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}),
+            svdata: csvdata,
+            prkeys: cprlist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}),
+            prdata: cprdata
+          }
+        }
       }
       $scope.chart1options = {
         chart: {
@@ -260,7 +308,7 @@
       $scope.chart1data = [
         {
           "key": "Labour",
-          "color": "#d62728",
+          "color": "#d5000d",
           "values": [
             {
                 "label" : "Total" ,
@@ -278,7 +326,7 @@
         },
         {
           "key": "Tory",
-          "color": "#1f77b4",
+          "color": "#0096db",
           "values": [
             {
                 "label" : "Total" ,
