@@ -131,7 +131,7 @@
             },
             'resultContainer@results': {
               templateUrl: '/app/components/results/barChart.html',
-              controller: 'resultsController'
+              controller: 'resultsContainerController'
             }
           }
         })
