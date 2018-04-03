@@ -28,15 +28,12 @@
         $rootScope.candidates = values.candidates;
         $rootScope.votes = values.votes;
         $rootScope.results = startCounting();
-        $rootScope.chartData = makeChartData($rootScope.results);
+        $scope.chartData = makeChartData($rootScope.results);
         console.log($rootScope.chartData)
-        console.log({keys: $rootScope.chartData.parties.fptpkeys, colors: $rootScope.chartData.parties.fptpcolors, data: $rootScope.chartData.parties.fptpdata})
-        $rootScope.fptp = zip({keys: $rootScope.chartData.parties.fptpkeys, colors: $rootScope.chartData.parties.fptpcolors, data: $rootScope.chartData.parties.fptpdata})
-        console.log($rootScope.chartData)
-        console.log($rootScope.fptp)
-        $scope.chart1data = $rootScope.fptp
-        console.log($scope.chart1data)
-        $scope.graph.refresh()
+        /*$scope.fptpgraph.refresh()
+        $scope.fptpgraph2.refresh()
+        $scope.avGraph.refresh()
+        $scope.avGraph2.refresh()*/
       });
       $rootScope.prepareDict = function(votes,candidates,parties) {
         var candidateDict = {};
@@ -264,6 +261,14 @@
             return {key: keys[i], color: colors[i], values: [{label:"Total",value:data[i]}]}
           });
         }
+        function multiZip({keys: keys, colors: colors, data: data}) {
+          console.log("^")
+          console.log(data)
+          console.log(data[i])
+          return keys.map(function(_,i){
+            return {key: keys[i], color: colors[i], values: data.map(function(l,j){return {label:"Round "+(j+1), value: l[i]}})}
+          });
+        }
         var [ckeys, cfptpdata, cavdata, cstvdata, csvdata, cprdata, pkeys, pfptpdata, pavdata, pstvdata, psvdata, pprdata] = [[],[],[],[],[],[],[],[],[],[],[],[]]
         var cfptplist = values(results.candidates).sort(function(b,a) {return a.fptpVotes-b.fptpVotes})
         var cavlist = values(results.candidates).sort(function(b,a) {return a.avVotes[0]-b.avVotes[0]})
@@ -299,34 +304,31 @@
         console.log("!",pfptplist.map(function(p) {return p.PartyColor}))
         return {
           parties: {
-            fptpkeys: pfptplist.map(function(p) {return p.PartyName}),
+            /*fptpkeys: pfptplist.map(function(p) {return p.PartyName}),
             fptpcolors: pfptplist.map(function(p) {return p.PartyColor}),
-            fptpdata: scale(pfptplist.map(function(p) {return p.fptpVotes})),
-            //fptp: {key: pfptplist.map(function(p) {return p.PartyName}), color: pfptplist.map(function(p) {return p.PartyColor}), values: scale(pfptplist.map(function(p) {return p.fptpVotes})),}
-            avkeys: pavlist.map(function(p) {return p.PartyName}),
-            avdata: pavdata,
+            fptpdata: scale(pfptplist.map(function(p) {return p.fptpVotes})),*/
+            fptp: simpleZip({keys: pfptplist.map(function(p) {return p.PartyName}), colors: pfptplist.map(function(p) {return p.PartyColor}), data: scale(pfptplist.map(function(p) {return p.fptpVotes}))}),
+            av: multiZip({keys: pavlist.map(function(p) {return p.PartyName}), colors: pavlist.map(function(p) {return p.PartyColor}), data: pavdata}),
+            stv: multiZip({keys: pstvlist.map(function(p) {return p.PartyName}), colors: pstvlist.map(function(p) {return p.PartyColor}), data: pstvdata}),
+            sv: multiZip({keys: psvlist.map(function(p) {return p.PartyName}), colors: psvlist.map(function(p) {return p.PartyColor}), data: psvdata}),
+            pr: simpleZip({keys: pprlist.map(function(p) {return p.PartyName}), colors: pprlist.map(function(p) {return p.PartyColor}), data: scale(pprlist.map(function(p) {return p.prVotes}))})/*,
             stvkeys: pstvlist.map(function(p) {return p.PartyName}),
             stvdata: pstvdata,
             svkeys: psvlist.map(function(p) {return p.PartyName}),
             svdata: psvdata,
             prkeys: pprlist.map(function(p) {return p.PartyName}),
-            prdata: scale(pprlist.map(function(p) {return p.prVotes})),
+            prdata: scale(pprlist.map(function(p) {return p.prVotes}))*/
           },
           candidates: {
-            fptpkeys: cfptplist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}),
-            fptpdata: cfptpdata,
-            avkeys: cavlist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}),
-            avdata: cavdata,
-            stvkeys: cstvlist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}),
-            stvdata: cstvdata,
-            svkeys: csvlist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}),
-            svdata: csvdata,
-            prkeys: cprlist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}),
-            prdata: cprdata
+            fptp: simpleZip({keys: cfptplist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}), colors: cfptplist.map(function(c) {return c.PartyColor}), data: scale(cfptplist.map(function(c) {return c.fptpVotes}))}),
+            av: multiZip({keys: cavlist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}), colors: cavlist.map(function(c) {return c.PartyColor}), data: cavdata}),
+            stv: multiZip({keys: cstvlist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}), colors: cstvlist.map(function(c) {return c.PartyColor}), data: cstvdata}),
+            sv: multiZip({keys: csvlist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}), colors: csvlist.map(function(c) {return c.PartyColor}), data: csvdata}),
+            pr: simpleZip({keys: cprlist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}), colors: cprlist.map(function(c) {return c.PartyColor}), data: scale(cprlist.map(function(c) {return c.prVotes}))}),
           }
         }
       }
-      $scope.chart1options = {
+      $scope.chartOptions = {
         chart: {
           type: 'multiBarHorizontalChart',
           height: 450,

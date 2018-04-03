@@ -21,7 +21,22 @@
       <div class="col-lg-2 containerWing"></div>
     </div>
   <div class="row">
-    <nvd3 options="chart1options" style="width:100%" api="graph" data="chart1data"></nvd3>
+    <nvd3 options="chartOptions" style="width:100%" api="fptpgraph" data="chartData.parties.fptp"></nvd3>
+  </div>
+  <div class="row">
+    <nvd3 options="chartOptions" style="width:100%" api="fptpgraph2" data="chartData.candidates.fptp"></nvd3>
+  </div>
+  <div class="row">
+    <nvd3 options="chartOptions" style="width:100%" api="avgraph" data="chartData.parties.av"></nvd3>
+  </div>
+  <div class="row">
+    <nvd3 options="chartOptions" style="width:100%" api="avgraph2" data="chartData.candidates.av"></nvd3>
+  </div>
+  <div class="row">
+    <nvd3 options="chartOptions" style="width:100%" api="prgraph" data="chartData.parties.pr"></nvd3>
+  </div>
+  <div class="row">
+    <nvd3 options="chartOptions" style="width:100%" api="prgraph2" data="chartData.candidates.pr"></nvd3>
   </div>
   </div>
 </div>
