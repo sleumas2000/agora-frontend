@@ -140,5 +140,9 @@ div.rightIcon {
 .election-choice-box {
   width: 50%;
   text-align: center;
-  
+}
+g.nv-bar rect {
+  stroke-opacity: 0.3 !important;
+  stroke-width: 1px;
+  stroke: #000000;
 }
