@@ -183,17 +183,19 @@
         console.log("@",{votes: votes, candidates: candidates, parties: parties, spoilt: spoilt})
         return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
       };
-      $rootScope.countSTVs = function(data) {
+      $rootScope.countSTVs = function(numSeats,data) {
         var stvVotes = {length: 0}
         var votes = data.votes;
         var candidates = data.candidates;
         var parties = data.parties;
         var spoilt = data.spoilt;
+        var numVotes = votes.length;
+        var quota = numVotes/(numSeats+1)
         spoilt.stv = [0]
         for (var i = 0; i < votes.length; i++) {
           if (votes[i].SystemShortName == "stv") {
             if (!stvVotes[votes[i].UserHash]) {
-              stvVotes[votes[i].UserHash] = {currentPointer:1,length:0}
+              stvVotes[votes[i].UserHash] = {currentPointer:1,weight:1,length:0}
               stvVotes.length++
             }
             if (!votes[i].CandidateID) {spoilt.stv[0]++}
@@ -205,7 +207,7 @@
           var total = {}
           for (i in voteList) {
             if (i == "length") continue
-            total[voteList[i][voteList[i].currentPointer]] = (total[voteList[i][voteList[i].currentPointer]] + 1) || 1
+            total[voteList[i][voteList[i].currentPointer]] = (total[voteList[i][voteList[i].currentPointer]] + voteList[i].weight) || voteList[i]
           }
           return total //totalList
         }
@@ -221,11 +223,36 @@
           }
           return lowest //[CandidateID, numVotes]
         }
-        function reassign(voteList,losers) { //voteList,[CandidateID (int)...] => voteList
+        function findBest(total) { //totalList => {IDs:[CandidateID (int)...], votes: numVotes (int)}
+          for (i in total) {
+            if (i == "undefined") continue
+            if (!highst) {var highest = {IDs:[i],votes:total[i]};continue};
+            if (total[i] == highest.votes) {
+              highest.IDs = highest.IDs.concat([i])
+            } else if (total[i] > highest.votes) {
+              highest = {IDs:[i],votes:total[i]};
+            }
+          }
+          return highest //[CandidateID, numVotes]
+        }
+        function reassignLosers(voteList,losers) { //voteList,[CandidateID (int)...] => voteList
           var oldList = voteList
           for (i in voteList) {
             if (i == "length" || voteList[i][voteList[i].currentPointer] == undefined) {continue}
             while (losers.indexOf(voteList[i][voteList[i].currentPointer].toString()) >= 0) {
+              if (voteList[i].currentPointer > voteList[i].length) {break}
+              voteList[i].currentPointer ++
+              if (voteList[i][voteList[i].currentPointer] == undefined) {break}
+            }
+          }
+          return voteList //voteList
+        }
+        function reassignWinners(voteList,winners,numVotes,quota) { //voteList,[CandidateID (int)...] => voteList
+          var oldList = voteList
+          for (i in voteList) {
+            if (i == "length" || voteList[i][voteList[i].currentPointer] == undefined) {continue}
+            while (winners.indexOf(voteList[i][voteList[i].currentPointer].toString()) >= 0) {
+              voteList[i].weight = voteList[i].weight*((numVotes/quota)-1)
               if (voteList[i].currentPointer > voteList[i].length) {break}
               voteList[i].currentPointer ++
               if (voteList[i][voteList[i].currentPointer] == undefined) {break}
