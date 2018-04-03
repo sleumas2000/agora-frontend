@@ -43,7 +43,7 @@
           partyDict[parties[i].PartyID].svVotes = {};
         }
         partyDict.length = parties.length
-        return {votes: votes, candidates: candidateDict, parties: partyDict, spoilt: {fptp: 0, av: 0, atf: 0, pr: 0, sv: 0}};
+        return {votes: votes, candidates: candidateDict, parties: partyDict, spoilt: {fptp: 0, av: [], stv: [], pr: 0, sv: 0}};
       };
       $rootScope.countFPTPs = function(data) {
         var votes = data.votes;
@@ -171,22 +171,18 @@
               lowest = {IDs:[i],votes:total[i]};
             }
           }
-          console.log("findworst",total,lowest)
           return lowest //[CandidateID, numVotes]
         }
         function reassign(voteList,losers) { //voteList,[CandidateID (int)...] => voteList
           var oldList = voteList
-          console.log("1a",voteList,losers)
           for (i in voteList) {
             if (i == "length" || voteList[i][voteList[i].currentPointer] == undefined) {continue}
-            console.log("1c",voteList,losers)
             while (losers.indexOf(voteList[i][voteList[i].currentPointer].toString()) >= 0) {
               if (voteList[i].currentPointer > voteList[i].length) {break}
               voteList[i].currentPointer ++
               if (voteList[i][voteList[i].currentPointer] == undefined) {break}
             }
           }
-          console.log("reassign",oldList,voteList,losers)
           return voteList //voteList
         }
         function isFinished(totalList) { // totalList => bool
@@ -217,12 +213,24 @@
           if (j > candidates.length) {console.log("too many loops");finished = true;} // stop loop overflows. If this happens, something is wrong anyway
           
         }
-        console.log("..")
+        console.log("..",candidates)
         for (i in candidates) {
-          candidates[i].avVotes=Array.apply(null, Array(j+1)).map(Number.prototype.valueOf,0)
-          
+          if (i=="length") {continue}
+          candidates[i].avVotes=Array.apply(null, Array(j)).map(Number.prototype.valueOf,0)
+        }
+        spoilt.av = Array.apply(null, Array(j)).map(Number.prototype.valueOf,0)
+        for (var r = 0; r < roundResults.length; r++) {
+          for (var c in roundResults[r]) {
+            if (c == "undefined") {
+              spoilt.av[r] = roundResults[r][c]
+            } else {
+              candidates[c].avVotes[r] = roundResults[r][c]
+              console.log(c)
+            }
+          }
         }
         //console.log(avVotes,count(reassign(avVotes,[1])))
+        console.log("@",{votes: votes, candidates: candidates, parties: parties, spoilt: spoilt})
         return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
       };
       function startCounting() {
@@ -235,7 +243,6 @@
           height: 450,
           x: function(d){return d.label;},
           y: function(d){return d.value;},
-          //yErr: function(d){ return [-Math.abs(d.value * Math.random() * 0.3), Math.abs(d.value * Math.random() * 0.3)] },
           showControls: true,
           showValues: true,
           duration: 500,
