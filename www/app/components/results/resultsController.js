@@ -89,14 +89,14 @@
         var candidates = data.candidates;
         var parties = data.parties;
         var spoilt = data.spoilt;
-        spoilt.av = [0]
+        console.log(spoilt)
+        spoilt.av = []
         for (var i = 0; i < votes.length; i++) {
           if (votes[i].SystemShortName == "av") {
             if (!avVotes[votes[i].UserHash]) {
               avVotes[votes[i].UserHash] = {currentPointer:1,length:0}
               avVotes.length++
             }
-            if (!votes[i].CandidateID) {spoilt.av[0]++}
             avVotes[votes[i].UserHash][votes[i].Position] = votes[i].CandidateID
             avVotes[votes[i].UserHash].length++
           }
@@ -152,6 +152,9 @@
         var out = []
         while (!finished) {
           roundResults[j] = count(avVotes)
+          console.log(spoilt,"£",roundResults[j])
+          spoilt.av.push(roundResults[j].undefined)
+          console.log(spoilt)
           if (isFinished(roundResults[j])) {finished = true;}
           else {
             out = out.concat(findWorst(roundResults[j]).IDs)
@@ -183,7 +186,8 @@
         console.log("@",{votes: votes, candidates: candidates, parties: parties, spoilt: spoilt})
         return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
       };
-      $rootScope.countSTVs = function(numSeats,data) {
+      $rootScope.countSTVs = function(data){return data}
+      /*$rootScope.countSTVs = function(numSeats,data) {
         var stvVotes = {length: 0}
         var votes = data.votes;
         var candidates = data.candidates;
@@ -310,10 +314,11 @@
         console.log("@",{votes: votes, candidates: candidates, parties: parties, spoilt: spoilt})
         return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
       };
-      function startCounting() {
+      */function startCounting() {
         return ($rootScope.countSTVs($rootScope.countAVs($rootScope.countPRs($rootScope.countFPTPs($rootScope.prepareDict($rootScope.votes, $rootScope.candidates, $rootScope.parties ))))));
       }
       function makeChartData(results) {
+        var spoilt = results.spoilt
         function values(obj) {var a = []; for (var k in obj) { if (k != "length") {a.push(obj[k])}}; return a}
         function scale(list) {var total = list.reduce((a, b) => a + b, 0); return list.map(a => 100*a/total)}
         function simpleZip({keys: keys, colors: colors, data: data}) {
@@ -326,17 +331,29 @@
             return {key: keys[i], color: colors[i], values: data.map(function(l,j){return {label:"Round "+(j+1), value: l[i]}})}
           });
         }
+        results.parties.s=({PartyName: "Spoilt Votes", PartyColor: "#555", isSpoilt: true})
+        results.parties.s.fptpVotes = spoilt.fptp
+        results.parties.s.avVotes = spoilt.av
+        results.parties.s.stvVotes = spoilt.stv
+        results.parties.s.svVotes = spoilt.sv
+        results.parties.s.prVotes = spoilt.pr
+        results.candidates.s=({CandidateName: "Spoilt Votes", PartyColor: "#555", isSpoilt: true})
+        results.candidates.s.fptpVotes = spoilt.fptp
+        results.candidates.s.avVotes = spoilt.av
+        results.candidates.s.stvVotes = spoilt.stv
+        results.candidates.s.svVotes = spoilt.sv
+        results.candidates.s.prVotes = spoilt.pr
         var [ckeys, cfptpdata, cavdata, cstvdata, csvdata, cprdata, pkeys, pfptpdata, pavdata, pstvdata, psvdata, pprdata] = [[],[],[],[],[],[],[],[],[],[],[],[]]
-        var cfptplist = values(results.candidates).sort(function(b,a) {return a.fptpVotes-b.fptpVotes})
-        var cavlist = values(results.candidates).sort(function(b,a) {return a.avVotes[0]-b.avVotes[0]})
-        var cstvlist = values(results.candidates).sort(function(b,a) {return a.stvVotes[0]-b.stvVotes[0]})
-        var csvlist = values(results.candidates).sort(function(b,a) {return a.svVotes[0]-b.svVotes[0]})
-        var cprlist = values(results.candidates).sort(function(b,a) {return a.prVotes-b.prVotes})
-        var pfptplist = values(results.parties).sort(function(b,a) {return a.fptpVotes-b.fptpVotes})
-        var pavlist = values(results.parties).sort(function(b,a) {return a.avVotes[0]-b.avVotes[0]})
-        var pstvlist = values(results.parties).sort(function(b,a) {return a.stvVotes[0]-b.stvVotes[0]})
-        var psvlist = values(results.parties).sort(function(b,a) {return a.svVotes[0]-b.svVotes[0]})
-        var pprlist = values(results.parties).sort(function(b,a) {return a.prVotes-b.prVotes})
+        var cfptplist = values(results.candidates).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.fptpVotes-b.fptpVotes})
+        var cavlist = values(results.candidates).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.avVotes[0]-b.avVotes[0]})
+        var cstvlist = values(results.candidates).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.stvVotes[0]-b.stvVotes[0]})
+        var csvlist = values(results.candidates).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.svVotes[0]-b.svVotes[0]})
+        var cprlist = values(results.candidates).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.prVotes-b.prVotes})
+        var pfptplist = values(results.parties).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.fptpVotes-b.fptpVotes})
+        var pavlist = values(results.parties).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.avVotes[0]-b.avVotes[0]})
+        var pstvlist = values(results.parties).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.stvVotes[0]-b.stvVotes[0]})
+        var psvlist = values(results.parties).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.svVotes[0]-b.svVotes[0]})
+        var pprlist = values(results.parties).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.prVotes-b.prVotes})
         var [pavdata, pstvdata, psvdata, cavdata, cstvdata, csvdata] = [[],[],[],[],[],[]]
         for (var i = 0; i < pavlist[0].avVotes.length; i++) {
           pavdata.push(scale(pavlist.map(function(p) {return p.avVotes[i]})))
@@ -365,11 +382,11 @@
             pr: simpleZip({keys: pprlist.map(function(p) {return p.PartyName}), colors: pprlist.map(function(p) {return p.PartyColor}), data: scale(pprlist.map(function(p) {return p.prVotes}))})
           },
           candidates: {
-            fptp: simpleZip({keys: cfptplist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}), colors: cfptplist.map(function(c) {return c.PartyColor}), data: scale(cfptplist.map(function(c) {return c.fptpVotes}))}),
-            av: multiZip({keys: cavlist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}), colors: cavlist.map(function(c) {return c.PartyColor}), data: cavdata}),
-            stv: multiZip({keys: cstvlist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}), colors: cstvlist.map(function(c) {return c.PartyColor}), data: cstvdata}),
-            sv: multiZip({keys: csvlist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}), colors: csvlist.map(function(c) {return c.PartyColor}), data: csvdata}),
-            pr: simpleZip({keys: cprlist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}), colors: cprlist.map(function(c) {return c.PartyColor}), data: scale(cprlist.map(function(c) {return c.prVotes}))}),
+            fptp: simpleZip({keys: cfptplist.map(function(c) {return c.isSpoilt ? c.CandidateName : c.CandidateName+" ("+c.PartyName+")"}), colors: cfptplist.map(function(c) {return c.PartyColor}), data: scale(cfptplist.map(function(c) {return c.fptpVotes}))}),
+            av: multiZip({keys: cavlist.map(function(c) {return c.isSpoilt ? c.CandidateName : c.CandidateName+" ("+c.PartyName+")"}), colors: cavlist.map(function(c) {return c.PartyColor}), data: cavdata}),
+            stv: multiZip({keys: cstvlist.map(function(c) {return c.isSpoilt ? c.CandidateName : c.CandidateName+" ("+c.PartyName+")"}), colors: cstvlist.map(function(c) {return c.PartyColor}), data: cstvdata}),
+            sv: multiZip({keys: csvlist.map(function(c) {return c.isSpoilt ? c.CandidateName : c.CandidateName+" ("+c.PartyName+")"}), colors: csvlist.map(function(c) {return c.PartyColor}), data: csvdata}),
+            pr: simpleZip({keys: cprlist.map(function(c) {return c.isSpoilt ? c.CandidateName : c.CandidateName+" ("+c.PartyName+")"}), colors: cprlist.map(function(c) {return c.PartyColor}), data: scale(cprlist.map(function(c) {return c.prVotes}))}),
           }
         }
       }
