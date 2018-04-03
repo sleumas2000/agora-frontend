@@ -4,6 +4,7 @@
   angular.module('agora')
     .controller('resultsController', function($scope, $rootScope, $q, User, Election, Candidate, Party, Vote){
       // shite goes here
+      console.log("loading controller")
       // TODO: remove this
       $scope.currentUser = {
         id: 125,
@@ -20,6 +21,7 @@
         $rootScope.parties = values.parties;
         $rootScope.candidates = values.candidates;
         $rootScope.votes = values.votes;
+        console.log("starting counting")
         startCounting();
       });
       $rootScope.prepareDict = function(votes,candidates,parties) {
@@ -28,7 +30,7 @@
         for (var i = 0; i < candidates.length; i++) {
           candidateDict[candidates[i].CandidateID] = candidates[i];
           candidateDict[candidates[i].CandidateID].fptpVotes = candidateDict[candidates[i].CandidateID].prVotes = 0;
-          candidateDict[candidates[i].CandidateID].avVotes = {};
+          candidateDict[candidates[i].CandidateID].avVotes = [];
           candidateDict[candidates[i].CandidateID].stvVotes = {};
           candidateDict[candidates[i].CandidateID].svVotes = {};
         }
@@ -134,55 +136,67 @@
         return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
       };*/
       $rootScope.countAVs = function(data) {
-        var avVotes = {}
+        var avVotes = {length: 0}
         var votes = data.votes;
         var candidates = data.candidates;
         var parties = data.parties;
         var spoilt = data.spoilt;
+        spoilt.av = [0]
         for (var i = 0; i < votes.length; i++) {
           if (votes[i].SystemShortName == "av") {
             if (!avVotes[votes[i].UserHash]) {
-              avVotes[votes[i].UserHash] = {currentPointer:1}
+              avVotes[votes[i].UserHash] = {currentPointer:1,length:0}
+              avVotes.length++
             }
+            if (!votes[i].CandidateID) {spoilt.av[0]++}
             avVotes[votes[i].UserHash][votes[i].Position] = votes[i].CandidateID
+            avVotes[votes[i].UserHash].length++
           }
         }
         function count(voteList) { //voteList => totalList
           var total = {}
           for (i in voteList) {
-            total[voteList[i][voteList[i].currentPointer]] = total[voteList[i][voteList[i].currentPointer]] +1 | 1
+            if (i == "length") continue
+            total[voteList[i][voteList[i].currentPointer]] = (total[voteList[i][voteList[i].currentPointer]] + 1) || 1
           }
           return total //totalList
         }
         function findWorst(total) { //totalList => {IDs:[CandidateID (int)...], votes: numVotes (int)}
           for (i in total) {
-            if (!lowest) {var lowest = {IDs:[i],votes:total[i]}};
+            if (i == "undefined") continue
+            if (!lowest) {var lowest = {IDs:[i],votes:total[i]};continue};
             if (total[i] == lowest.votes) {
-              lowest.IDs.concat(i)
+              lowest.IDs = lowest.IDs.concat([i])
             } else if (total[i] < lowest.votes) {
               lowest = {IDs:[i],votes:total[i]};
             }
           }
+          console.log("findworst",total,lowest)
           return lowest //[CandidateID, numVotes]
         }
         function reassign(voteList,losers) { //voteList,[CandidateID (int)...] => voteList
-          for (var i = 0; i < losers.length; i++) {
-            for (i in voteList) {
-              while (losers.indexOf(voteList[i][voteList[i].currentPointer]) >= 0) {
-                voteList[i].currentPointer ++
-              }
+          var oldList = voteList
+          console.log("1a",voteList,losers)
+          for (i in voteList) {
+            if (i == "length" || voteList[i][voteList[i].currentPointer] == undefined) {continue}
+            console.log("1c",voteList,losers)
+            while (losers.indexOf(voteList[i][voteList[i].currentPointer].toString()) >= 0) {
+              if (voteList[i].currentPointer > voteList[i].length) {break}
+              voteList[i].currentPointer ++
+              if (voteList[i][voteList[i].currentPointer] == undefined) {break}
             }
           }
+          console.log("reassign",oldList,voteList,losers)
           return voteList //voteList
         }
-        function isFinished(voteList) { // voteList => bool
+        function isFinished(totalList) { // totalList => bool
           var totalVotes = 0
-          for (i in voteList) {
-            if (i === undefined) {console.log("undefined"); continue}
-            totalVotes += voteList[i]
+          for (i in totalList) {
+            if (i == "undefined") {console.log("undefined"); continue}
+            totalVotes += totalList[i]
           }
-          for (i in voteList) {
-            if (voteList[i] > totalVotes/2) {
+          for (i in totalList) {
+            if (totalList[i] > totalVotes/2 && i != "undefined") {
               return true
             }
           }
@@ -194,17 +208,25 @@
         var out = []
         while (!finished) {
           roundResults[j] = count(avVotes)
-          out += findWorst(roundResults[j]).IDs
-          avVotes = reassign(avVotes,out)
-          console.log(avVotes["c02a65ac"],avVotes["51e4f5ff"],avVotes["5f496f0b"])
-          console.log(avVotes)
+          if (isFinished(roundResults[j])) {console.log("Done",roundResults,avVotes);finished = true;}
+          else {
+            out = out.concat(findWorst(roundResults[j]).IDs)
+            avVotes = reassign(avVotes,out)
+          }
           j++
-          if (j > candidates.length) {console.log("too many loops");finished = true;}
+          if (j > candidates.length) {console.log("too many loops");finished = true;} // stop loop overflows. If this happens, something is wrong anyway
+          
         }
-        console.log(avVotes,count(reassign(avVotes,[1])))
+        console.log("..")
+        for (i in candidates) {
+          candidates[i].avVotes=Array.apply(null, Array(j+1)).map(Number.prototype.valueOf,0)
+          
+        }
+        //console.log(avVotes,count(reassign(avVotes,[1])))
         return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
       };
       function startCounting() {
+        console.log("here we go")
         console.log($rootScope.countAVs($rootScope.countPRs($rootScope.countFPTPs($rootScope.prepareDict($rootScope.votes, $rootScope.candidates, $rootScope.parties )))));
       }
       $scope.chart1options = {
