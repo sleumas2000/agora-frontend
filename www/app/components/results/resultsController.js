@@ -17,12 +17,26 @@
         candidates: Candidate.query({electionID:$rootScope.electionID}).$promise
       };
       $q.all(promises).then(function(values) {
+        function zip({keys: keys, colors: colors, data: data}) {
+          console.log("$",keys,colors,data)
+          return keys.map(function(_,i){
+            return {key: keys[i], color: colors[i], values: [{label:"Total",value:data[i]}]}
+          });
+        }
         $rootScope.parties = values.parties;
+        console.log($rootScope.parties)
         $rootScope.candidates = values.candidates;
         $rootScope.votes = values.votes;
         $rootScope.results = startCounting();
         $rootScope.chartData = makeChartData($rootScope.results);
         console.log($rootScope.chartData)
+        console.log({keys: $rootScope.chartData.parties.fptpkeys, colors: $rootScope.chartData.parties.fptpcolors, data: $rootScope.chartData.parties.fptpdata})
+        $rootScope.fptp = zip({keys: $rootScope.chartData.parties.fptpkeys, colors: $rootScope.chartData.parties.fptpcolors, data: $rootScope.chartData.parties.fptpdata})
+        console.log($rootScope.chartData)
+        console.log($rootScope.fptp)
+        $scope.chart1data = $rootScope.fptp
+        console.log($scope.chart1data)
+        $scope.graph.refresh()
       });
       $rootScope.prepareDict = function(votes,candidates,parties) {
         var candidateDict = {};
@@ -244,6 +258,12 @@
       function makeChartData(results) {
         function values(obj) {var a = []; for (var k in obj) { if (k != "length") {a.push(obj[k])}}; return a}
         function scale(list) {var total = list.reduce((a, b) => a + b, 0); return list.map(a => 100*a/total)}
+        function simpleZip({keys: keys, colors: colors, data: data}) {
+          console.log("$",keys,colors,data)
+          return keys.map(function(_,i){
+            return {key: keys[i], color: colors[i], values: [{label:"Total",value:data[i]}]}
+          });
+        }
         var [ckeys, cfptpdata, cavdata, cstvdata, csvdata, cprdata, pkeys, pfptpdata, pavdata, pstvdata, psvdata, pprdata] = [[],[],[],[],[],[],[],[],[],[],[],[]]
         var cfptplist = values(results.candidates).sort(function(b,a) {return a.fptpVotes-b.fptpVotes})
         var cavlist = values(results.candidates).sort(function(b,a) {return a.avVotes[0]-b.avVotes[0]})
@@ -257,17 +277,38 @@
         var pprlist = values(results.parties).sort(function(b,a) {return a.prVotes-b.prVotes})
         console.log(cfptplist)
         console.log(scale(pfptplist.map(function(p) {return p.fptpVotes})))
-        var i=0
+        var [pavdata, pstvdata, psvdata, cavdata, cstvdata, csvdata] = [[],[],[],[],[],[]]
+        for (var i = 0; i < pavlist[0].avVotes.length; i++) {
+          pavdata.push(scale(pavlist.map(function(p) {return p.avVotes[i]})))
+        }
+        for (var i = 0; i < pstvlist[0].stvVotes.length; i++) {
+          pstvdata.push(scale(pstvlist.map(function(p) {return p.stvVotes[i]})))
+        }
+        for (var i = 0; i < psvlist[0].svVotes.length; i++) {
+          psvdata.push(scale(psvlist.map(function(p) {return p.svVotes[i]})))
+        }
+        for (var i = 0; i < cavlist[0].avVotes.length; i++) {
+          cavdata.push(scale(cavlist.map(function(c) {return c.avVotes[i]})))
+        }
+        for (var i = 0; i < cstvlist[0].stvVotes.length; i++) {
+          cstvdata.push(scale(cstvlist.map(function(c) {return c.stvVotes[i]})))
+        }
+        for (var i = 0; i < csvlist[0].svVotes.length; i++) {
+          csvdata.push(scale(csvlist.map(function(c) {return c.svVotes[i]})))
+        }
+        console.log("!",pfptplist.map(function(p) {return p.PartyColor}))
         return {
           parties: {
             fptpkeys: pfptplist.map(function(p) {return p.PartyName}),
+            fptpcolors: pfptplist.map(function(p) {return p.PartyColor}),
             fptpdata: scale(pfptplist.map(function(p) {return p.fptpVotes})),
+            //fptp: {key: pfptplist.map(function(p) {return p.PartyName}), color: pfptplist.map(function(p) {return p.PartyColor}), values: scale(pfptplist.map(function(p) {return p.fptpVotes})),}
             avkeys: pavlist.map(function(p) {return p.PartyName}),
-            avdata: scale(pavlist.map(function(p) {return p.avVotes[i]})),
+            avdata: pavdata,
             stvkeys: pstvlist.map(function(p) {return p.PartyName}),
-            stvdata: scale(pstvlist.map(function(p) {return p.stvVotes[i]})),
+            stvdata: pstvdata,
             svkeys: psvlist.map(function(p) {return p.PartyName}),
-            svdata: scale(psvlist.map(function(p) {return p.svVotes[i]})),
+            svdata: psvdata,
             prkeys: pprlist.map(function(p) {return p.PartyName}),
             prdata: scale(pprlist.map(function(p) {return p.prVotes})),
           },
@@ -305,7 +346,7 @@
           }
         }
       };
-      $scope.chart1data = [
+      /*$scope.chart1data = [
         {
           "key": "Labour",
           "color": "#d5000d",
@@ -342,7 +383,7 @@
             }
           ]
         }
-      ]
+      ]*/
       $scope.changeData = function() {
         console.log("datachanged")
         $scope.chart1data = [
