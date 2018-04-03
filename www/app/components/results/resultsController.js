@@ -183,8 +183,108 @@
         console.log("@",{votes: votes, candidates: candidates, parties: parties, spoilt: spoilt})
         return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
       };
+      $rootScope.countSTVs = function(data) {
+        var stvVotes = {length: 0}
+        var votes = data.votes;
+        var candidates = data.candidates;
+        var parties = data.parties;
+        var spoilt = data.spoilt;
+        spoilt.stv = [0]
+        for (var i = 0; i < votes.length; i++) {
+          if (votes[i].SystemShortName == "stv") {
+            if (!stvVotes[votes[i].UserHash]) {
+              stvVotes[votes[i].UserHash] = {currentPointer:1,length:0}
+              stvVotes.length++
+            }
+            if (!votes[i].CandidateID) {spoilt.stv[0]++}
+            stvVotes[votes[i].UserHash][votes[i].Position] = votes[i].CandidateID
+            stvVotes[votes[i].UserHash].length++
+          }
+        }
+        function count(voteList) { //voteList => totalList
+          var total = {}
+          for (i in voteList) {
+            if (i == "length") continue
+            total[voteList[i][voteList[i].currentPointer]] = (total[voteList[i][voteList[i].currentPointer]] + 1) || 1
+          }
+          return total //totalList
+        }
+        function findWorst(total) { //totalList => {IDs:[CandidateID (int)...], votes: numVotes (int)}
+          for (i in total) {
+            if (i == "undefined") continue
+            if (!lowest) {var lowest = {IDs:[i],votes:total[i]};continue};
+            if (total[i] == lowest.votes) {
+              lowest.IDs = lowest.IDs.concat([i])
+            } else if (total[i] < lowest.votes) {
+              lowest = {IDs:[i],votes:total[i]};
+            }
+          }
+          return lowest //[CandidateID, numVotes]
+        }
+        function reassign(voteList,losers) { //voteList,[CandidateID (int)...] => voteList
+          var oldList = voteList
+          for (i in voteList) {
+            if (i == "length" || voteList[i][voteList[i].currentPointer] == undefined) {continue}
+            while (losers.indexOf(voteList[i][voteList[i].currentPointer].toString()) >= 0) {
+              if (voteList[i].currentPointer > voteList[i].length) {break}
+              voteList[i].currentPointer ++
+              if (voteList[i][voteList[i].currentPointer] == undefined) {break}
+            }
+          }
+          return voteList //voteList
+        }
+        function isFinished(totalList) { // totalList => bool
+          var totalVotes = 0
+          for (i in totalList) {
+            if (i == "undefined") {console.log("undefined"); continue}
+            totalVotes += totalList[i]
+          }
+          for (i in totalList) {
+            if (totalList[i] > totalVotes/2 && i != "undefined") {
+              return true
+            }
+          }
+          return false
+        }
+        var finished = false
+        var j = 0
+        var roundResults = []
+        var out = []
+        while (!finished) {
+          roundResults[j] = count(stvVotes)
+          if (isFinished(roundResults[j])) {finished = true;}
+          else {
+            out = out.concat(findWorst(roundResults[j]).IDs)
+            stvVotes = reassign(stvVotes,out)
+          }
+          j++
+          if (j > candidates.length) {console.log("too many loops");finished = true;} // stop loop overflows. If this happens, something is wrong anyway
+        }
+        for (i in candidates) {
+          if (i=="length") {continue}
+          candidates[i].stvVotes=Array.apply(null, Array(j)).map(Number.prototype.valueOf,0)
+        }
+        for (i in parties) {
+          if (i=="length") {continue}
+          parties[i].stvVotes=Array.apply(null, Array(j)).map(Number.prototype.valueOf,0)
+        }
+        spoilt.stv = Array.apply(null, Array(j)).map(Number.prototype.valueOf,0)
+        for (var r = 0; r < roundResults.length; r++) {
+          for (var c in roundResults[r]) {
+            if (c == "undefined") {
+              spoilt.stv[r] = roundResults[r][c]
+            } else {
+              candidates[c].stvVotes[r] = roundResults[r][c]
+              parties[candidates[c].PartyID].stvVotes[r] += roundResults[r][c]
+            }
+          }
+        }
+        //console.log(stvVotes,count(reassign(stvVotes,[1])))
+        console.log("@",{votes: votes, candidates: candidates, parties: parties, spoilt: spoilt})
+        return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
+      };
       function startCounting() {
-        return ($rootScope.countAVs($rootScope.countPRs($rootScope.countFPTPs($rootScope.prepareDict($rootScope.votes, $rootScope.candidates, $rootScope.parties )))));
+        return ($rootScope.countSTVs($rootScope.countAVs($rootScope.countPRs($rootScope.countFPTPs($rootScope.prepareDict($rootScope.votes, $rootScope.candidates, $rootScope.parties ))))));
       }
       function makeChartData(results) {
         function values(obj) {var a = []; for (var k in obj) { if (k != "length") {a.push(obj[k])}}; return a}
