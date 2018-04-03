@@ -8,7 +8,6 @@
         id: 125,
         DisplayName: 'Mr S Balderson'
       };
-      console.log($scope.currentUser.values)
       // end remove
       if (!$rootScope.electionID) $rootScope.electionID=1;
       var promises = {
@@ -24,12 +23,10 @@
           });
         }
         $rootScope.parties = values.parties;
-        console.log($rootScope.parties)
         $rootScope.candidates = values.candidates;
         $rootScope.votes = values.votes;
         $rootScope.results = startCounting();
         $scope.chartData = makeChartData($rootScope.results);
-        console.log($rootScope.chartData)
       });
       $rootScope.prepareDict = function(votes,candidates,parties) {
         var candidateDict = {};
@@ -155,16 +152,14 @@
         var out = []
         while (!finished) {
           roundResults[j] = count(avVotes)
-          if (isFinished(roundResults[j])) {console.log("Done",roundResults,avVotes);finished = true;}
+          if (isFinished(roundResults[j])) {finished = true;}
           else {
             out = out.concat(findWorst(roundResults[j]).IDs)
             avVotes = reassign(avVotes,out)
           }
           j++
           if (j > candidates.length) {console.log("too many loops");finished = true;} // stop loop overflows. If this happens, something is wrong anyway
-          
         }
-        console.log("..",candidates)
         for (i in candidates) {
           if (i=="length") {continue}
           candidates[i].avVotes=Array.apply(null, Array(j)).map(Number.prototype.valueOf,0)
@@ -181,7 +176,6 @@
             } else {
               candidates[c].avVotes[r] = roundResults[r][c]
               parties[candidates[c].PartyID].avVotes[r] += roundResults[r][c]
-              console.log(c)
             }
           }
         }
@@ -196,15 +190,11 @@
         function values(obj) {var a = []; for (var k in obj) { if (k != "length") {a.push(obj[k])}}; return a}
         function scale(list) {var total = list.reduce((a, b) => a + b, 0); return list.map(a => 100*a/total)}
         function simpleZip({keys: keys, colors: colors, data: data}) {
-          console.log("$",keys,colors,data)
           return keys.map(function(_,i){
             return {key: keys[i], color: colors[i], values: [{label:"Total",value:data[i]}]}
           });
         }
         function multiZip({keys: keys, colors: colors, data: data}) {
-          console.log("^")
-          console.log(data)
-          console.log(data[i])
           return keys.map(function(_,i){
             return {key: keys[i], color: colors[i], values: data.map(function(l,j){return {label:"Round "+(j+1), value: l[i]}})}
           });
@@ -239,7 +229,6 @@
         for (var i = 0; i < csvlist[0].svVotes.length; i++) {
           csvdata.push(scale(csvlist.map(function(c) {return c.svVotes[i]})))
         }
-        console.log("!",pfptplist.map(function(p) {return p.PartyColor}))
         return {
           parties: {
             fptp: simpleZip({keys: pfptplist.map(function(p) {return p.PartyName}), colors: pfptplist.map(function(p) {return p.PartyColor}), data: scale(pfptplist.map(function(p) {return p.fptpVotes}))}),
