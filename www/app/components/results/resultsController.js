@@ -30,10 +30,6 @@
         $rootScope.results = startCounting();
         $scope.chartData = makeChartData($rootScope.results);
         console.log($rootScope.chartData)
-        /*$scope.fptpgraph.refresh()
-        $scope.fptpgraph2.refresh()
-        $scope.avGraph.refresh()
-        $scope.avGraph2.refresh()*/
       });
       $rootScope.prepareDict = function(votes,candidates,parties) {
         var candidateDict = {};
@@ -90,62 +86,6 @@
         }
         return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
       };
-      /*$rootScope.countAVs = function(data) {
-        var votes = data.votes;
-        var candidates = data.candidates;
-        var parties = data.parties;
-        var spoilt = data.spoilt;
-        var totalVotes = 0;
-        for (var i = 0; i < votes.length; i++) {
-          if (votes[i].SystemShortName == "av") {
-            var vote = votes[i];
-            if (!vote.CandidateID) {
-              spoilt.av ++;
-            } else if (vote.Position == 1) {
-              totalVotes ++;
-              candidates[vote.CandidateID].avVotes[0] = candidates[vote.CandidateID].avVotes[0] + 1 || 1;
-              if (vote.PartyID) {
-                parties[vote.PartyID].avVotes[0] = parties[vote.PartyID].avVotes[0] + 1 || 1;
-              }
-            }
-          }
-        }
-        var finished = false
-        var round = 0
-        while (!finished) {
-          //candidates[1].avVotes[0] = 100
-          var lowest = {IDs: [0], votes: totalVotes};
-          for (var i in candidates){
-            if (candidates[i].out) {
-              continue
-            }
-            if (candidates[i].avVotes[round] > totalVotes/2) {
-              finished = true
-            }
-            if (candidates[i].avVotes[round] < lowest.votes) {
-              lowest.IDs = [i]
-              lowest.votes = candidates[i].avVotes[round]
-            } else if (candidates[i].avVotes[round] == lowest.votes) {
-              lowest.IDs += [i]
-            }
-          }
-          if (!finished) {
-            round++
-            for (var i in candidates) {
-              candidates[i].avVotes[round] = candidates[i].avVotes[round-1]
-            }
-            for (var id in lowest.IDs) {
-              candidates[id].out = true
-            }
-            for (var i = 0; i < votes.length; i++) {
-              
-            }
-            finished = true
-          }
-        }
-        console.log({votes: votes, candidates: candidates, parties: parties, spoilt: spoilt});
-        return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
-      };*/
       $rootScope.countAVs = function(data) {
         var avVotes = {length: 0}
         var votes = data.votes;
@@ -280,8 +220,6 @@
         var pstvlist = values(results.parties).sort(function(b,a) {return a.stvVotes[0]-b.stvVotes[0]})
         var psvlist = values(results.parties).sort(function(b,a) {return a.svVotes[0]-b.svVotes[0]})
         var pprlist = values(results.parties).sort(function(b,a) {return a.prVotes-b.prVotes})
-        console.log(cfptplist)
-        console.log(scale(pfptplist.map(function(p) {return p.fptpVotes})))
         var [pavdata, pstvdata, psvdata, cavdata, cstvdata, csvdata] = [[],[],[],[],[],[]]
         for (var i = 0; i < pavlist[0].avVotes.length; i++) {
           pavdata.push(scale(pavlist.map(function(p) {return p.avVotes[i]})))
@@ -304,20 +242,11 @@
         console.log("!",pfptplist.map(function(p) {return p.PartyColor}))
         return {
           parties: {
-            /*fptpkeys: pfptplist.map(function(p) {return p.PartyName}),
-            fptpcolors: pfptplist.map(function(p) {return p.PartyColor}),
-            fptpdata: scale(pfptplist.map(function(p) {return p.fptpVotes})),*/
             fptp: simpleZip({keys: pfptplist.map(function(p) {return p.PartyName}), colors: pfptplist.map(function(p) {return p.PartyColor}), data: scale(pfptplist.map(function(p) {return p.fptpVotes}))}),
             av: multiZip({keys: pavlist.map(function(p) {return p.PartyName}), colors: pavlist.map(function(p) {return p.PartyColor}), data: pavdata}),
             stv: multiZip({keys: pstvlist.map(function(p) {return p.PartyName}), colors: pstvlist.map(function(p) {return p.PartyColor}), data: pstvdata}),
             sv: multiZip({keys: psvlist.map(function(p) {return p.PartyName}), colors: psvlist.map(function(p) {return p.PartyColor}), data: psvdata}),
-            pr: simpleZip({keys: pprlist.map(function(p) {return p.PartyName}), colors: pprlist.map(function(p) {return p.PartyColor}), data: scale(pprlist.map(function(p) {return p.prVotes}))})/*,
-            stvkeys: pstvlist.map(function(p) {return p.PartyName}),
-            stvdata: pstvdata,
-            svkeys: psvlist.map(function(p) {return p.PartyName}),
-            svdata: psvdata,
-            prkeys: pprlist.map(function(p) {return p.PartyName}),
-            prdata: scale(pprlist.map(function(p) {return p.prVotes}))*/
+            pr: simpleZip({keys: pprlist.map(function(p) {return p.PartyName}), colors: pprlist.map(function(p) {return p.PartyColor}), data: scale(pprlist.map(function(p) {return p.prVotes}))})
           },
           candidates: {
             fptp: simpleZip({keys: cfptplist.map(function(c) {return c.CandidateName+" ("+c.PartyName+")"}), colors: cfptplist.map(function(c) {return c.PartyColor}), data: scale(cfptplist.map(function(c) {return c.fptpVotes}))}),
@@ -348,139 +277,5 @@
           }
         }
       };
-      /*$scope.chart1data = [
-        {
-          "key": "Labour",
-          "color": "#d5000d",
-          "values": [
-            {
-                "label" : "Total" ,
-                "value" : 44
-            },
-            {
-                "label" : "Year 12" ,
-                "value" : 50
-            },
-            {
-                "label" : "Year 13" ,
-                "value" : 38
-            }
-          ]
-        },
-        {
-          "key": "Tory",
-          "color": "#0096db",
-          "values": [
-            {
-                "label" : "Total" ,
-                "value" : 56
-            },
-            {
-                "label" : "Year 12" ,
-                "value" : 50
-            },
-            {
-                "label" : "Year 13" ,
-                "value" : 62
-            }
-          ]
-        }
-      ]*/
-      $scope.changeData = function() {
-        console.log("datachanged")
-        $scope.chart1data = [
-          {
-            "key": "Labour",
-            "color": "#d62728",
-            "values": [
-              {
-                "label" : "Total" ,
-                "value" : 56
-              },
-              {
-                "label" : "Year 12" ,
-                "value" : 50
-              },
-              {
-                "label" : "Year 13" ,
-                "value" : 62
-              }
-            ]
-          },
-          {
-            "key": "Tory",
-            "color": "#1f77b4",
-            "values": [
-              {
-                "label" : "Total" ,
-                "value" : 44
-              },
-              {
-                "label" : "Year 12" ,
-                "value" : 50
-              },
-              {
-                "label" : "Year 13" ,
-                "value" : 38
-              }
-            ]
-          },
-          {
-            "key": "Lib Dem",
-            "color": "#d6c728",
-            "values": [
-              {
-                "label" : "Total" ,
-                "value" : 56
-              },
-              {
-                "label" : "Year 12" ,
-                "value" : 50
-              },
-              {
-                "label" : "Year 13" ,
-                "value" : 62
-              }
-            ]
-          },
-          {
-            "key": "Green",
-            "color": "#27d628",
-            "values": [
-              {
-                "label" : "Total" ,
-                "value" : 50
-              },
-              {
-                "label" : "Year 12" ,
-                "value" : 50
-              },
-              {
-                "label" : "Year 13" ,
-                "value" : 50
-              }
-            ]
-          },
-          {
-            "key": "UKIP",
-            "color": "#b437f1",
-            "values": [
-              {
-                "label" : "Total" ,
-                "value" : 44
-              },
-              {
-                "label" : "Year 12" ,
-                "value" : 50
-              },
-              {
-                "label" : "Year 13" ,
-                "value" : 38
-              }
-            ]
-          }
-        ]
-        $scope.graph.refresh()
-      }
     });
 })();
