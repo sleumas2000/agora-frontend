@@ -21,35 +21,41 @@
         <button type="button" ng-hide="systems.indexOf('pr') == -1" ng-class="{btn: true, 'btn-primary': whichTab != 'pr', 'btn-outline-primary': whichTab == 'pr'}" ng-click="goTo('pr')">Proportional Representation</button>
       </div>
     </div>
-    <div class="row" ng-show="whichTab == 'fptp'">
-      <nvd3 options="chartOptions" style="width:100%" api="fptpgraph" data="chartData.parties.fptp"></nvd3>
+    <div class="row resultHeader">
+      <h3>Votes by Candidate</h3>
     </div>
     <div class="row" ng-show="whichTab == 'fptp'">
       <nvd3 options="chartOptions" style="width:100%" api="fptpgraph2" data="chartData.candidates.fptp"></nvd3>
     </div>
     <div class="row" ng-show="whichTab == 'av'">
-      <nvd3 options="chartOptions" style="width:100%" api="avgraph" data="chartData.parties.av"></nvd3>
-    </div>
-    <div class="row" ng-show="whichTab == 'av'">
       <nvd3 options="chartOptions" style="width:100%" api="avgraph2" data="chartData.candidates.av"></nvd3>
-    </div>
-    <div class="row" ng-show="whichTab == 'sv'">
-      <nvd3 options="chartOptions" style="width:100%" api="svgraph" data="chartData.parties.sv"></nvd3>
     </div>
     <div class="row" ng-show="whichTab == 'sv'">
       <nvd3 options="chartOptions" style="width:100%" api="svgraph2" data="chartData.candidates.sv"></nvd3>
     </div>
     <div class="row" ng-show="whichTab == 'pr'">
-      <nvd3 options="chartOptions" style="width:100%" api="prgraph" data="chartData.parties.pr"></nvd3>
-    </div>
-    <div class="row" ng-show="whichTab == 'pr'">
       <nvd3 options="chartOptions" style="width:100%" api="prgraph2" data="chartData.candidates.pr"></nvd3>
     </div>
     <div class="row" ng-show="whichTab == 'stv'">
-      <nvd3 options="chartOptions" style="width:100%" api="stvgraph" data="chartData.parties.stv"></nvd3>
+      <nvd3 options="chartOptions" style="width:100%" api="stvgraph2" data="chartData.candidates.stv"></nvd3>
+    </div>
+    <div class="row resultHeader">
+      <h3>Votes by Party</h3>
+    </div>
+    <div class="row" ng-show="whichTab == 'fptp'">
+      <nvd3 options="chartOptions" style="width:100%" api="fptpgraph" data="chartData.parties.fptp"></nvd3>
+    </div>
+    <div class="row" ng-show="whichTab == 'av'">
+      <nvd3 options="chartOptions" style="width:100%" api="avgraph" data="chartData.parties.av"></nvd3>
+    </div>
+    <div class="row" ng-show="whichTab == 'sv'">
+      <nvd3 options="chartOptions" style="width:100%" api="svgraph" data="chartData.parties.sv"></nvd3>
+    </div>
+    <div class="row" ng-show="whichTab == 'pr'">
+      <nvd3 options="chartOptions" style="width:100%" api="prgraph" data="chartData.parties.pr"></nvd3>
     </div>
     <div class="row" ng-show="whichTab == 'stv'">
-      <nvd3 options="chartOptions" style="width:100%" api="stvgraph2" data="chartData.candidates.stv"></nvd3>
+      <nvd3 options="chartOptions" style="width:100%" api="stvgraph" data="chartData.parties.stv"></nvd3>
     </div>
   </div>
 </div>

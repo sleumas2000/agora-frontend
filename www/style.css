@@ -161,3 +161,7 @@ g.nv-bar rect {
   padding: 10px;
   padding-top: 20px;
 }
+.resultHeader {
+  padding: 30px;
+  padding-top: 70px;
+}
