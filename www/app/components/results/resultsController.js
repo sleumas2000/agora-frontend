@@ -16,12 +16,6 @@
         candidates: Candidate.query({electionID:$rootScope.electionID}).$promise
       };
       $q.all(promises).then(function(values) {
-        function zip({keys: keys, colors: colors, data: data}) {
-          console.log("$",keys,colors,data)
-          return keys.map(function(_,i){
-            return {key: keys[i], color: colors[i], values: [{label:"Total",value:data[i]}]}
-          });
-        }
         $rootScope.parties = values.parties;
         $rootScope.candidates = values.candidates;
         $rootScope.votes = values.votes;
@@ -35,7 +29,7 @@
           candidateDict[candidates[i].CandidateID] = candidates[i];
           candidateDict[candidates[i].CandidateID].fptpVotes = candidateDict[candidates[i].CandidateID].prVotes = 0;
           candidateDict[candidates[i].CandidateID].avVotes = [];
-          candidateDict[candidates[i].CandidateID].stvVotes = {};
+          candidateDict[candidates[i].CandidateID].stvVotes = [];
           candidateDict[candidates[i].CandidateID].svVotes = {};
         }
         candidateDict.length = candidates.length
@@ -43,7 +37,7 @@
           partyDict[parties[i].PartyID] = parties[i];
           partyDict[parties[i].PartyID].fptpVotes = partyDict[parties[i].PartyID].prVotes = 0;
           partyDict[parties[i].PartyID].avVotes = [];
-          partyDict[parties[i].PartyID].stvVotes = {};
+          partyDict[parties[i].PartyID].stvVotes = [];
           partyDict[parties[i].PartyID].svVotes = {};
         }
         partyDict.length = parties.length
@@ -89,7 +83,6 @@
         var candidates = data.candidates;
         var parties = data.parties;
         var spoilt = data.spoilt;
-        console.log(spoilt)
         spoilt.av = []
         for (var i = 0; i < votes.length; i++) {
           if (votes[i].SystemShortName == "av") {
@@ -136,7 +129,7 @@
         function isFinished(totalList) { // totalList => bool
           var totalVotes = 0
           for (i in totalList) {
-            if (i == "undefined") {console.log("undefined"); continue}
+            if (i == "undefined") {continue}
             totalVotes += totalList[i]
           }
           for (i in totalList) {
@@ -152,9 +145,7 @@
         var out = []
         while (!finished) {
           roundResults[j] = count(avVotes)
-          console.log(spoilt,"£",roundResults[j])
           spoilt.av.push(roundResults[j].undefined)
-          console.log(spoilt)
           if (isFinished(roundResults[j])) {finished = true;}
           else {
             out = out.concat(findWorst(roundResults[j]).IDs)
@@ -182,25 +173,20 @@
             }
           }
         }
-        //console.log(avVotes,count(reassign(avVotes,[1])))
-        console.log("@",{votes: votes, candidates: candidates, parties: parties, spoilt: spoilt})
         return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
       };
-      $rootScope.countSTVs = function(data){return data}
-      /*$rootScope.countSTVs = function(numSeats,data) {
+      //$rootScope.countSTVs = function(data){return data}
+      $rootScope.countSTVs = function(numSeats,data) {
         var stvVotes = {length: 0}
         var votes = data.votes;
         var candidates = data.candidates;
         var parties = data.parties;
         var spoilt = data.spoilt;
-        var numVotes = votes.length;
-        var quota = numVotes/(numSeats+1)
         spoilt.stv = [0]
         for (var i = 0; i < votes.length; i++) {
           if (votes[i].SystemShortName == "stv") {
             if (!stvVotes[votes[i].UserHash]) {
               stvVotes[votes[i].UserHash] = {currentPointer:1,weight:1,length:0}
-              stvVotes.length++
             }
             if (!votes[i].CandidateID) {spoilt.stv[0]++}
             stvVotes[votes[i].UserHash][votes[i].Position] = votes[i].CandidateID
@@ -211,7 +197,7 @@
           var total = {}
           for (i in voteList) {
             if (i == "length") continue
-            total[voteList[i][voteList[i].currentPointer]] = (total[voteList[i][voteList[i].currentPointer]] + voteList[i].weight) || voteList[i]
+            total[voteList[i][voteList[i].currentPointer]] = (total[voteList[i][voteList[i].currentPointer]] + voteList[i].weight) || voteList[i].weight
           }
           return total //totalList
         }
@@ -227,17 +213,21 @@
           }
           return lowest //[CandidateID, numVotes]
         }
-        function findBest(total) { //totalList => {IDs:[CandidateID (int)...], votes: numVotes (int)}
+        function findBest(total,quota) { //totalList => {IDs:CandidateID (int), votes: numVotes (int)}
           for (i in total) {
             if (i == "undefined") continue
-            if (!highst) {var highest = {IDs:[i],votes:total[i]};continue};
+            if (!highest) {var highest = {IDs:[i],votes:total[i]};continue};
             if (total[i] == highest.votes) {
               highest.IDs = highest.IDs.concat([i])
             } else if (total[i] > highest.votes) {
               highest = {IDs:[i],votes:total[i]};
             }
           }
-          return highest //[CandidateID, numVotes]
+          highest.ID = highest.IDs[Math.floor(Math.random()*highest.IDs.length)]
+          delete highest.IDs
+          if (highest.votes > quota) {
+            return highest //[CandidateID, numVotes]
+          } else return {ID: null, votes: 0}
         }
         function reassignLosers(voteList,losers) { //voteList,[CandidateID (int)...] => voteList
           var oldList = voteList
@@ -251,42 +241,50 @@
           }
           return voteList //voteList
         }
-        function reassignWinners(voteList,winners,numVotes,quota) { //voteList,[CandidateID (int)...] => voteList
+        function reassignWinner(voteList,out,winner,numVotes,quota) { //voteList,[CandidateID (int)...],CandidateID (int), int, int => voteList
           var oldList = voteList
           for (i in voteList) {
             if (i == "length" || voteList[i][voteList[i].currentPointer] == undefined) {continue}
-            while (winners.indexOf(voteList[i][voteList[i].currentPointer].toString()) >= 0) {
-              voteList[i].weight = voteList[i].weight*((numVotes/quota)-1)
+            if (voteList[i][voteList[i].currentPointer].toString()==winner) {voteList[i].weight = voteList[i].weight*(1-(quota/numVotes));voteList[i].currentPointer ++;if (voteList[i][voteList[i].currentPointer] == undefined) {spoilt.av[j]+=voteList[i].weight;break}}
+            while (out.indexOf(voteList[i][voteList[i].currentPointer].toString()) >= 0) {
               if (voteList[i].currentPointer > voteList[i].length) {break}
               voteList[i].currentPointer ++
-              if (voteList[i][voteList[i].currentPointer] == undefined) {break}
+              if (voteList[i][voteList[i].currentPointer] == undefined) {spoilt.av[j]+=voteList[i].weight;break}
             }
           }
           return voteList //voteList
         }
-        function isFinished(totalList) { // totalList => bool
-          var totalVotes = 0
-          for (i in totalList) {
-            if (i == "undefined") {console.log("undefined"); continue}
-            totalVotes += totalList[i]
+        function findQuota(total,numSeats) {
+          var quota=0
+          for (i in total) {
+            if (i=="undefined") {continue}
+            quota += total[i]
           }
-          for (i in totalList) {
-            if (totalList[i] > totalVotes/2 && i != "undefined") {
-              return true
-            }
-          }
-          return false
+          return quota/(numSeats+1)
         }
         var finished = false
         var j = 0
         var roundResults = []
         var out = []
+        var electedCandidates = []
+        var quota 
+        var numSeatsFree = numSeats
         while (!finished) {
           roundResults[j] = count(stvVotes)
-          if (isFinished(roundResults[j])) {finished = true;}
+          quota=findQuota(roundResults[j],numSeatsFree)
+          var originalQuota = originalQuota || findQuota(roundResults[0],numSeats)
+          var best = findBest(roundResults[j],quota)
+          if (numSeatsFree === 0) {finished = true;}
           else {
-            out = out.concat(findWorst(roundResults[j]).IDs)
-            stvVotes = reassign(stvVotes,out)
+            if (best.votes !== 0) {
+              stvVotes = reassignWinner(stvVotes,out,best.ID,best.votes,quota)
+              electedCandidates.push(best.ID)
+              numSeatsFree --
+              out.push(best.ID)
+            } else {
+              out = out.concat(findWorst(roundResults[j]).IDs)
+              electedCandidates.push(null)
+            }
           }
           j++
           if (j > candidates.length) {console.log("too many loops");finished = true;} // stop loop overflows. If this happens, something is wrong anyway
@@ -310,12 +308,16 @@
             }
           }
         }
-        //console.log(stvVotes,count(reassign(stvVotes,[1])))
-        console.log("@",{votes: votes, candidates: candidates, parties: parties, spoilt: spoilt})
+        for (var c = 0; c < electedCandidates.length; c++) {
+          for (var r = j-1; r > c; r--) {
+            candidates[electedCandidates[c]].stvVotes[r] = originalQuota
+            parties[candidates[electedCandidates[c]].PartyID].stvVotes[r] += originalQuota
+          }
+        }
         return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
       };
-      */function startCounting() {
-        return ($rootScope.countSTVs($rootScope.countAVs($rootScope.countPRs($rootScope.countFPTPs($rootScope.prepareDict($rootScope.votes, $rootScope.candidates, $rootScope.parties ))))));
+      function startCounting() {
+        return ($rootScope.countSTVs(3,$rootScope.countAVs($rootScope.countPRs($rootScope.countFPTPs($rootScope.prepareDict($rootScope.votes, $rootScope.candidates, $rootScope.parties ))))));
       }
       function makeChartData(results) {
         var spoilt = results.spoilt
