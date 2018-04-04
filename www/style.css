@@ -146,3 +146,9 @@ g.nv-bar rect {
   stroke-width: 1px;
   stroke: #000000;
 }
+.btn-primary, .btn-outline-primary {
+  margin: 5px
+}
+.buttonBox {
+  margin: auto
+}

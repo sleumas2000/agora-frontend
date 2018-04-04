@@ -1,7 +1,7 @@
 (function(){
   'use strict';
   angular.module('agora')
-    .controller('resultsController', function($scope, $rootScope, $q, User, Election, Candidate, Party, Vote){
+    .controller('resultsController', function($scope, $rootScope, $q, $timeout, User, Election, Candidate, Party, Vote){
       // shite goes here
       // TODO: remove this
       $scope.currentUser = {
@@ -9,6 +9,26 @@
         DisplayName: 'Mr S Balderson'
       };
       // end remove
+      $scope.whichTab = "fptp"
+      $scope.goTo = function(tab) {
+        $scope.whichTab = tab
+        if (tab == "fptp") {
+          $timeout(function(){$scope.fptpgraph.refresh()})
+          $timeout(function(){$scope.fptpgraph2.refresh()})
+        } else if (tab == "av") {
+          $timeout(function(){$scope.avgraph.refresh()})
+          $timeout(function(){$scope.avgraph2.refresh()})
+        } else if (tab == "stv") {
+          $timeout(function(){$scope.stvgraph.refresh()})
+          $timeout(function(){$scope.stvgraph2.refresh()})
+        } else if (tab == "sv") {
+          $timeout(function(){$scope.svgraph.refresh()})
+          $timeout(function(){$scope.svgraph2.refresh()})
+        } else if (tab == "pr") {
+          $timeout(function(){$scope.prgraph.refresh()})
+          $timeout(function(){$scope.prgraph2.refresh()})
+        }
+      }
       if (!$rootScope.electionID) $rootScope.electionID=1;
       var promises = {
         votes: Vote.getVotes({electionID:$rootScope.electionID}).$promise,
@@ -400,6 +420,7 @@
           y: function(d){return d.value;},
           showControls: true,
           showValues: true,
+          stacked: true,
           duration: 500,
           xAxis: {
             showMaxMin: false

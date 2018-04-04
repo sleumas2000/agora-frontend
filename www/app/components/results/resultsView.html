@@ -15,28 +15,43 @@
   {{c}}
   {{v}}
   <div class="container">
-    <div class="row">
+    <div class="row" ng-click="stackGraphs()">
       <div class="col-lg-2 containerWing"></div>
       <div class="col-lg-8" id="resultContainer" ui-view="resultContainer"></div>
       <div class="col-lg-2 containerWing"></div>
     </div>
-  <div class="row">
-    <nvd3 options="chartOptions" style="width:100%" api="fptpgraph" data="chartData.parties.fptp"></nvd3>
-  </div>
-  <div class="row">
-    <nvd3 options="chartOptions" style="width:100%" api="fptpgraph2" data="chartData.candidates.fptp"></nvd3>
-  </div>
-  <div class="row">
-    <nvd3 options="chartOptions" style="width:100%" api="avgraph" data="chartData.parties.av"></nvd3>
-  </div>
-  <div class="row">
-    <nvd3 options="chartOptions" style="width:100%" api="avgraph2" data="chartData.candidates.av"></nvd3>
-  </div>
-  <div class="row">
-    <nvd3 options="chartOptions" style="width:100%" api="prgraph" data="chartData.parties.pr"></nvd3>
-  </div>
-  <div class="row">
-    <nvd3 options="chartOptions" style="width:100%" api="prgraph2" data="chartData.candidates.pr"></nvd3>
-  </div>
+    <div class="row">
+      <div class="buttonBox">
+        <button type="button" ng-class="{btn: true, 'btn-primary': whichTab != 'fptp', 'btn-outline-primary': whichTab == 'fptp'}" ng-click="goTo('fptp')">First Past The Post</button>
+        <button type="button" ng-class="{btn: true, 'btn-primary': whichTab != 'av', 'btn-outline-primary': whichTab == 'av'}" ng-click="goTo('av')">Alternative Vote</button>
+        <button type="button" ng-class="{btn: true, 'btn-primary': whichTab != 'stv', 'btn-outline-primary': whichTab == 'stv'}" ng-click="goTo('stv')">Single Transferable Vote</button>
+        <button type="button" ng-class="{btn: true, 'btn-primary': whichTab != 'sv', 'btn-outline-primary': whichTab == 'sv'}" ng-click="goTo('sv')">Supplementary Vote</button>
+        <button type="button" ng-class="{btn: true, 'btn-primary': whichTab != 'pr', 'btn-outline-primary': whichTab == 'pr'}" ng-click="goTo('pr')">Proportional Representation</button>
+      </div>
+    </div>
+    <div class="row" ng-show="whichTab == 'fptp'">
+      <nvd3 options="chartOptions" style="width:100%" api="fptpgraph" data="chartData.parties.fptp"></nvd3>
+    </div>
+    <div class="row" ng-show="whichTab == 'fptp'">
+      <nvd3 options="chartOptions" style="width:100%" api="fptpgraph2" data="chartData.candidates.fptp"></nvd3>
+    </div>
+    <div class="row" ng-show="whichTab == 'av'">
+      <nvd3 options="chartOptions" style="width:100%" api="avgraph" data="chartData.parties.av"></nvd3>
+    </div>
+    <div class="row" ng-show="whichTab == 'av'">
+      <nvd3 options="chartOptions" style="width:100%" api="avgraph2" data="chartData.candidates.av"></nvd3>
+    </div>
+    <div class="row" ng-show="whichTab == 'pr'">
+      <nvd3 options="chartOptions" style="width:100%" api="prgraph" data="chartData.parties.pr"></nvd3>
+    </div>
+    <div class="row" ng-show="whichTab == 'pr'">
+      <nvd3 options="chartOptions" style="width:100%" api="prgraph2" data="chartData.candidates.pr"></nvd3>
+    </div>
+    <div class="row" ng-show="whichTab == 'stv'">
+      <nvd3 options="chartOptions" style="width:100%" api="stvgraph" data="chartData.parties.stv"></nvd3>
+    </div>
+    <div class="row" ng-show="whichTab == 'stv'">
+      <nvd3 options="chartOptions" style="width:100%" api="stvgraph2" data="chartData.candidates.stv"></nvd3>
+    </div>
   </div>
 </div>
