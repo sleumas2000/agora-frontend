@@ -14,11 +14,11 @@
   <div class="container">
     <div class="row">
       <div class="buttonBox">
-        <button type="button" ng-class="{btn: true, 'btn-primary': whichTab != 'fptp', 'btn-outline-primary': whichTab == 'fptp'}" ng-click="goTo('fptp')">First Past The Post</button>
-        <button type="button" ng-class="{btn: true, 'btn-primary': whichTab != 'av', 'btn-outline-primary': whichTab == 'av'}" ng-click="goTo('av')">Alternative Vote</button>
-        <button type="button" ng-class="{btn: true, 'btn-primary': whichTab != 'stv', 'btn-outline-primary': whichTab == 'stv'}" ng-click="goTo('stv')">Single Transferable Vote</button>
-        <button type="button" ng-class="{btn: true, 'btn-primary': whichTab != 'sv', 'btn-outline-primary': whichTab == 'sv'}" ng-click="goTo('sv')">Supplementary Vote</button>
-        <button type="button" ng-class="{btn: true, 'btn-primary': whichTab != 'pr', 'btn-outline-primary': whichTab == 'pr'}" ng-click="goTo('pr')">Proportional Representation</button>
+        <button type="button" ng-hide="systems.indexOf('fptp') == -1" ng-class="{btn: true, 'btn-primary': whichTab != 'fptp', 'btn-outline-primary': whichTab == 'fptp'}" ng-click="goTo('fptp')">First Past The Post</button>
+        <button type="button" ng-hide="systems.indexOf('av') == -1" ng-class="{btn: true, 'btn-primary': whichTab != 'av', 'btn-outline-primary': whichTab == 'av'}" ng-click="goTo('av')">Alternative Vote</button>
+        <button type="button" ng-hide="systems.indexOf('stv') == -1" ng-class="{btn: true, 'btn-primary': whichTab != 'stv', 'btn-outline-primary': whichTab == 'stv'}" ng-click="goTo('stv')">Single Transferable Vote</button>
+        <button type="button" ng-hide="systems.indexOf('sv') == -1" ng-class="{btn: true, 'btn-primary': whichTab != 'sv', 'btn-outline-primary': whichTab == 'sv'}" ng-click="goTo('sv')">Supplementary Vote</button>
+        <button type="button" ng-hide="systems.indexOf('pr') == -1" ng-class="{btn: true, 'btn-primary': whichTab != 'pr', 'btn-outline-primary': whichTab == 'pr'}" ng-click="goTo('pr')">Proportional Representation</button>
       </div>
     </div>
     <div class="row" ng-show="whichTab == 'fptp'">

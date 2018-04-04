@@ -11,6 +11,7 @@
         DisplayName: 'Mr S Balderson'
       };
       // end remove
+      $scope.systems = ["fptp","av","stv","sv","pr"]
       $scope.whichTab = "fptp"
       $scope.goTo = function(tab) {
         $scope.whichTab = tab
@@ -35,6 +36,7 @@
       if (!$rootScope.election) {$rootScope.election = $rootScope.elections[0];}
       if (!$scope.selectedElection) {$scope.selectedElection = $rootScope.elections[0];}
       $scope.setElection = function() {
+        $scope.systems = ["fptp","av","stv","sv","pr"]
         $rootScope.election = $scope.selectedElection;
         var promises = {
           votes: Vote.getVotes({electionID:$rootScope.election.ElectionID}).$promise,
@@ -50,7 +52,7 @@
           $scope.goTo($scope.whichTab)
         });
       };
-      console.log($rootScope.election)
+      console.log($rootScope.elections)
       var promises = {
         votes: Vote.getVotes({electionID:$rootScope.election.ElectionID}).$promise,
         parties: Party.getByElection({electionID:$rootScope.election.ElectionID}).$promise,
@@ -455,7 +457,34 @@
         return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
       }
       function startCounting() {
-        return ($rootScope.countSTVs(3,$rootScope.countSVs($rootScope.countAVs($rootScope.countPRs($rootScope.countFPTPs($rootScope.prepareDict($rootScope.votes, $rootScope.candidates, $rootScope.parties )))))));
+        var z = $rootScope.prepareDict($rootScope.votes, $rootScope.candidates, $rootScope.parties )
+        var systemStrings = []
+        for (var s in $rootScope.election.systems) {
+          s = parseInt(s)
+          console.log($rootScope.election.systems,s)
+          if ($rootScope.election.systems[s].SystemShortName == "fptp") {
+            z = $rootScope.countFPTPs(z)
+            systemStrings.push("fptp")
+          } else
+          if ($rootScope.election.systems[s].SystemShortName == "av") {
+            z = $rootScope.countAVs(z)
+            systemStrings.push("av")
+          } else
+          if ($rootScope.election.systems[s].SystemShortName == "sv") {
+            z = $rootScope.countSVs(z)
+            systemStrings.push("sv")
+          } else
+          if ($rootScope.election.systems[s].SystemShortName == "pr") {
+            z = $rootScope.countPRs(z)
+            systemStrings.push("pr")
+          } else
+          if ($rootScope.election.systems[s].SystemShortName == "stv") {
+            z = $rootScope.countSTVs(3,z)
+            systemStrings.push("stv")
+          }
+        }
+        $scope.systems = systemStrings
+        return (z);
       }
       function makeChartData(results) {
         var spoilt = results.spoilt
