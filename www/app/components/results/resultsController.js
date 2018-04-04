@@ -2,6 +2,8 @@
   'use strict';
   angular.module('agora')
     .controller('resultsController', function($scope, $rootScope, $q, $timeout, User, Election, Candidate, Party, Vote){
+      function onElectionsGot(values) {
+      $rootScope.elections = values
       // shite goes here
       // TODO: remove this
       $scope.currentUser = {
@@ -29,11 +31,30 @@
           $timeout(function(){$scope.prgraph2.refresh()})
         }
       }
-      if (!$rootScope.electionID) $rootScope.electionID=1;
+      
+      if (!$rootScope.election) {$rootScope.election = $rootScope.elections[0];}
+      if (!$scope.selectedElection) {$scope.selectedElection = $rootScope.elections[0];}
+      $scope.setElection = function() {
+        $rootScope.election = $scope.selectedElection;
+        var promises = {
+          votes: Vote.getVotes({electionID:$rootScope.election.ElectionID}).$promise,
+          parties: Party.getByElection({electionID:$rootScope.election.ElectionID}).$promise,
+          candidates: Candidate.query({electionID:$rootScope.election.ElectionID}).$promise
+        };
+        $q.all(promises).then(function(values) {
+          $rootScope.parties = values.parties;
+          $rootScope.candidates = values.candidates;
+          $rootScope.votes = values.votes;
+          $rootScope.results = startCounting();
+          $scope.chartData = makeChartData($rootScope.results);
+          $scope.goTo($scope.whichTab)
+        });
+      };
+      console.log($rootScope.election)
       var promises = {
-        votes: Vote.getVotes({electionID:$rootScope.electionID}).$promise,
-        parties: Party.getByElection({electionID:$rootScope.electionID}).$promise,
-        candidates: Candidate.query({electionID:$rootScope.electionID}).$promise
+        votes: Vote.getVotes({electionID:$rootScope.election.ElectionID}).$promise,
+        parties: Party.getByElection({electionID:$rootScope.election.ElectionID}).$promise,
+        candidates: Candidate.query({electionID:$rootScope.election.ElectionID}).$promise
       };
       $q.all(promises).then(function(values) {
         $rootScope.parties = values.parties;
@@ -195,7 +216,6 @@
         }
         return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
       };
-      //$rootScope.countSTVs = function(data){return data}
       $rootScope.countSTVs = function(numSeats,data) {
         var stvVotes = {length: 0}
         var votes = data.votes;
@@ -433,5 +453,7 @@
           }
         }
       };
+      }
+      Election.query().$promise.then(onElectionsGot);
     });
 })();
