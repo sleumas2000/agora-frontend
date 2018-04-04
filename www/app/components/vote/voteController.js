@@ -36,7 +36,6 @@
           $rootScope.election = $scope.selectedElection;
           $rootScope.election.systems = Election.getSystems({id:$rootScope.election.ElectionID}, afterSystems);
           $rootScope.election.candidates = Candidate.query({electionID:$rootScope.election.ElectionID}/*, function() { localStorage.setItem('election', JSON.stringify($rootScope.election)); }*/);
-
         };
         if (!$rootScope.election) {$rootScope.election = $rootScope.elections[0];}
         if (!$scope.selectedElection) {$scope.selectedElection = $rootScope.elections[0];}
