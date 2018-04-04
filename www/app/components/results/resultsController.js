@@ -84,7 +84,7 @@
           partyDict[parties[i].PartyID].svVotes = {};
         }
         partyDict.length = parties.length
-        return {votes: votes, candidates: candidateDict, parties: partyDict, spoilt: {fptp: 0, av: [], stv: [], pr: 0, sv: 0}};
+        return {votes: votes, candidates: candidateDict, parties: partyDict, spoilt: {fptp: 0, av: [], stv: [], pr: 0, sv: 0}, winners: {fptp: [], av: [], stv: [], pr: [], sv: []}};
       };
       $rootScope.countFPTPs = function(data) {
         var votes = data.votes;
@@ -100,7 +100,18 @@
             if (vote.PartyID) parties[vote.PartyID].fptpVotes ++;
           }
         }
-        return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
+        var winners = []
+        var highest = 0
+        for (var i in candidates) {
+          if (candidates[i].fptpVotes > highest) {
+            winners = [candidates[i]]
+            highest = candidates[i].fptpVotes
+          } else if (candidates[i].fptpVotes == highest) {
+            winners.push(candidates[i])
+          }
+        }
+        data.winners.fptp=winners
+        return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt, winners: data.winners};
       };
       $rootScope.countPRs = function(data) {
         var votes = data.votes;
@@ -118,7 +129,18 @@
             }
           }
         }
-        return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
+        var winners = []
+        var highest = 0
+        for (var i in candidates) {
+          if (candidates[i].fptpVotes > highest) {
+            winners = [candidates[i]]
+            highest = candidates[i].prVotes
+          } else if (candidates[i].prVotes == highest) {
+            winners.push(candidates[i])
+          }
+        }
+        data.winners.pr=winners
+        return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt, winners: data.winners};
       };
       $rootScope.countAVs = function(data) {
         var avVotes = {length: 0}
@@ -177,6 +199,7 @@
           }
           for (i in totalList) {
             if (totalList[i] > totalVotes/2 && i != "undefined") {
+              winner = i
               return true
             }
           }
@@ -184,6 +207,7 @@
         }
         var finished = false
         var j = 0
+        var winner
         var roundResults = []
         var out = []
         while (!finished) {
@@ -205,6 +229,7 @@
           if (i=="length") {continue}
           parties[i].avVotes=Array.apply(null, Array(j)).map(Number.prototype.valueOf,0)
         }
+        data.winners.av=[candidates[winner]]
         spoilt.av = Array.apply(null, Array(j)).map(Number.prototype.valueOf,0)
         for (var r = 0; r < roundResults.length; r++) {
           for (var c in roundResults[r]) {
@@ -216,7 +241,7 @@
             }
           }
         }
-        return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
+        return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt, winners: data.winners};
       };
       $rootScope.countSTVs = function(numSeats,data) {
         var stvVotes = {length: 0}
@@ -355,8 +380,9 @@
             candidates[electedCandidates[c]].stvVotes[r] = originalQuota
             parties[candidates[electedCandidates[c]].PartyID].stvVotes[r] += originalQuota
           }
+          data.winners.stv.push(candidates[electedCandidates[c]])
         }
-        return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
+        return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt, winners: data.winners};
       };
       $rootScope.countSVs = function(data) {
         var svVotes = {length: 0}
@@ -415,11 +441,13 @@
           }
           for (i in totalList) {
             if (totalList[i] > totalVotes/2 && i != "undefined") {
+              winner = i
               return true
             }
           }
           return false
         }
+        var winner
         var finished = false
         var j = 0
         var roundResults = []
@@ -435,6 +463,7 @@
           j++
           if (j > candidates.length) {console.log("too many loops");finished = true;} // stop loop overflows. If this happens, something is wrong anyway
         }
+        data.winners.sv=[candidates[winner]]
         for (i in candidates) {
           if (i=="length") {continue}
           candidates[i].svVotes=Array.apply(null, Array(j)).map(Number.prototype.valueOf,0)
@@ -454,7 +483,7 @@
             }
           }
         }
-        return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt};
+        return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt, winners: data.winners};
       }
       function startCounting() {
         var z = $rootScope.prepareDict($rootScope.votes, $rootScope.candidates, $rootScope.parties )
@@ -483,6 +512,8 @@
             systemStrings.push("stv")
           }
         }
+        $scope.winners = z.winners
+        console.log($scope.winners)
         $scope.systems = systemStrings
         return (z);
       }
