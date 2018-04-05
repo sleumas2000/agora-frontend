@@ -1,0 +1,57 @@
+<div class=container>
+  <h1>Candidate Management Panel</h1>
+  <div class="col-12">
+    <p>Use this page to manage candidates.</p>
+    <p><strong>You are signed in as: </strong><em>{{user.DisplayName}}</p>
+  </div>
+  <div class="row">
+    <form ng-submit="addCandidate()">
+      <h2>Candidates</h2>
+      <table class="admin">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th class="right">Delete</th>
+        </tr>
+        <tr ng-repeat="candidate in candidates">
+          <td>{{candidate.CandidateID}}</td>
+          <td>{{candidate.CandidateName}}</td>
+          <td class="right"><button class="right admin" type="button" ng-click="deleteCandidate(candidate.CandidateID,$index)">Delete {{candidate.CandidateName}}</button></td>
+        </tr>
+        <tr>
+          <td>New Candidate:</td>
+          <td><input class="admin" ng-model="newCandidate.CandidateName"></td>
+          <td class="right"><button class="right admin" type="submit">Add Candidate</button></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  <div class="row"> 
+    <form ng-submit="addParty()">
+      <h2>Parties</h2>
+      <table class="admin">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Colour</th>
+          <th>Logo</th>
+          <th class="right">Delete</th>
+        </tr>
+        <tr class="partyAdminRow" ng-repeat="party in parties" ng-style="{'border-left': '10px solid '+party.PartyColor, 'background-color': party.PartyColor}">
+          <td>{{party.PartyID}}</td>
+          <td>{{party.PartyName}}</td>
+          <td>{{party.PartyColor}}</td>
+          <td><img class="partyLogo" ng-src="{{party.PathToLogo}}" title="{{party.PathToLogo}}"></td>
+          <td class="right admin"><button class="right admin" type="button" ng-click="deleteParty(party.PartyID,$index)">Delete {{party.PartyName}}</button></td>
+        </tr>
+        <tr>
+          <td>New Party:</td>
+          <td><input ng-model="newParty.PartyName"></td>
+          <td><input ng-model="newParty.PartyColor"></td>
+          <td><input ng-model="newParty.PathToLogo"></td>
+          <td class="right"><button class="right admin" type="submit">Add Party</button></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>

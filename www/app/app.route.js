@@ -38,7 +38,15 @@
             }
           }
         })
-
+        .state('candidateAdmin', {
+          url: '/candidateadmin',
+          views: {
+            'content@': {
+              templateUrl: '/app/components/candidateAdmin/candidateAdminView.html',
+              controller: 'candidateAdminController'
+            }
+          }
+        })
         // Voting systems
 
         .state('fptp', {

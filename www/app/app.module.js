@@ -90,6 +90,10 @@
             method: 'GET',
             isArray: true
          },
+         delete: {
+           method: 'DELETE',
+           headers: {'x-confirm-delete': true}
+         }
        });
     })
     .factory('Party', function($resource){
@@ -101,6 +105,10 @@
            method:  'GET',
            url: apiRoot+"/elections/:electionID/parties",
            isArray: true
+         },
+         delete: {
+           method: 'DELETE',
+           headers: {'x-confirm-delete': true}
          }
        });
     })
