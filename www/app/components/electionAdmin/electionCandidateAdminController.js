@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('agora')
-    .controller('electionAdminController', function($scope, $rootScope, Election, System, $state){
+    .controller('electionCandidateAdminController', function($scope, Election, System){
 
       $scope.user = {
         id: 125,
@@ -50,10 +50,6 @@
        election.Active.data[0] = 0
         Election.deactivate({id: election.ElectionID})
         console.log(election)
-      }
-      $scope.editCandidates = function(election) {
-        $rootScope.election = election
-        $state.go('electionCandidateAdmin')
       }
     })
 })();

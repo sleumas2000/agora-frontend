@@ -201,3 +201,7 @@ g.nv-bar rect {
   height: 20%;
   margin-top: 5px;
 }
+.col-1.wide {
+  padding-left: 15px;
+  padding-right: 0px;
+}

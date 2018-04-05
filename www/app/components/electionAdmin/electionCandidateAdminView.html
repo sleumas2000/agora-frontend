@@ -6,7 +6,7 @@
   </div>
   <div class="row">
     <form class="electionAdminContainer" ng-submit="addElection()">
-      <h2>Elections</h2>
+      <h2>Candidates in {{election.ElectionName}}</h2>
         <div class="row electionAdminHeaderRow">
           <div class="col-1 wide"><h4>ID</h4></div>
           <div class="col-3"><h4>Name</h4></div>
@@ -32,7 +32,7 @@
             </div>
           </div>
           <div class="col-2">
-            <button type="button" ng-click="editCandidates(election)" class="btn btn-primary btn-block">Edit Candidates</button>
+            <button type="button" class="btn btn-primary btn-block">Edit Candidates</button>
           </div>
           <div class="col-1 wide"><button class="btn btn-outline-danger btn-block" type="button" ng-click="deleteElection(election.ElectionID,$index)">Delete</button></div>
         </div>
