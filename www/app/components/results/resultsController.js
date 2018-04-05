@@ -575,18 +575,18 @@
         }
         return {
           parties: {
-            fptp: simpleZip({keys: pfptplist.map(function(p) {return p.PartyName}), colors: pfptplist.map(function(p) {return p.PartyColor}), data: scale(pfptplist.map(function(p) {return p.fptpVotes}))}),
-            av: multiZip({keys: pavlist.map(function(p) {return p.PartyName}), colors: pavlist.map(function(p) {return p.PartyColor}), data: pavdata}),
-            stv: multiZip({keys: pstvlist.map(function(p) {return p.PartyName}), colors: pstvlist.map(function(p) {return p.PartyColor}), data: pstvdata}),
-            sv: multiZip({keys: psvlist.map(function(p) {return p.PartyName}), colors: psvlist.map(function(p) {return p.PartyColor}), data: psvdata}),
-            pr: simpleZip({keys: pprlist.map(function(p) {return p.PartyName}), colors: pprlist.map(function(p) {return p.PartyColor}), data: scale(pprlist.map(function(p) {return p.prVotes}))})
+            fptp: $scope.systems.indexOf("fptp") != -1 ? simpleZip({keys: pfptplist.map(function(p) {return p.PartyName}), colors: pfptplist.map(function(p) {return p.PartyColor}), data: scale(pfptplist.map(function(p) {return p.fptpVotes}))}) : null,
+            av: $scope.systems.indexOf("av") != -1 ? multiZip({keys: pavlist.map(function(p) {return p.PartyName}), colors: pavlist.map(function(p) {return p.PartyColor}), data: pavdata}) : null,
+            stv: $scope.systems.indexOf("stv") != -1 ? multiZip({keys: pstvlist.map(function(p) {return p.PartyName}), colors: pstvlist.map(function(p) {return p.PartyColor}), data: pstvdata}) : null,
+            sv: $scope.systems.indexOf("sv") != -1 ? multiZip({keys: psvlist.map(function(p) {return p.PartyName}), colors: psvlist.map(function(p) {return p.PartyColor}), data: psvdata}) : null,
+            pr: $scope.systems.indexOf("pr") != -1 ? simpleZip({keys: pprlist.map(function(p) {return p.PartyName}), colors: pprlist.map(function(p) {return p.PartyColor}), data: scale(pprlist.map(function(p) {return p.prVotes}))}) : null
           },
           candidates: {
-            fptp: simpleZip({keys: cfptplist.map(function(c) {return c.isSpoilt ? c.CandidateName : c.CandidateName+" ("+c.PartyName+")"}), colors: cfptplist.map(function(c) {return c.PartyColor}), data: scale(cfptplist.map(function(c) {return c.fptpVotes}))}),
-            av: multiZip({keys: cavlist.map(function(c) {return c.isSpoilt ? c.CandidateName : c.CandidateName+" ("+c.PartyName+")"}), colors: cavlist.map(function(c) {return c.PartyColor}), data: cavdata}),
-            stv: multiZip({keys: cstvlist.map(function(c) {return c.isSpoilt ? c.CandidateName : c.CandidateName+" ("+c.PartyName+")"}), colors: cstvlist.map(function(c) {return c.PartyColor}), data: cstvdata}),
-            sv: multiZip({keys: csvlist.map(function(c) {return c.isSpoilt ? c.CandidateName : c.CandidateName+" ("+c.PartyName+")"}), colors: csvlist.map(function(c) {return c.PartyColor}), data: csvdata}),
-            pr: simpleZip({keys: cprlist.map(function(c) {return c.isSpoilt ? c.CandidateName : c.CandidateName+" ("+c.PartyName+")"}), colors: cprlist.map(function(c) {return c.PartyColor}), data: scale(cprlist.map(function(c) {return c.prVotes}))}),
+            fptp: $scope.systems.indexOf("fptp") != -1 ? simpleZip({keys: cfptplist.map(function(c) {return c.isSpoilt ? c.CandidateName : c.CandidateName+" ("+c.PartyName+")"}), colors: cfptplist.map(function(c) {return c.PartyColor}), data: scale(cfptplist.map(function(c) {return c.fptpVotes}))}) : null,
+            av: $scope.systems.indexOf("av") != -1 ? multiZip({keys: cavlist.map(function(c) {return c.isSpoilt ? c.CandidateName : c.CandidateName+" ("+c.PartyName+")"}), colors: cavlist.map(function(c) {return c.PartyColor}), data: cavdata}) : null,
+            stv: $scope.systems.indexOf("stv") != -1 ? multiZip({keys: cstvlist.map(function(c) {return c.isSpoilt ? c.CandidateName : c.CandidateName+" ("+c.PartyName+")"}), colors: cstvlist.map(function(c) {return c.PartyColor}), data: cstvdata}) : null,
+            sv: $scope.systems.indexOf("sv") != -1 ? multiZip({keys: csvlist.map(function(c) {return c.isSpoilt ? c.CandidateName : c.CandidateName+" ("+c.PartyName+")"}), colors: csvlist.map(function(c) {return c.PartyColor}), data: csvdata}) : null,
+            pr: $scope.systems.indexOf("pr") != -1 ? simpleZip({keys: cprlist.map(function(c) {return c.isSpoilt ? c.CandidateName : c.CandidateName+" ("+c.PartyName+")"}), colors: cprlist.map(function(c) {return c.PartyColor}), data: scale(cprlist.map(function(c) {return c.prVotes}))}) : null,
           }
         }
       }
