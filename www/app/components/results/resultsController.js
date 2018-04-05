@@ -52,7 +52,6 @@
           $scope.goTo($scope.whichTab)
         });
       };
-      console.log($rootScope.elections)
       var promises = {
         votes: Vote.getVotes({electionID:$rootScope.election.ElectionID}).$promise,
         parties: Party.getByElection({electionID:$rootScope.election.ElectionID}).$promise,
@@ -101,7 +100,7 @@
           }
         }
         var winners = []
-        var highest = 0
+        var highest = 1
         for (var i in candidates) {
           if (candidates[i].fptpVotes > highest) {
             winners = [candidates[i]]
@@ -130,7 +129,7 @@
           }
         }
         var winners = []
-        var highest = 0
+        var highest = 1
         for (var i in candidates) {
           if (candidates[i].fptpVotes > highest) {
             winners = [candidates[i]]
@@ -148,7 +147,6 @@
         var candidates = data.candidates;
         var parties = data.parties;
         var spoilt = data.spoilt;
-        spoilt.av = []
         for (var i = 0; i < votes.length; i++) {
           if (votes[i].SystemShortName == "av") {
             if (!avVotes[votes[i].UserHash]) {
@@ -212,7 +210,6 @@
         var out = []
         while (!finished) {
           roundResults[j] = count(avVotes)
-          spoilt.av.push(roundResults[j].undefined)
           if (isFinished(roundResults[j])) {finished = true;}
           else {
             out = out.concat(findWorst(roundResults[j]).IDs)
@@ -249,13 +246,11 @@
         var candidates = data.candidates;
         var parties = data.parties;
         var spoilt = data.spoilt;
-        spoilt.stv = [0]
         for (var i = 0; i < votes.length; i++) {
           if (votes[i].SystemShortName == "stv") {
             if (!stvVotes[votes[i].UserHash]) {
               stvVotes[votes[i].UserHash] = {currentPointer:1,weight:1,length:0}
             }
-            if (!votes[i].CandidateID) {spoilt.stv[0]++}
             stvVotes[votes[i].UserHash][votes[i].Position] = votes[i].CandidateID
             stvVotes[votes[i].UserHash].length++
           }
@@ -290,7 +285,7 @@
               highest = {IDs:[i],votes:total[i]};
             }
           }
-          highest.ID = highest.IDs[Math.floor(Math.random()*highest.IDs.length)]
+          highest.ID = highest.IDs[0]
           delete highest.IDs
           if (highest.votes > quota) {
             return highest //[CandidateID, numVotes]
@@ -309,14 +304,14 @@
           return voteList //voteList
         }
         function reassignWinner(voteList,out,winner,numVotes,quota) { //voteList,[CandidateID (int)...],CandidateID (int), int, int => voteList
-          var oldList = voteList
+          var oldList = JSON.parse(JSON.stringify(voteList))
           for (i in voteList) {
             if (i == "length" || voteList[i][voteList[i].currentPointer] == undefined) {continue}
-            if (voteList[i][voteList[i].currentPointer].toString()==winner) {voteList[i].weight = voteList[i].weight*(1-(quota/numVotes));voteList[i].currentPointer ++;if (voteList[i][voteList[i].currentPointer] == undefined) {spoilt.av[j]+=voteList[i].weight;break}}
+            if (voteList[i][voteList[i].currentPointer].toString()==winner) {voteList[i].weight = voteList[i].weight*(1-(quota/numVotes));voteList[i].currentPointer ++;if (voteList[i][voteList[i].currentPointer] == undefined) {continue}}
             while (out.indexOf(voteList[i][voteList[i].currentPointer].toString()) >= 0) {
               if (voteList[i].currentPointer > voteList[i].length) {break}
               voteList[i].currentPointer ++
-              if (voteList[i][voteList[i].currentPointer] == undefined) {spoilt.av[j]+=voteList[i].weight;break}
+              if (voteList[i][voteList[i].currentPointer] == undefined) {break}
             }
           }
           return voteList //voteList
@@ -338,7 +333,7 @@
         var numSeatsFree = numSeats
         while (!finished) {
           roundResults[j] = count(stvVotes)
-          quota=findQuota(roundResults[j],numSeatsFree)
+          quota=findQuota(roundResults[0],numSeats)
           var originalQuota = originalQuota || findQuota(roundResults[0],numSeats)
           if (numSeatsFree === 0) {finished = true;}
           else {
@@ -351,6 +346,7 @@
             } else {
               out = out.concat(findWorst(roundResults[j]).IDs)
               electedCandidates.push(null)
+              stvVotes = reassignLosers(stvVotes,out)
             }
           }
           j++
@@ -376,6 +372,7 @@
           }
         }
         for (var c = 0; c < electedCandidates.length; c++) {
+          if (electedCandidates[c] == null) {continue}
           for (var r = j-1; r > c; r--) {
             candidates[electedCandidates[c]].stvVotes[r] = originalQuota
             parties[candidates[electedCandidates[c]].PartyID].stvVotes[r] += originalQuota
@@ -490,37 +487,35 @@
         var systemStrings = []
         for (var s in $rootScope.election.systems) {
           s = parseInt(s)
-          console.log($rootScope.election.systems,s)
           if ($rootScope.election.systems[s].SystemShortName == "fptp") {
-            z = $rootScope.countFPTPs(z)
+            try {z = $rootScope.countFPTPs(z)} catch(err) {console.log(err)}
             systemStrings.push("fptp")
           } else
           if ($rootScope.election.systems[s].SystemShortName == "av") {
-            z = $rootScope.countAVs(z)
+            try {z = $rootScope.countAVs(z)} catch(err) {console.log(err)}
             systemStrings.push("av")
           } else
           if ($rootScope.election.systems[s].SystemShortName == "sv") {
-            z = $rootScope.countSVs(z)
+            try {z = $rootScope.countSVs(z)} catch(err) {console.log(err)}
             systemStrings.push("sv")
           } else
           if ($rootScope.election.systems[s].SystemShortName == "pr") {
-            z = $rootScope.countPRs(z)
+            try {z = $rootScope.countPRs(z)} catch(err) {console.log(err)}
             systemStrings.push("pr")
           } else
           if ($rootScope.election.systems[s].SystemShortName == "stv") {
-            z = $rootScope.countSTVs(3,z)
+            try {z = $rootScope.countSTVs(3,z)} catch(err) {console.log(err)}
             systemStrings.push("stv")
           }
         }
         $scope.winners = z.winners
-        console.log($scope.winners)
         $scope.systems = systemStrings
         return (z);
       }
       function makeChartData(results) {
         var spoilt = results.spoilt
         function values(obj) {var a = []; for (var k in obj) { if (k != "length") {a.push(obj[k])}}; return a}
-        function scale(list) {var total = list.reduce((a, b) => a + b, 0); return list.map(a => 100*a/total)}
+        function scale(list) {var total = 100/*list.reduce((a, b) => a + b, 0)*/; return list.map(a => 100*a/total)}
         function simpleZip({keys: keys, colors: colors, data: data}) {
           return keys.map(function(_,i){
             return {key: keys[i], color: colors[i], values: [{label:"Total",value:data[i]}]}
