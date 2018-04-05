@@ -35,7 +35,7 @@
         $scope.setElection = function() {
           $rootScope.election = $scope.selectedElection;
           $rootScope.election.systems = Election.getSystems({id:$rootScope.election.ElectionID}, afterSystems);
-          $rootScope.election.candidates = Candidate.query({electionID:$rootScope.election.ElectionID}/*, function() { localStorage.setItem('election', JSON.stringify($rootScope.election)); }*/);
+          $rootScope.election.candidates = Candidate.getByElection({electionID:$rootScope.election.ElectionID}/*, function() { localStorage.setItem('election', JSON.stringify($rootScope.election)); }*/);
         };
         if (!$rootScope.election) {$rootScope.election = $rootScope.elections[0];}
         if (!$scope.selectedElection) {$scope.selectedElection = $rootScope.elections[0];}
@@ -47,7 +47,7 @@
         //  console.log($rootScope.nextPage)
       };
         $rootScope.election.systems = Election.getSystems({id:$rootScope.election.ElectionID}, afterSystems);
-        $rootScope.election.candidates = Candidate.query({electionID:$rootScope.election.ElectionID}/*, function() { localStorage.setItem('election', JSON.stringify($rootScope.election)); }*/);
+        $rootScope.election.candidates = Candidate.getByElection({electionID:$rootScope.election.ElectionID}/*, function() { localStorage.setItem('election', JSON.stringify($rootScope.election)); }*/);
         $rootScope.voteViewGoTo = function(page) {
         //  $state.go('vote.fptp');
         };

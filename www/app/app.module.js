@@ -81,9 +81,14 @@
        });
     })
     .factory('Candidate', function($resource){
-       return $resource(apiRoot+"/elections/:electionID/candidates/:id", {id: '@id', electionID: '@electionID'}, {
+       return $resource(apiRoot+"/candidates/:id", {id: '@id', electionID: '@electionID'}, {
          update: {
            method: 'PUT'
+         },
+         getByElection: {
+            url: apiRoot+"/elections/:electionID/candidates/:id",
+            method: 'GET',
+            isArray: true
          },
        });
     })

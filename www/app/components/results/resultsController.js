@@ -41,7 +41,7 @@
         var promises = {
           votes: Vote.getVotes({electionID:$rootScope.election.ElectionID}).$promise,
           parties: Party.getByElection({electionID:$rootScope.election.ElectionID}).$promise,
-          candidates: Candidate.query({electionID:$rootScope.election.ElectionID}).$promise
+          candidates: Candidate.getByElection({electionID:$rootScope.election.ElectionID}).$promise
         };
         $q.all(promises).then(function(values) {
           $rootScope.parties = values.parties;
@@ -55,7 +55,7 @@
       var promises = {
         votes: Vote.getVotes({electionID:$rootScope.election.ElectionID}).$promise,
         parties: Party.getByElection({electionID:$rootScope.election.ElectionID}).$promise,
-        candidates: Candidate.query({electionID:$rootScope.election.ElectionID}).$promise
+        candidates: Candidate.getByElection({electionID:$rootScope.election.ElectionID}).$promise
       };
       $q.all(promises).then(function(values) {
         $rootScope.parties = values.parties;
