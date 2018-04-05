@@ -147,7 +147,7 @@ g.nv-bar rect {
   stroke-width: 1px;
   stroke: #000000;
 }
-.btn-primary, .btn-outline-primary {
+.buttonBox .btn-primary, .buttonBox .btn-outline-primary {
   margin: 5px
 }
 .buttonBox {
@@ -181,4 +181,23 @@ g.nv-bar rect {
 }
 .partyAdminRow td {
   background-color: rgba(255,255,255,0.8);
+}
+.electionAdminContainer {
+  width: 100%;
+}
+.electionAdminHeaderRow {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.electionAdminRow {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.buttonListContainer {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+.short {
+  height: 20%;
+  margin-top: 5px;
 }

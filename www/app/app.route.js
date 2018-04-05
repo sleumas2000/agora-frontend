@@ -47,6 +47,15 @@
             }
           }
         })
+        .state('electionAdmin', {
+          url: '/electionadmin',
+          views: {
+            'content@': {
+              templateUrl: '/app/components/electionAdmin/electionAdminView.html',
+              controller: 'electionAdminController'
+            }
+          }
+        })
         // Voting systems
 
         .state('fptp', {

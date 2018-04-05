@@ -69,7 +69,7 @@
        });
     })
     .factory('Election', function($resource){
-       return $resource(apiRoot+"/elections/:id", {id: '@id'}, {
+       return $resource(apiRoot+"/elections/:id", {id: '@id', systemIDs: '@systemIDs'}, {
          update: {
            method: 'PUT'
          },
@@ -78,6 +78,29 @@
             method: 'GET',
             isArray: true
          },
+         setSystems: {
+            url: apiRoot+'/elections/:id/systems/:systemIDs',
+            method: 'POST'
+         },
+         activate: {
+           url: apiRoot+'/elections/:id/activate',
+           method: 'POST'
+         },
+         deactivate: {
+           url: apiRoot+'/elections/:id/deactivate',
+           method: 'POST'
+         },
+         delete: {
+            method: 'DELETE',
+            headers: {'x-confirm-delete': true}
+         }
+       });
+    })
+    .factory('System', function($resource){
+       return $resource(apiRoot+"/systems/:id", {id: '@id'}, {
+         update: {
+           method: 'PUT'
+         }
        });
     })
     .factory('Candidate', function($resource){

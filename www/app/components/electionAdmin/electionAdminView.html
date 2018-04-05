@@ -1,0 +1,48 @@
+<div class=container>
+  <h1>Election Management Panel</h1>
+  <div class="col-12">
+    <p>Use this page to manage elections.</p>
+    <p><strong>You are signed in as: </strong><em>{{user.DisplayName}}</p>
+  </div>
+  <div class="row">
+    <form class="electionAdminContainer" ng-submit="addElection()">
+      <h2>Elections</h2>
+        <div class="row electionAdminHeaderRow">
+          <div class="col-1"><h4>ID</h4></div>
+          <div class="col-3"><h4>Name</h4></div>
+          <div class="col-3"><h4>Systems</h4></div>
+          <div class="col-2"><h4>Voting</h4></div>
+          <div class="col-3"><h4 class="right">Delete</div><h4>
+        </div>
+        <div class="row electionAdminRow" ng-repeat="election in elections">
+          <div class="col-1">{{election.ElectionID}}</div>
+          <div class="col-3">{{election.ElectionName}}</div>
+          <div class="col-3">
+            <div ng-repeat="system in election.systems">
+              {{system.SystemName}}
+            </div>
+          </div>
+          <div class="col-2">
+            <div ng-show="election.Active.data[0]">
+              <button type="button" class="btn btn-success btn-block" ng-click="deactivate(election)">Active</button>
+            </div>
+            <div ng-hide="election.Active.data[0]">
+              <button type="button" class="btn btn-danger btn-block" ng-click="activate(election)">Inactive</button>
+            </div>
+          </div>
+          <div class="col-3"><button class="btn btn-outline-danger btn-block" type="button" ng-click="deleteElection(election.ElectionID,$index)">Delete {{election.ElectionName}}</button></div>
+        </div>
+        <div class="row electionAdminRow">
+          <div class="col-1">New Election:</div>
+          <div class="col-3 input-group"><input class="form-control short" placeholder="Election Name" ng-model="newElection.ElectionName"></div>
+          <div class="col-3">
+            <div class="buttonListContainer" ng-repeat="system in systems" ng-click="toggleSystem(system)">
+              <button type="button" ng-class="{btn: true, 'btn-block': true, 'btn-danger' : newSystems.indexOf(system.SystemID) == -1, 'btn-success' : newSystems.indexOf(system.SystemID) != -1}">{{system.SystemName}}
+            </div>
+          </div>
+          <div class="col-2"></div>
+          <div class="col-3"><button class="btn btn-primary btn-block" type="submit">Add Election</button></div>
+        </div>
+    </form>
+  </div>
+</div>
