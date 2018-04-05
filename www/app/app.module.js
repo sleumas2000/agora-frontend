@@ -103,6 +103,22 @@
          }
        });
     })
+    .factory('ElectionCandidateLink', function($resource){
+       return $resource(apiRoot+"/electionCandidateLinks/:electionID", {id: '@id', electionID: '@electionID'}, {
+         update: {
+           method: 'PUT'
+         },
+         save: {
+           url: apiRoot+"/electionCandidateLinks/:id",
+           method: 'POST'
+         },
+         delete: {
+           url: apiRoot+"/electionCandidateLinks/:id",
+           method: 'DELETE',
+           headers: {'x-confirm-delete': true}
+         }
+       });
+    })
     .factory('Candidate', function($resource){
        return $resource(apiRoot+"/candidates/:id", {id: '@id', electionID: '@electionID'}, {
          update: {

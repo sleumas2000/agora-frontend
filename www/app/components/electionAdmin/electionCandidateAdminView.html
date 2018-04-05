@@ -3,50 +3,25 @@
   <div class="col-12">
     <p>Use this page to manage elections.</p>
     <p><strong>You are signed in as: </strong><em>{{user.DisplayName}}</p>
+    {{newCandidate.CandidateName}}{{newParty.PathToLogo}}
   </div>
   <div class="row">
-    <form class="electionAdminContainer" ng-submit="addElection()">
+    <form class="electionAdminContainer" ng-submit="addLink()">
       <h2>Candidates in {{election.ElectionName}}</h2>
         <div class="row electionAdminHeaderRow">
-          <div class="col-1 wide"><h4>ID</h4></div>
-          <div class="col-3"><h4>Name</h4></div>
-          <div class="col-3"><h4>Systems</h4></div>
-          <div class="col-2"><h4>Voting</h4></div>
-          <div class="col-2"><h4>Candidates</h4></div>
-          <div class="col-1 wide"><h4 class="right">Delete</div><h4>
+          <div class="col-5"><h4>Candidate</h4></div>
+          <div class="col-5"><h4>Party</h4></div>
+          <div class="col-2"><h4 class="right">Remove</div><h4>
         </div>
-        <div class="row electionAdminRow" ng-repeat="election in elections">
-          <div class="col-1 wide">{{election.ElectionID}}</div>
-          <div class="col-3">{{election.ElectionName}}</div>
-          <div class="col-3">
-            <div ng-repeat="system in election.systems">
-              {{system.SystemName}}
-            </div>
-          </div>
-          <div class="col-2">
-            <div ng-show="election.Active.data[0]">
-              <button type="button" class="btn btn-success btn-block" ng-click="deactivate(election)">Active</button>
-            </div>
-            <div ng-hide="election.Active.data[0]">
-              <button type="button" class="btn btn-danger btn-block" ng-click="activate(election)">Inactive</button>
-            </div>
-          </div>
-          <div class="col-2">
-            <button type="button" class="btn btn-primary btn-block">Edit Candidates</button>
-          </div>
-          <div class="col-1 wide"><button class="btn btn-outline-danger btn-block" type="button" ng-click="deleteElection(election.ElectionID,$index)">Delete</button></div>
+        <div class="row electionAdminRow" ng-repeat="link in links">
+          <div class="col-5">{{link.CandidateName}}</div>
+          <div class="col-5">{{link.PartyName}}</div>
+          <div class="col-2"><button class="btn btn-outline-danger btn-block" type="button" ng-click="deleteLink(link.LinkID,$index)">Delete</button></div>
         </div>
         <div class="row electionAdminRow">
-          <div class="col-1 wide">New Election:</div>
-          <div class="col-3 input-group"><input class="form-control short" placeholder="Election Name" ng-model="newElection.ElectionName"></div>
-          <div class="col-3">
-            <div class="buttonListContainer" ng-repeat="system in systems" ng-click="toggleSystem(system)">
-              <button type="button" ng-class="{btn: true, 'btn-block': true, 'btn-danger' : newSystems.indexOf(system.SystemID) == -1, 'btn-success' : newSystems.indexOf(system.SystemID) != -1}">{{system.SystemName}}
-            </div>
-          </div>
-          <div class="col-2"></div>
-          <div class="col-2"></div>
-          <div class="col-1 wide"><button class="btn btn-primary btn-block" type="submit">Add</button></div>
+          <div class="col-5"><select ng-model="newCandidate" ng-options="x.CandidateName for x in candidates"></select></div>
+          <div class="col-5"><select ng-model="newParty" ng-options="x.PartyName for x in parties"></select></div>
+          <div class="col-2"><button class="btn btn-primary btn-block" type="submit">Add</button></div>
         </div>
     </form>
   </div>
