@@ -39,7 +39,7 @@
         $scope.links.push(newLink)
       };
       $scope.deleteLink = function(linkID,rowNumber){
-        Election.delete({id: linkID});
+        ElectionCandidateLink.delete({id: linkID});
         $scope.links.splice(rowNumber,1)
       }
     })
