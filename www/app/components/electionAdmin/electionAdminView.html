@@ -67,7 +67,12 @@
           <div class="col-3 input-group"><input class="form-control short" placeholder="Election Name" ng-model="newElection.ElectionName"></div>
           <div class="col-3">
             <div class="buttonListContainer" ng-repeat="system in systems" ng-click="toggleSystem(system)">
-              <button type="button" ng-class="{btn: true, 'btn-block': true, 'btn-danger' : newSystems.indexOf(system.SystemID) == -1, 'btn-success' : newSystems.indexOf(system.SystemID) != -1}">{{system.SystemName}}
+              <button type="button" ng-class="{btn: true, 'btn-block': true, 'btn-danger' : newSystems.indexOf(system.SystemID) == -1, 'btn-success' : newSystems.indexOf(system.SystemID) != -1}">
+                {{system.SystemName}} (
+                  <span ng-hide="newSystems.indexOf(system.SystemID) == -1">✓</span>
+                  <span ng-show="newSystems.indexOf(system.SystemID) == -1">✗</span>
+                  )
+              </button>
             </div>
           </div>
           <div class="col-2"></div>
