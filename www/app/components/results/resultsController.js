@@ -561,7 +561,7 @@
       function makeChartData(results) {
         var spoilt = results.spoilt
         function values(obj) {var a = []; for (var k in obj) { if (k != "length") {a.push(obj[k])}}; return a}
-        function scale(list) {var total = 100/*list.reduce((a, b) => a + b, 0)*/; return list.map(a => 100*a/total)}
+        function scale(list) {var total = list.reduce((a, b) => a + b, 0); return list.map(a => 100*a/total)}
         function simpleZip({keys: keys, colors: colors, data: data}) {
           return keys.map(function(_,i){
             return {key: keys[i], color: colors[i], values: [{label:"Total",value:data[i]}]}
