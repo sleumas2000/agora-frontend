@@ -121,33 +121,69 @@
         data.winners.fptp=winners
         return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt, winners: data.winners};
       };
-      $rootScope.countPRs = function(data) {
+      $rootScope.countPRs = function(numSeats,data) {
         var votes = data.votes;
         var candidates = data.candidates;
         var parties = data.parties;
         var spoilt = data.spoilt;
+        var totalVotes = 0
         for (var i = 0; i < votes.length; i++) {
           if (votes[i].SystemShortName == "pr") {
             var vote = votes[i];
             if (!vote.CandidateID) {
               spoilt.pr ++;
             } else {
+              totalVotes ++
               candidates[vote.CandidateID].prVotes ++;
               if (vote.PartyID) parties[vote.PartyID].prVotes ++;
             }
           }
         }
-        var winners = []
-        var highest = 1
-        for (var i in candidates) {
-          if (candidates[i].fptpVotes > highest) {
-            winners = [candidates[i]]
-            highest = candidates[i].prVotes
-          } else if (candidates[i].prVotes == highest) {
-            winners.push(candidates[i])
+        var winningParties = {}
+        var toFill = numSeats
+        while(toFill > 0) {
+          var successfulParty = false
+          for (var i in parties) {
+            if (i=="length") {continue}
+            if (parties[i].prVotes-((winningParties[i] || 0)*totalVotes/(toFill+1)) > totalVotes/(toFill+1)) {
+              successfulParty = true
+              totalVotes -= totalVotes/(toFill+1)
+              toFill --
+              winningParties[i] = (winningParties[i] + 1) || 1
+            }
+          }
+          if (!successfulParty) {
+            var winners = []
+            var highest = 1
+            for (var i in parties) {
+              if (i=="length") {continue}
+              if (parties[i].prVotes-((winningParties[i] || 0)*totalVotes/(toFill+1)) > highest) {
+                winners = [parties[i]]
+                highest = parties[i].prVotes-((winningParties[i] || 0)*totalVotes/(toFill+1))
+              } else if (parties[i].prVotes-((winningParties[i] || 0)*totalVotes/(toFill+1)) == highest) {
+                winners.push(parties[i])
+              }
+            }
+            for (var i in winners) {
+              totalVotes -= totalVotes/((toFill+1) || 1)
+              toFill --
+              winningParties[winners[i].PartyID] = (winningParties[winners[i].PartyID] + 1) || 1
+            }
           }
         }
-        data.winners.pr=winners
+        var winningCandidates = []
+        for (var i in winningParties) {
+          var party = parties[i]
+          var partyCandidates = []
+          for (var j in candidates) {
+            console.log(candidates[j],j,i)
+            if (candidates[j].PartyID == i) partyCandidates.push(candidates[j])
+          }
+          console.log(partyCandidates)
+          partyCandidates=partyCandidates.sort(function(a,b){return b.prVotes-a.prVotes})
+          winningCandidates = winningCandidates.concat(partyCandidates.slice(0,winningParties[i]))
+        }
+        data.winners.pr=winningCandidates
         return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt, winners: data.winners};
       };
       $rootScope.countAVs = function(data) {
@@ -509,7 +545,7 @@
             systemStrings.push("sv")
           } else
           if ($rootScope.election.systems[s].SystemShortName == "pr") {
-            try {z = $rootScope.countPRs(z)} catch(err) {console.log(err)}
+            try {z = $rootScope.countPRs(3,z)} catch(err) {console.log(err)}
             systemStrings.push("pr")
           } else
           if ($rootScope.election.systems[s].SystemShortName == "stv") {
