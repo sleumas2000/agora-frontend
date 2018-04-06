@@ -3,21 +3,18 @@
 
   angular.module('agora')
     .controller('electionCandidateAdminController', function($scope, $rootScope, $state, Candidate, Party, Election, ElectionCandidateLink){
+      if (!$rootScope.currentUser) $state.go('login')
       if (!$rootScope.election) {$state.go('electionAdmin')}
       $scope.showAdmin = true
       $scope.navBar = function(state) {
         for (var prop in $rootScope) {
-          if (typeof $rootScope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $rootScope[prop];}
+          if (typeof $rootScope[prop] !== 'function' && prop !== "currentUser" && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $rootScope[prop];}
         }
         for (var prop in $scope) {
           if (typeof $scope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $scope[prop];}
         }
         $state.transitionTo(state, {}, {reload: true, inherit: false, notify: true})
       }
-      $scope.currentUser = {
-        id: 125,
-        DisplayName: 'Mr S Balderson'
-      };
       $scope.links = ElectionCandidateLink.query({electionID: $rootScope.election.ElectionID})
       $scope.candidates = Candidate.query();
       $scope.parties = Party.query();

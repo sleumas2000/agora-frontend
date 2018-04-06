@@ -3,21 +3,18 @@
 
   angular.module('agora')
     .controller('memberAdminController', function($scope, $rootScope, $state, Group, User, Membership){
+      if (!$rootScope.currentUser) $state.go('login')
       $scope.showAdmin = true
       if (!$rootScope.group) {$state.go('groupAdmin')}
       $scope.navBar = function(state) {
         for (var prop in $rootScope) {
-          if (typeof $rootScope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $rootScope[prop];}
+          if (typeof $rootScope[prop] !== 'function' && prop !== "currentUser" && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $rootScope[prop];}
         }
         for (var prop in $scope) {
           if (typeof $scope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $scope[prop];}
         }
         $state.transitionTo(state, {}, {reload: true, inherit: false, notify: true})
       }
-      $scope.currentUser = {
-        id: 125,
-        DisplayName: 'Mr S Balderson'
-      };
       $scope.memberships = Membership.query({groupID: $rootScope.group.GroupID})
       $scope.users = User.query();
       $scope.newUser = new User();

@@ -7,6 +7,15 @@
       $urlRouterProvider.otherwise('/vote');
 
       $stateProvider
+        .state('login', {
+          url: '/login',
+          views: {
+            'content@': {
+              templateUrl: '/app/components/login/loginView.html',
+              controller: 'loginController'
+            }
+          }
+        })
         .state('vote', {
           url: '/vote',
           views: {

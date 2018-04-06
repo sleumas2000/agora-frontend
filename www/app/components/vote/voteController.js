@@ -3,10 +3,11 @@
 
   angular.module('agora')
     .controller('voteController', function($scope, $rootScope, $state, User, Election, Candidate){
+      if (!$rootScope.currentUser) $state.go('login')
       $scope.showAdmin = true
       $scope.navBar = function(state) {
         for (var prop in $rootScope) {
-          if (typeof $rootScope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $rootScope[prop];}
+          if (typeof $rootScope[prop] !== 'function' && prop !== "currentUser" && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $rootScope[prop];}
         }
         for (var prop in $scope) {
           if (typeof $scope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $scope[prop];}
@@ -19,28 +20,7 @@
         $rootScope.$on('goBackHome', function() {
           $state.go('vote');
         });
-        $rootScope.currentUser = $rootScope.currentUser || {
-          UserID: Math.floor(Math.random() * (55)) + 3,
-          DisplayName: 'Mr S Balderson'
-        };
-        console.log($rootScope.currentUser)
         $scope.users = User.query();
-        //$rootScope.election = JSON.parse(localStorage.getItem('election'));
-        //console.log($rootScope.election)
-        /*$rootScope.election = {
-          ElectionID: 1,
-          ElectionName: '2018 Test Election'
-        };*/
-        /*$rootScope.elections = [
-          {
-            ElectionID: 1,
-            ElectionName: '2018 Test Election'
-          },
-          {
-            ElectionID: 2,
-            ElectionName: '2018 Test Election 2'
-          }
-        ]*/
         $scope.setElection = function() {
           $rootScope.election = $scope.selectedElection;
           $rootScope.election.systems = Election.getSystems({id:$rootScope.election.ElectionID}, afterSystems);

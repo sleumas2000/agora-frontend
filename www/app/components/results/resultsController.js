@@ -2,10 +2,11 @@
   'use strict';
   angular.module('agora')
     .controller('resultsController', function($scope, $rootScope, $state, $q, $timeout, User, Election, Candidate, Party, Vote){
+      if (!$rootScope.currentUser) $state.go('login')
       $scope.navBar = function(state) {
         $state.transitionTo(state, {}, {reload: true, inherit: false, notify: true})
         for (var prop in $rootScope) {
-          if (typeof $rootScope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1 && prop !== 'api'/* to keep d3 happy */) {delete $rootScope[prop];}
+          if (typeof $rootScope[prop] !== 'function' && prop !== "currentUser" && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1 && prop !== 'api'/* to keep d3 happy */) {delete $rootScope[prop];}
         }
         for (var prop in $scope) {
           if (typeof $scope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1 && prop !== 'api'/* to keep d3 happy */) {delete $scope[prop];}

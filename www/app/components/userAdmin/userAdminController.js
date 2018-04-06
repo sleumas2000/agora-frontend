@@ -2,9 +2,13 @@
   'use strict';
 
   angular.module('agora')
-    .controller('userAdminController', function($scope, $state, GroupUserList, GroupTypeGroupList, User, Group, GroupType){
+    .controller('userAdminController', function($scope, $rootScope, $state, GroupUserList, GroupTypeGroupList, User, Group, GroupType){
+      if (!$rootScope.currentUser) $state.go('login')
       $scope.showAdmin = true
       $scope.navBar = function(state) {
+        for (var prop in $rootScope) {
+          if (typeof $rootScope[prop] !== 'function' && prop !== "currentUser" && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $rootScope[prop];}
+        }
         for (var prop in $scope) {
           if (typeof $scope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $scope[prop];}
         }
@@ -18,12 +22,6 @@
           console.log($scope.groupTypes[i]);
         }
       });
-      // TODO: remove this
-      $scope.currentUser = {
-        id: 125,
-        DisplayName: 'Mr S Balderson'
-      };
-      // end remove
       $scope.users = User.query();
       $scope.$watch('typeFilter', function(value) {
         if (value) {

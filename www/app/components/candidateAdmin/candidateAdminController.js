@@ -2,18 +2,18 @@
   'use strict';
 
   angular.module('agora')
-    .controller('candidateAdminController', function($scope, $state, Candidate, Party){
+    .controller('candidateAdminController', function($scope, $rootScope, $state, Candidate, Party){
+      if (!$rootScope.currentUser) $state.go('login')
       $scope.showAdmin = true
       $scope.navBar = function(state) {
+        for (var prop in $rootScope) {
+          if (typeof $rootScope[prop] !== 'function' && prop !== "currentUser" && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $rootScope[prop];}
+        }
         for (var prop in $scope) {
           if (typeof $scope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $scope[prop];}
         }
         $state.transitionTo(state, {}, {reload: true, inherit: false, notify: true})
       }
-      $scope.currentUser = {
-        id: 125,
-        DisplayName: 'Mr S Balderson'
-      };
       $scope.candidates = Candidate.query();
       $scope.parties = Party.query();
       $scope.newCandidate = new Candidate();
