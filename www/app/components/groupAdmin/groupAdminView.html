@@ -28,16 +28,17 @@
 <div class="container">
 
   <h1>Group Management Panel</h1>
-  <div class="col-12">
+  <div class="col-12 adminStrapline">
     <p>Use this page to manage system usergroups.</p>
-    <p><strong>You are signed in as: </strong><em>{{user.DisplayName}}</p>
-    <select ng-model="typeFilter" ng-options="x.GroupTypeName for x in groupTypes">
-      <option value="">Show All</option>
-    </select>
   </div>
   <div class="row">
     <form ng-submit="addGroup()" class="col-lg">
-      <h2>Groups</h2>
+      <h2>
+        Groups
+        <select class="typeFilter" ng-model="typeFilter" ng-options="x.GroupTypeName for x in groupTypes">
+          <option value="">Show All</option>
+        </select>
+      </h2>
       <table class="admin">
         <tr>
           <th>ID</th>

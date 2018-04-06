@@ -27,14 +27,13 @@
 </div>
 <div class="container">
   <h1>Candidate Management Panel</h1>
-  <div class="col-12">
+  <div class="col-12 adminStrapline">
     <p>Use this page to manage candidates.</p>
-    <p><strong>You are signed in as: </strong><em>{{user.DisplayName}}</p>
   </div>
   <div class="row">
-    <form ng-submit="addCandidate()">
+    <form class="wide" ng-submit="addCandidate()">
       <h2>Candidates</h2>
-      <table class="admin">
+      <table class="wide" class="admin">
         <tr>
           <th>ID</th>
           <th>Name</th>
@@ -54,9 +53,9 @@
     </form>
   </div>
   <div class="row"> 
-    <form ng-submit="addParty()">
+    <form class="wide" ng-submit="addParty()">
       <h2>Parties</h2>
-      <table class="admin">
+      <table class="wide" class="admin">
         <tr>
           <th>ID</th>
           <th>Name</th>
@@ -71,7 +70,7 @@
           <td><img class="partyLogo" ng-src="{{party.PathToLogo}}" title="{{party.PathToLogo}}"></td>
           <td class="right admin"><button class="right admin" type="button" ng-click="deleteParty(party.PartyID,$index)">Delete {{party.PartyName}}</button></td>
         </tr>
-        <tr>
+        <tr class="partyAdminRow" ng-style="{'border-left': '10px solid '+newParty.PartyColor, 'background-color': newParty.PartyColor}">
           <td>New Party:</td>
           <td><input ng-model="newParty.PartyName"></td>
           <td><input ng-model="newParty.PartyColor"></td>

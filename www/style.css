@@ -26,7 +26,6 @@ input.admin {
 }
 button.right {
   width: 100%;
-  max-width: 250px;
 }
 .narrow {
   max-width: 30px;
@@ -37,6 +36,7 @@ input.checkbox.admin {
 }
 h1 {
   text-align: center;
+  margin-top: 40px;
 }
 /*.containerWing {
   min-height: 20px;
@@ -90,8 +90,14 @@ tr.header th {
 .navBox {
   padding: 0px;
 }
-.navButton {
+.navBox .navButton {
   float: right;
+}
+.userSignInBar .navButton {
+  position: absolute;
+  max-width: 50px;
+}
+.navButton {
   padding: 10px;
   margin: 0px;
   background-color: #e4e4e4;
@@ -194,6 +200,9 @@ g.nv-bar rect {
 .partyAdminRow td {
   background-color: rgba(255,255,255,0.8);
 }
+.partyAdminRow {
+  height: 100px;
+}
 .electionAdminContainer {
   width: 100%;
 }
@@ -238,4 +247,14 @@ g.nv-bar rect {
 }
 .partyLogo.logo-right {
   float: right;
+}
+select.typeFilter {
+  float: right
+}
+.adminStrapline {
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+form.wide, table.wide {
+  width: 100%;
 }

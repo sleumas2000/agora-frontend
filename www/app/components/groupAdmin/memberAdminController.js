@@ -3,8 +3,18 @@
 
   angular.module('agora')
     .controller('memberAdminController', function($scope, $rootScope, $state, Group, User, Membership){
+      $scope.showAdmin = true
       if (!$rootScope.group) {$state.go('groupAdmin')}
-      $scope.user = {
+      $scope.navBar = function(state) {
+        for (var prop in $rootScope) {
+          if (typeof $rootScope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $rootScope[prop];}
+        }
+        for (var prop in $scope) {
+          if (typeof $scope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $scope[prop];}
+        }
+        $state.transitionTo(state, {}, {reload: true, inherit: false, notify: true})
+      }
+      $scope.currentUser = {
         id: 125,
         DisplayName: 'Mr S Balderson'
       };

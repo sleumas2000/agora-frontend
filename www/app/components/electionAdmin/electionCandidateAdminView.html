@@ -1,8 +1,40 @@
+<div class="topBar">
+  <div class="container">
+    <div class="row">
+      <div class="navButton col-1" ng-click="navBar('electionAdmin')">
+        <i class="fas fa-angle-left fa-lg"></i>
+        Back
+      </div>
+      <div class="userSignInBar col-3">
+        <strong>You are signed in as: </strong><em>{{currentUser.DisplayName}}</em>
+      </div>
+      <div class="navBox col-8">
+        <div class="navButton" ng-click="navBar('vote')">
+          Vote
+        </div>
+        <div class="navButton" ng-click="navBar('results')">
+          Results
+        </div>
+        <div class="navButton" ng-show="showAdmin" ng-click="navBar('electionAdmin')">
+          Election Admin
+        </div>
+        <div class="navButton" ng-show="showAdmin" ng-click="navBar('candidateAdmin')">
+          Candidate Admin
+        </div>
+        <div class="navButton" ng-show="showAdmin" ng-click="navBar('userAdmin')">
+          User Admin
+        </div>
+        <div class="navButton" ng-show="showAdmin" ng-click="navBar('groupAdmin')">
+          Group Admin
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="container">
   <h1>Election Management Panel</h1>
-  <div class="col-12">
+  <div class="col-12 adminStrapline">
     <p>Use this page to manage elections.</p>
-    <p><strong>You are signed in as: </strong><em>{{user.DisplayName}}</p>
   </div>
   <div class="row">
     <form class="electionAdminContainer" ng-submit="addLink()">
