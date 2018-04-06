@@ -119,6 +119,22 @@
          }
        });
     })
+    .factory('Membership', function($resource){
+       return $resource(apiRoot+"/memberships/:groupID", {id: '@id', groupID: '@groupID'}, {
+         update: {
+           method: 'PUT'
+         },
+         save: {
+           url: apiRoot+"/memberships/:id",
+           method: 'POST'
+         },
+         delete: {
+           url: apiRoot+"/memberships/:id",
+           method: 'DELETE',
+           headers: {'x-confirm-delete': true}
+         }
+       });
+    })
     .factory('Candidate', function($resource){
        return $resource(apiRoot+"/candidates/:id", {id: '@id', electionID: '@electionID'}, {
          update: {

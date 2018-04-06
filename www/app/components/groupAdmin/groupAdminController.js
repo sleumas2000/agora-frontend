@@ -2,9 +2,12 @@
   'use strict';
 
   angular.module('agora')
-    .controller('groupAdminController', function($scope, $state, GroupTypeGroupList, Group, GroupType){
+    .controller('groupAdminController', function($scope, $rootScope, $state, GroupTypeGroupList, Group, GroupType){
       $scope.showAdmin = true
       $scope.navBar = function(state) {
+        for (var prop in $rootScope) {
+          if (typeof $rootScope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $rootScope[prop];}
+        }
         for (var prop in $scope) {
           if (typeof $scope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $scope[prop];}
         }
@@ -56,6 +59,11 @@
       $scope.deleteGroupType = function(groupTypeID,rowNumber){
         GroupType.delete({id: groupTypeID});
         $scope.groupTypes.splice(rowNumber,1)
+      }
+      $scope.editMembers = function(group) {
+        $rootScope.group = group
+        console.log("^",$rootScope.group)
+        $state.go('memberAdmin')
       }
     })
 })();

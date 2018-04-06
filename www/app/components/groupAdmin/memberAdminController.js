@@ -1,0 +1,32 @@
+(function(){
+  'use strict';
+
+  angular.module('agora')
+    .controller('memberAdminController', function($scope, $rootScope, $state, Group, User, Membership){
+      if (!$rootScope.group) {$state.go('groupAdmin')}
+      $scope.user = {
+        id: 125,
+        DisplayName: 'Mr S Balderson'
+      };
+      $scope.memberships = Membership.query({groupID: $rootScope.group.GroupID})
+      $scope.users = User.query();
+      $scope.newUser = new User();
+      $scope.addMembership = function(){
+        console.log("Membershiping")
+        var newMembership = new Membership()
+        newMembership.UserID = $scope.newUser.UserID
+        newMembership.GroupID = $rootScope.group.GroupID
+        Membership.save(newMembership, function(){
+          delete $scope.newGroup;
+          $scope.newUser = new User();
+          $scope.memberships = Membership.query({groupID: $rootScope.group.GroupID})
+        });
+        newMembership.DisplayName = $scope.newUser.UserName
+        $scope.memberships.push(newMembership)
+      };
+      $scope.deleteMembership = function(membershipID,rowNumber){
+        Membership.delete({id: membershipID});
+        $scope.memberships.splice(rowNumber,1)
+      }
+    })
+})();

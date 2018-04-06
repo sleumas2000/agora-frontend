@@ -206,6 +206,17 @@ g.nv-bar rect {
   margin-top: 20px;
   min-height: 100px;
 }
+.memberAdminContainer {
+  width: 100%;
+}
+.memberAdminHeaderRow {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.memberAdminRow {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
 .buttonListContainer {
   margin-bottom: 5px;
   margin-top: 5px;

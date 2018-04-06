@@ -38,6 +38,15 @@
             }
           }
         })
+        .state('memberAdmin', {
+          url: '/groupadmin/members',
+          views: {
+            'content@': {
+              templateUrl: '/app/components/groupAdmin/memberAdminView.html',
+              controller: 'memberAdminController'
+            }
+          }
+        })
         .state('candidateAdmin', {
           url: '/candidateadmin',
           views: {

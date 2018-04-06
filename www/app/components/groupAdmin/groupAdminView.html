@@ -43,19 +43,21 @@
           <th>ID</th>
           <th>Name</th>
           <th>Type</th>
+          <th>Members</th>
           <th class="right">Delete</th>
         </tr>
         <tr ng-repeat="group in groups">
           <td>{{group.GroupID}}</td>
           <td>{{group.GroupName}}</td>
           <td>{{group.GroupTypeName}}</td>
+          <td><button class="right admin" type="button" ng-click="editMembers(group)">Edit</button></td>
           <td class="right"><button class="right admin" type="button" ng-click="deleteGroup(group.GroupID,$index)">Delete {{group.GroupTypeName}}: {{group.GroupName}}</button></td>
         </tr>
         <tr>
           <td>New Group:</td>
           <td><input class="admin" ng-model="newGroup.GroupName"></td>
           <td><select ng-model="newGroup.GroupType" ng-options="x.GroupTypeName for x in groupTypes"></select></td>
-          <td class="right"><button class="right admin" type="submit">Add Group</button></td>
+          <td colspan="2" class="right"><button class="right admin" type="submit">Add Group</button></td>
         </tr>
       </table>
     </form>

@@ -1,0 +1,29 @@
+<div class="container">
+  <h1>Membership Management Panel</h1>
+  <div class="col-12">
+    <p>Use this page to manage users' group memberships.</p>
+  </div>
+  <div class="row">
+    <form class="memberAdminContainer" ng-submit="addMembership()">
+      <h2>Members of {{group.GroupTypeName}}: {{group.GroupName}}</h2>
+        <div class="row memberAdminHeaderRow">
+          <div class="col-3"></div>
+          <div class="col-4"><h4>Name</h4></div>
+          <div class="col-2"><h4 class="right">Remove</div><h4>
+          <div class="col-3"></div>
+        </div>
+        <div class="row memberAdminRow" ng-repeat="membership in memberships">
+          <div class="col-3"></div>
+          <div class="col-4">{{membership.DisplayName}}</div>
+          <div class="col-2"><button class="btn btn-sm btn-outline-danger btn-block" type="button" ng-click="deleteMembership(membership.LinkID,$index)">Delete</button></div>
+          <div class="col-3"></div>
+        </div>
+        <div class="row memberAdminRow">
+          <div class="col-3"></div>
+          <div class="col-4"><select ng-model="newUser" ng-options="x.DisplayName for x in users"></select></div>
+          <div class="col-2"><button class="btn btn-sm btn-primary btn-block" type="submit">Add</button></div>
+          <div class="col-3"></div>
+        </div>
+    </form>
+  </div>
+</div>
