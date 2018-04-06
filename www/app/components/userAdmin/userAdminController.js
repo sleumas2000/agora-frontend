@@ -2,7 +2,14 @@
   'use strict';
 
   angular.module('agora')
-    .controller('userAdminController', function($scope, GroupUserList, GroupTypeGroupList, User, Group, GroupType){
+    .controller('userAdminController', function($scope, $state, GroupUserList, GroupTypeGroupList, User, Group, GroupType){
+      $scope.showAdmin = true
+      $scope.navBar = function(state) {
+        for (var prop in $scope) {
+          if (typeof $scope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $scope[prop];}
+        }
+        $state.transitionTo(state, {}, {reload: true, inherit: false, notify: true})
+      }
       $scope.groups = Group.query();
       $scope.groupTypes = GroupType.query(function(resp) {
         var numGroupTypes = $scope.groupTypes.length;

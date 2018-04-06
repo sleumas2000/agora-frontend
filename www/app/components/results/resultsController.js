@@ -1,7 +1,16 @@
 (function(){
   'use strict';
   angular.module('agora')
-    .controller('resultsController', function($scope, $rootScope, $q, $timeout, User, Election, Candidate, Party, Vote){
+    .controller('resultsController', function($scope, $rootScope, $state, $q, $timeout, User, Election, Candidate, Party, Vote){
+      $scope.navBar = function(state) {
+        $state.transitionTo(state, {}, {reload: true, inherit: false, notify: true})
+        for (var prop in $rootScope) {
+          if (typeof $rootScope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1 && prop !== 'api'/* to keep d3 happy */) {delete $rootScope[prop];}
+        }
+        for (var prop in $scope) {
+          if (typeof $scope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1 && prop !== 'api'/* to keep d3 happy */) {delete $scope[prop];}
+        }
+      }
       function onElectionsGot(values) {
       $rootScope.elections = values
       // shite goes here

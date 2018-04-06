@@ -2,8 +2,17 @@
   'use strict';
 
   angular.module('agora')
-    .controller('electionAdminController', function($scope, $rootScope, Election, System, $state){
-
+    .controller('electionAdminController', function($scope, $rootScope, $state, Election, System){
+      $scope.showAdmin = true
+      $scope.navBar = function(state) {
+        for (var prop in $rootScope) {
+          if (typeof $rootScope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $rootScope[prop];}
+        }
+        for (var prop in $scope) {
+          if (typeof $scope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $scope[prop];}
+        }
+        $state.transitionTo(state, {}, {reload: true, inherit: false, notify: true})
+      }
       $scope.user = {
         id: 125,
         DisplayName: 'Mr S Balderson'

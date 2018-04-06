@@ -3,7 +3,6 @@
   <div class="col-12">
     <p>Use this page to manage elections.</p>
     <p><strong>You are signed in as: </strong><em>{{user.DisplayName}}</p>
-    {{newCandidate.CandidateName}}{{newParty.PathToLogo}}
   </div>
   <div class="row">
     <form class="electionAdminContainer" ng-submit="addLink()">
@@ -13,10 +12,13 @@
           <div class="col-5"><h4>Party</h4></div>
           <div class="col-2"><h4 class="right">Remove</div><h4>
         </div>
-        <div class="row electionAdminRow" ng-repeat="link in links">
-          <div class="col-5">{{link.CandidateName}}</div>
-          <div class="col-5">{{link.PartyName}}</div>
-          <div class="col-2"><button class="btn btn-outline-danger btn-block" type="button" ng-click="deleteLink(link.LinkID,$index)">Delete</button></div>
+        <div class="row electionAdminRow" ng-repeat="link in links" ng-style="{'border-left': '10px solid '+link.PartyColor, 'background-color': link.PartyColor}">
+          <div class="col-5 whiteOut">{{link.CandidateName}}</div>
+          <div class="col-5 whiteOut">
+            {{link.PartyName}}
+            <img class="partyLogo logo-right" ng-src="{{link.PathToLogo}}">
+          </div>
+          <div class="col-2 whiteOut"><button class="btn btn-outline-danger btn-block" type="button" ng-click="deleteLink(link.LinkID,$index)">Delete</button></div>
         </div>
         <div class="row electionAdminRow">
           <div class="col-5"><select ng-model="newCandidate" ng-options="x.CandidateName for x in candidates"></select></div>

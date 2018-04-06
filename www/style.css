@@ -79,13 +79,25 @@ tr.header th {
 .voteHeader {
   padding-bottom: 15px
 }
-#topBar {
+.topBar {
   width: 100%;
   background-color: #eee;
 }
-#userSignInBar {
+.userSignInBar {
   padding: 10px;
-  margin-bottom: 0px;
+  margin: 0px;
+}
+.navBox {
+  padding: 0px;
+}
+.navButton {
+  float: right;
+  padding: 10px;
+  margin: 0px;
+  background-color: #e4e4e4;
+}
+.navButton:hover {
+  background-color: #dddddd;
 }
 .candidateList tr {
   background-color: #fafafa;
@@ -192,6 +204,7 @@ g.nv-bar rect {
 .electionAdminRow {
   margin-bottom: 20px;
   margin-top: 20px;
+  min-height: 100px;
 }
 .buttonListContainer {
   margin-bottom: 5px;
@@ -204,4 +217,14 @@ g.nv-bar rect {
 .col-1.wide {
   padding-left: 15px;
   padding-right: 0px;
+}
+.whiteOut {
+  line-height: 100px;
+  background-color: rgba(255,255,255,0.8);
+}
+.whiteOut .btn {
+  margin-top: 31px;
+}
+.partyLogo.logo-right {
+  float: right;
 }

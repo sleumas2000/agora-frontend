@@ -3,10 +3,19 @@
 
   angular.module('agora')
     .controller('voteController', function($scope, $rootScope, $state, User, Election, Candidate){
+      $scope.showAdmin = true
+      $scope.navBar = function(state) {
+        for (var prop in $rootScope) {
+          if (typeof $rootScope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $rootScope[prop];}
+        }
+        for (var prop in $scope) {
+          if (typeof $scope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $scope[prop];}
+        }
+        $state.transitionTo(state, {}, {reload: true, inherit: false, notify: true})
+      }
       function onElectionsGot(values) {
         console.log(values);
         $rootScope.elections = values;
-
         $rootScope.$on('goBackHome', function() {
           $state.go('vote');
         });

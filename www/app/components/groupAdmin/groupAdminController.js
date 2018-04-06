@@ -2,8 +2,14 @@
   'use strict';
 
   angular.module('agora')
-    .controller('groupAdminController', function($scope, GroupTypeGroupList, Group, GroupType){
-
+    .controller('groupAdminController', function($scope, $state, GroupTypeGroupList, Group, GroupType){
+      $scope.showAdmin = true
+      $scope.navBar = function(state) {
+        for (var prop in $scope) {
+          if (typeof $scope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $scope[prop];}
+        }
+        $state.transitionTo(state, {}, {reload: true, inherit: false, notify: true})
+      }
       $scope.user = {
         id: 125,
         DisplayName: 'Mr S Balderson'
