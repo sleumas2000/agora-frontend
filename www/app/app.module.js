@@ -48,21 +48,21 @@
          query: {
             method: 'GET',
             isArray: true,
-            headers: {'x-access-token': "webToken"}
+            headers: {'x-access-token': "123Wells909"}
          },
          update: {
            method: 'PUT',
-           headers: {'x-access-token': "webToken"}
+           headers: {'x-access-token': "123Wells909"}
          },
          getUsers: {
             url: apiRoot+"/users/groups/:id/members",
             method: 'GET',
             isArray: true,
-            headers: {'x-access-token': "webToken"}
+            headers: {'x-access-token': "123Wells909"}
          },
          delete: {
            method: 'DELETE',
-           headers: {'x-confirm-delete': true, 'x-access-token': "webToken"}
+           headers: {'x-confirm-delete': true, 'x-access-token': "123Wells909"}
          }
        });
     })
@@ -71,21 +71,21 @@
          query: {
             method: 'GET',
             isArray: true,
-            headers: {'x-access-token': "webToken"}
+            headers: {'x-access-token': "123Wells909"}
          },
          update: {
            method: 'PUT',
-           headers: {'x-access-token': "webToken"}
+           headers: {'x-access-token': "123Wells909"}
          },
          getGroups: {
             url: apiRoot+"/users/groups/types/:id/members",
             method: 'GET',
             isArray: true,
-            headers: {'x-access-token': "webToken"}
+            headers: {'x-access-token': "123Wells909"}
          },
          delete: {
            method: 'DELETE',
-           headers: {'x-confirm-delete': true, 'x-access-token': "webToken"}
+           headers: {'x-confirm-delete': true, 'x-access-token': "123Wells909"}
          }
        });
     })
@@ -93,7 +93,7 @@
        return $resource(apiRoot+"/users/bygroup/:id", {id: '@id', token: '@token'}, {
          update: {
            method: 'PUT',
-           headers: {'x-access-token': "webToken"}
+           headers: {'x-access-token': "123Wells909"}
          }
        });
     })
@@ -101,7 +101,7 @@
        return $resource(apiRoot+"/users/groups/bygrouptype/:id", {id: '@id', token: '@token'}, {
          update: {
            method: 'PUT',
-           headers: {'x-access-token': "webToken"}
+           headers: {'x-access-token': "123Wells909"}
          }
        });
     })*/
@@ -110,36 +110,36 @@
          query: {
             method: 'GET',
             isArray: true,
-            headers: {'x-access-token': "webToken" || '123Wells909'}
+            headers: {'x-access-token': "123Wells909" || '123Wells909'}
          },
          update: {
            method: 'PUT',
-           headers: {'x-access-token': "webToken"}
+           headers: {'x-access-token': "123Wells909"}
          },
          getSystems: {
             url: apiRoot+"/elections/:id/systems",
             method: 'GET',
             isArray: true,
-            headers: {'x-access-token': "webToken"}
+            headers: {'x-access-token': "123Wells909"}
          },
          setSystems: {
             url: apiRoot+'/elections/:id/systems/:systemIDs',
             method: 'POST',
-            headers: {'x-access-token': "webToken"}
+            headers: {'x-access-token': "123Wells909"}
          },
          activate: {
            url: apiRoot+'/elections/:id/activate',
            method: 'POST',
-           headers: {'x-access-token': "webToken"}
+           headers: {'x-access-token': "123Wells909"}
          },
          deactivate: {
            url: apiRoot+'/elections/:id/deactivate',
            method: 'POST',
-           headers: {'x-access-token': "webToken"}
+           headers: {'x-access-token': "123Wells909"}
          },
          delete: {
             method: 'DELETE',
-            headers: {'x-confirm-delete': true, 'x-access-token': "webToken"}
+            headers: {'x-confirm-delete': true, 'x-access-token': "123Wells909"}
          }
        });
     })
@@ -148,11 +148,11 @@
          query: {
             method: 'GET',
             isArray: true,
-            headers: {'x-access-token': "webToken"}
+            headers: {'x-access-token': "123Wells909"}
          },
          update: {
            method: 'PUT',
-           headers: {'x-access-token': "webToken"}
+           headers: {'x-access-token': "123Wells909"}
          }
        });
     })
@@ -161,21 +161,21 @@
          query: {
             method: 'GET',
             isArray: true,
-            headers: {'x-access-token': "webToken"}
+            headers: {'x-access-token': "123Wells909"}
          },
          update: {
            method: 'PUT',
-           headers: {'x-access-token': "webToken"}
+           headers: {'x-access-token': "123Wells909"}
          },
          save: {
            url: apiRoot+"/electionCandidateLinks/:id",
            method: 'POST',
-           headers: {'x-access-token': "webToken"}
+           headers: {'x-access-token': "123Wells909"}
          },
          delete: {
            url: apiRoot+"/electionCandidateLinks/:id",
            method: 'DELETE',
-           headers: {'x-confirm-delete': true, 'x-access-token': "webToken"}
+           headers: {'x-confirm-delete': true, 'x-access-token': "123Wells909"}
          }
        });
     })
@@ -184,21 +184,21 @@
          query: {
             method: 'GET',
             isArray: true,
-            headers: {'x-access-token': "webToken"}
+            headers: {'x-access-token': "123Wells909"}
          },
          update: {
            method: 'PUT',
-           headers: {'x-access-token': "webToken"}
+           headers: {'x-access-token': "123Wells909"}
          },
          save: {
            url: apiRoot+"/memberships/:id",
            method: 'POST',
-           headers: {'x-access-token': "webToken"}
+           headers: {'x-access-token': "123Wells909"}
          },
          delete: {
            url: apiRoot+"/memberships/:id",
            method: 'DELETE',
-           headers: {'x-confirm-delete': true, 'x-access-token': "webToken"}
+           headers: {'x-confirm-delete': true, 'x-access-token': "123Wells909"}
          }
        });
     })
@@ -207,21 +207,21 @@
          query: {
             method: 'GET',
             isArray: true,
-            headers: {'x-access-token': "webToken"}
+            headers: {'x-access-token': "123Wells909"}
          },
          update: {
            method: 'PUT',
-           headers: {'x-access-token': "webToken"}
+           headers: {'x-access-token': "123Wells909"}
          },
          getByElection: {
             url: apiRoot+"/elections/:electionID/candidates/:id",
             method: 'GET',
             isArray: true,
-            headers: {'x-access-token': "webToken"}
+            headers: {'x-access-token': "123Wells909"}
          },
          delete: {
            method: 'DELETE',
-           headers: {'x-confirm-delete': true, 'x-access-token': "webToken"}
+           headers: {'x-confirm-delete': true, 'x-access-token': "123Wells909"}
          }
        });
     })
@@ -230,21 +230,21 @@
          query: {
             method: 'GET',
             isArray: true,
-            headers: {'x-access-token': "webToken"}
+            headers: {'x-access-token': "123Wells909"}
          },
          update: {
            method: 'PUT',
-           headers: {'x-access-token': "webToken"}
+           headers: {'x-access-token': "123Wells909"}
          },
          getByElection: {
            method:  'GET',
            url: apiRoot+"/elections/:electionID/parties",
            isArray: true,
-           headers: {'x-access-token': "webToken"}
+           headers: {'x-access-token': "123Wells909"}
          },
          delete: {
            method: 'DELETE',
-           headers: {'x-confirm-delete': true, 'x-access-token': "webToken"}
+           headers: {'x-confirm-delete': true, 'x-access-token': "123Wells909"}
          }
        });
     })
@@ -253,24 +253,24 @@
          query: {
             method: 'GET',
             isArray: true,
-            headers: {'x-access-token': "webToken"}
+            headers: {'x-access-token': "123Wells909"}
          },
          record: {
            url: apiRoot+"/elections/:electionID/systems/:systemShortName/votes/user/:userID",
            method: 'POST',
-           headers: {'x-access-token': "webToken"}
+           headers: {'x-access-token': "123Wells909"}
          },
          getVotes: {
             url: apiRoot+"/elections/:electionID/votes",
             method: 'GET',
             isArray: true,
-            headers: {'x-access-token': "webToken"}
+            headers: {'x-access-token': "123Wells909"}
          },
          getVotesByGroup: {
             url: apiRoot+"/elections/:electionID/votes/group/:groupID",
             method: 'GET',
             isArray: true,
-            headers: {'x-access-token': "webToken"}
+            headers: {'x-access-token': "123Wells909"}
          }
        });
     });
