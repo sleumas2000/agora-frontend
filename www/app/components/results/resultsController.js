@@ -1,7 +1,7 @@
 (function(){
   'use strict';
   angular.module('agora')
-    .controller('resultsController', function($scope, $rootScope, $state, $q, $timeout, User, Election, Candidate, Party, Vote){
+    .controller('resultsController', function($scope, $rootScope, $state, $q, $timeout, User, Election, Candidate, Party, Vote, Group){
       if (!$rootScope.currentUser) $state.go('login')
       $scope.navBar = function(state) {
         $state.transitionTo(state, {}, {reload: true, inherit: false, notify: true})
@@ -13,14 +13,10 @@
         }
       }
       function onElectionsGot(values) {
-      $rootScope.elections = values
-      // shite goes here
-      // TODO: remove this
-      $scope.currentUser = {
-        id: 125,
-        DisplayName: 'Mr S Balderson'
-      };
-      // end remove
+      $rootScope.elections = values.elections
+      $rootScope.groups = [{GroupID: 0, GroupName: 'Everyone', GroupTypeName: "System"}]
+      $rootScope.groups=$rootScope.groups.concat(values.groups)
+      $scope.selectedGroup = $rootScope.groups[0]
       $scope.systems = ["fptp","av","stv","sv","pr"]
       $scope.whichTab = "fptp"
       $scope.goTo = function(tab) {
@@ -42,7 +38,7 @@
           $timeout(function(){$scope.prgraph2.refresh()})
         }
       }
-      
+
       if (!$rootScope.election) {$rootScope.election = $rootScope.elections[0];}
       if (!$scope.selectedElection) {$scope.selectedElection = $rootScope.elections[0];}
       $scope.setElection = function() {
@@ -59,9 +55,29 @@
           $rootScope.votes = values.votes;
           $rootScope.results = startCounting();
           $scope.chartData = makeChartData($rootScope.results);
+          console.log($scope.chartData)
           $scope.goTo($scope.whichTab)
         });
       };
+      $scope.updateByGroup = function() {
+        if ($scope.selectedGroup.GroupID == 0) {
+          Vote.getVotes({electionID:$rootScope.election.ElectionID}).$promise.then(function(values) {
+            $rootScope.votes = values;
+            $rootScope.results = startCounting();
+            $scope.chartData = makeChartData($rootScope.results);
+            console.log($scope.chartData)
+            $scope.goTo($scope.whichTab)
+          });
+        } else {
+          Vote.getVotesByGroup({electionID:$rootScope.election.ElectionID,groupID:$scope.selectedGroup.GroupID}).$promise.then(function(values) {
+            $rootScope.votes = values;
+            $rootScope.results = startCounting();
+            $scope.chartData = makeChartData($rootScope.results);
+            console.log($scope.chartData)
+            $scope.goTo($scope.whichTab)
+          });
+        }
+      }
       var promises = {
         votes: Vote.getVotes({electionID:$rootScope.election.ElectionID}).$promise,
         parties: Party.getByElection({electionID:$rootScope.election.ElectionID}).$promise,
@@ -97,6 +113,10 @@
       };
       $rootScope.countFPTPs = function(data) {
         var votes = data.votes;
+        if (votes.length == 0) {
+          data.winners.fptp = []
+          return data
+        }
         var candidates = data.candidates;
         var parties = data.parties;
         var spoilt = data.spoilt;
@@ -124,6 +144,10 @@
       };
       $rootScope.countPRs = function(numSeats,data) {
         var votes = data.votes;
+        if (votes.length == 0) {
+          data.winners.pr = []
+          return data
+        }
         var candidates = data.candidates;
         var parties = data.parties;
         var spoilt = data.spoilt;
@@ -142,6 +166,7 @@
         }
         var winningParties = {}
         var toFill = numSeats
+        var numLoops = 0
         while(toFill > 0) {
           var successfulParty = false
           for (var i in parties) {
@@ -171,16 +196,16 @@
               winningParties[winners[i].PartyID] = (winningParties[winners[i].PartyID] + 1) || 1
             }
           }
+          if (numLoops > toFill) {console.log("too many loops");break;} // stop loop overflows. If this happens, something is wrong anyway
+          numLoops ++
         }
         var winningCandidates = []
         for (var i in winningParties) {
           var party = parties[i]
           var partyCandidates = []
           for (var j in candidates) {
-            console.log(candidates[j],j,i)
             if (candidates[j].PartyID == i) partyCandidates.push(candidates[j])
           }
-          console.log(partyCandidates)
           partyCandidates=partyCandidates.sort(function(a,b){return b.prVotes-a.prVotes})
           winningCandidates = winningCandidates.concat(partyCandidates.slice(0,winningParties[i]))
         }
@@ -190,6 +215,10 @@
       $rootScope.countAVs = function(data) {
         var avVotes = {length: 0}
         var votes = data.votes;
+        if (votes.length == 0) {
+          data.winners.av = []
+          return data
+        }
         var candidates = data.candidates;
         var parties = data.parties;
         var spoilt = data.spoilt;
@@ -289,6 +318,10 @@
       $rootScope.countSTVs = function(numSeats,data) {
         var stvVotes = {length: 0}
         var votes = data.votes;
+        if (votes.length == 0) {
+          data.winners.stv = []
+          return data
+        }
         var candidates = data.candidates;
         var parties = data.parties;
         var spoilt = data.spoilt;
@@ -375,7 +408,7 @@
         var roundResults = []
         var out = []
         var electedCandidates = []
-        var quota 
+        var quota
         var numSeatsFree = numSeats
         while (!finished) {
           roundResults[j] = count(stvVotes)
@@ -430,6 +463,10 @@
       $rootScope.countSVs = function(data) {
         var svVotes = {length: 0}
         var votes = data.votes;
+        if (votes.length == 0) {
+          data.winners.sv = []
+          return data
+        }
         var candidates = data.candidates;
         var parties = data.parties;
         var spoilt = data.spoilt;
@@ -556,6 +593,7 @@
         }
         $scope.winners = z.winners
         $scope.systems = systemStrings
+        console.log(z)
         return (z);
       }
       function makeChartData(results) {
@@ -588,12 +626,12 @@
         var cfptplist = values(results.candidates).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.fptpVotes-b.fptpVotes})
         var cavlist = values(results.candidates).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.avVotes.slice(-1)[0]-b.avVotes.slice(-1)[0]})
         var cstvlist = values(results.candidates).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.stvVotes.slice(-1)[0]-b.stvVotes.slice(-1)[0]})
-        var csvlist = values(results.candidates).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.svVotes.slice(-1)[0]-b.svVotes.slice(-1)[0]})
+        var csvlist = values(results.candidates).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.svVotes[1]-b.svVotes[1]})
         var cprlist = values(results.candidates).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.prVotes-b.prVotes})
         var pfptplist = values(results.parties).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.fptpVotes-b.fptpVotes})
         var pavlist = values(results.parties).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.avVotes.slice(-1)[0]-b.avVotes.slice(-1)[0]})
         var pstvlist = values(results.parties).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.stvVotes.slice(-1)[0]-b.stvVotes.slice(-1)[0]})
-        var psvlist = values(results.parties).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.svVotes.slice(-1)[0]-b.svVotes.slice(-1)[0]})
+        var psvlist = values(results.parties).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.svVotes[1]-b.svVotes[1]})
         var pprlist = values(results.parties).sort(function(b,a) {return a.isSpoilt ? -1 : b.isSpoilt ? 1 : a.prVotes-b.prVotes})
         var [pavdata, pstvdata, psvdata, cavdata, cstvdata, csvdata] = [[],[],[],[],[],[]]
         for (var i = 0; i < pavlist[0].avVotes.length; i++) {
@@ -653,6 +691,6 @@
         }
       };
       }
-      Election.query().$promise.then(onElectionsGot);
+      $q.all({elections:Election.query().$promise,groups:Group.query().$promise}).then(onElectionsGot);
     });
 })();

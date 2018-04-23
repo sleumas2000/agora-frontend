@@ -52,6 +52,6 @@
           });
         };
       }
-      Election.query().$promise.then(onElectionsGot);
+      Election.query({token: $rootScope.token}).$promise.then(onElectionsGot);
     });
 })();

@@ -30,9 +30,12 @@
   <!--<h1>Yo Yo Yo, gangsta man</h1>
   <p>My vocal chords is my gun</p>-->
 
-  <h1 class="electionSelector" ng-hide="isGoing"><form>
+  <h1 class="electionSelector"><form>
     <select class="election-choice-box" ng-model="selectedElection" ng-change="setElection()" ng-options="election.ElectionName for election in elections"></select>
   </form></h1>
+  <p><form>
+    Filter by Group: <select ng-model="selectedGroup" ng-change="updateByGroup()" ng-options="group.GroupName for group in groups"></select>
+  </form></p>
   <div class="container">
     <div class="row">
       <div class="buttonBox">

@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('agora')
-    .controller('groupAdminController', function($scope, $rootScope, $state, GroupTypeGroupList, Group, GroupType){
+    .controller('groupAdminController', function($scope, $rootScope, $state, Group, GroupType){
       if (!$rootScope.currentUser) $state.go('login')
       $scope.showAdmin = true
       $scope.navBar = function(state) {
