@@ -4,6 +4,7 @@
   angular.module('agora')
     .controller('userAdminController', function($scope, $rootScope, $state, User, Group, GroupType){
       if (!$rootScope.currentUser) $state.go('login')
+      $scope.passwords = {}
       $scope.showAdmin = true
       $scope.navBar = function(state) {
         for (var prop in $rootScope) {
@@ -13,6 +14,11 @@
           if (typeof $scope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $scope[prop];}
         }
         $state.transitionTo(state, {}, {reload: true, inherit: false, notify: true})
+      }
+      $scope.setPassword = function(userID,index) {
+        let password = $scope.passwords[index]
+        User.setPassword({id:userID,password:password})
+        $scope.passwords[index] = ""
       }
       $scope.groups = Group.query();
       $scope.groupTypes = GroupType.query(function(resp) {
@@ -39,7 +45,6 @@
         }
       });
       $scope.newUser = new User();
-      // TODO: make this use the factory
       $scope.addUser = function(){
         console.log("Submitting");
         console.log($scope.newUser);

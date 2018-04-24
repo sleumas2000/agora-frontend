@@ -1,1 +1,19 @@
-<div class="container"><a class="btn btn-primary btn-lg btn-block" style="margin-top: 200px;" href="/vote">Log me in, scotty</a></div>
+<div class="container">
+  <div class="row" style="margin-top: 200px;">
+    <div class="col-6 form-group">
+      <!--<label for="usernameBox">Email address</label>-->
+      <input placeholder="Username" id="usernameBox" class="form-control" type="text" ng-model="username" default="Username" style="width: 100%;"></input>
+    </div>
+    <div class="col-6 form-group">
+      <!--<label for="passwordBox">Email address</label>-->
+      <input placeholder="Password" id="passwordBox"class="form-control" type="password" ng-model="password" style="width: 100%;"></input>
+    </div>
+  </div>
+  <a class="btn btn-primary btn-lg btn-block"  href="#" ng-click="logIn()">Log me in, scotty</a>
+  <div class="row" ng-show="error">
+    <div style="margin: 15px; width: 100%;" class="alert alert-danger">
+      {{error}}
+    </div>
+  </div>
+
+</div>

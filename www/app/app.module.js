@@ -14,7 +14,7 @@
 
     .factory('User', ['$resource', '$rootScope', function($resource,$rootScope){
        console.log("token is ",$rootScope.token)
-       return $resource(apiRoot+"/users/:id", {id: '@id', token: '@token'}, {
+       return $resource(apiRoot+"/users/:id", {id: '@id', UserName: '@UserName', token: '@token'}, {
          query: {
             method: 'GET',
             isArray: true,
@@ -29,11 +29,15 @@
            headers: {'x-confirm-delete': true, 'x-access-token': $rootScope.token}
          },
          authGet: {
-           url: authRoot+'/users/:id',
+           url: authRoot+'/users/:UserName',
            method: 'GET'
          },
          authenticateToken: {
            url: authRoot+'/authenticate',
+           method: 'POST'
+         },
+         setPassword: {
+           url: apiRoot+"/users/:id/password",
            method: 'POST'
          }/*,
          authQuery: {

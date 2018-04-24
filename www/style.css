@@ -181,7 +181,6 @@ g.nv-bar rect {
 }
 .resultHeader {
   padding: 30px;
-  padding-top: 70px;
 }
 .winnerCell {
   padding: 25px;
@@ -257,4 +256,13 @@ select.typeFilter {
 }
 form.wide, table.wide {
   width: 100%;
+}
+.admin .right.narrow, .right.narrow {
+  min-width: 20px;
+  width: 65px;
+  max-width: 65px;
+}
+.admin input.right.password, input.right.password {
+  min-width: 40px;
+  max-width: 100px;
 }

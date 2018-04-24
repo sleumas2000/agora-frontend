@@ -46,7 +46,8 @@
         <th>Surname</th>
         <th>Email Address</th>
         <th>Preferred Name</th>
-        <th class="right">Delete</th>
+        <th class="right narrow">Delete</th>
+        <th class="right password">Set Password</th>
       </tr>
       <tr ng-repeat="user in users">
         <td class="select narrow"><input class="admin" type="checkbox" ng-model="user.isSelected" ng-change="validateCheckBoxes()"></input></th>
@@ -57,7 +58,8 @@
         <td>{{user.Surname}}</td>
         <td>{{user.Email}}</td>
         <td>{{user.PreferredName}}</td>
-        <td class="right"><button class="right admin" type="button" ng-click="deleteUser(user.UserID,$index)">Delete {{user.DisplayName}}</button></td>
+        <td class="right narrow"><button class="admin" type="button" ng-click="deleteUser(user.UserID,$index)">Delete</button></td>
+        <td class="right password"><input ng-model="passwords[$index]" class="right password" placeholder="Password" type="password"></input><button class="admin" type="button" style="width: 40px;" ng-click="setPassword(user.UserID,$index)">Set</button></td>
       </tr>
       <tr>
         <th class="narrow"></th>
@@ -68,7 +70,7 @@
         <td><input class="admin" ng-model="newUser.Surname"></td>
         <td><input class="admin" ng-model="newUser.Email"></td>
         <td><input class="admin" ng-model="newUser.PreferredName"></td>
-        <td class="right"><input class="right admin" type="submit">Add User</input></td>
+        <td colspan="2" class="right narrow"><input class="right admin" type="submit">Add</input></td>
       </tr>
     </table>
   </form>
