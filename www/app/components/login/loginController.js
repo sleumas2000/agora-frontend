@@ -1,7 +1,7 @@
 (function(){
   'use strict';
   angular.module('agora')
-    .controller('loginController', function($scope, $rootScope, $state, User){
+    .controller('loginController', function($scope, $rootScope, $state, User, authService){
       /*var id = Math.floor(Math.random() * (55)) + 3
       $rootScope.currentUser = $rootScope.currentUser || User.authGet({id: id});
       console.log($rootScope.currentUser)
@@ -27,6 +27,7 @@
           User.authenticateToken(user).$promise.then(function(token) {
             console.log(token)
             if (token.success) {
+              authService.regenService(token.token)
               $rootScope.token = token.token
               console.log(token.token)
               $state.go('vote')
