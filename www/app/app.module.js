@@ -13,7 +13,6 @@
     ])
 
     .factory('User', ['$resource', '$rootScope', function($resource,$rootScope){
-       console.log("token is ",$rootScope.token)
        return $resource(apiRoot+"/users/:id", {id: '@id', UserName: '@UserName', token: '@token'}, {
          query: {
             method: 'GET',
@@ -112,6 +111,12 @@
     .factory('Election', function($resource,$rootScope){
        return $resource(apiRoot+"/elections/:id", {id: '@id', systemIDs: '@systemIDs', token: '@token'}, {
          query: {
+            method: 'GET',
+            isArray: true,
+
+         },
+         queryActive: {
+            url: apiRoot+'/elections/active',
             method: 'GET',
             isArray: true,
 
