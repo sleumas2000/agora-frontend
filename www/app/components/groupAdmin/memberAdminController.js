@@ -8,7 +8,7 @@
       if (!$rootScope.group) {$state.go('groupAdmin')}
       $scope.navBar = function(state) {
         for (var prop in $rootScope) {
-          if (typeof $rootScope[prop] !== 'function' && prop !== "currentUser" && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $rootScope[prop];}
+          if (typeof $rootScope[prop] !== 'function' && prop !== "currentUser" && prop !== "token" && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $rootScope[prop];}
         }
         for (var prop in $scope) {
           if (typeof $scope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $scope[prop];}

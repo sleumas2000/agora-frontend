@@ -293,12 +293,9 @@
     .factory('jwtInjector', ['$q', '$location', 'authService', function($q, $location, authService){
 			var jwtInjector = {
 				'request': function(config) {
-          console.log("#",authService.getToken())
-          console.log(config.headers)
 					if(authService.getToken()){
 							config.headers['x-access-token'] = authService.getToken();
 					}
-          console.log(config.headers)
 					return config;
 				}/*,
 				'responseError' : function(response) {

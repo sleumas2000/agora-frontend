@@ -6,7 +6,7 @@
       $scope.navBar = function(state) {
         $state.transitionTo(state, {}, {reload: true, inherit: false, notify: true})
         for (var prop in $rootScope) {
-          if (typeof $rootScope[prop] !== 'function' && prop !== "currentUser" && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1 && prop !== 'api'/* to keep d3 happy */) {delete $rootScope[prop];}
+          if (typeof $rootScope[prop] !== 'function' && prop !== "currentUser" && prop !== "token" && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1 && prop !== 'api'/* to keep d3 happy */) {delete $rootScope[prop];}
         }
         for (var prop in $scope) {
           if (typeof $scope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1 && prop !== 'api'/* to keep d3 happy */) {delete $scope[prop];}
@@ -250,7 +250,7 @@
               lowest = {IDs:[i],votes:total[i]};
             }
           }
-          return lowest //[CandidateID, numVotes]
+          return lowest || {IDs: [], votes:0} //[CandidateID, numVotes]
         }
         function reassign(voteList,losers) { //voteList,[CandidateID (int)...] => voteList
           var oldList = voteList
@@ -281,6 +281,7 @@
         var finished = false
         var j = 0
         var winner
+        var tie = false
         var roundResults = []
         var out = []
         while (!finished) {
@@ -290,6 +291,7 @@
             out = out.concat(findWorst(roundResults[j]).IDs)
             avVotes = reassign(avVotes,out)
           }
+          if (candidates.length == out.length) {finished = true; tie = true}
           j++
           if (j > candidates.length) {console.log("too many loops");finished = true;} // stop loop overflows. If this happens, something is wrong anyway
         }
@@ -313,13 +315,14 @@
             }
           }
         }
+        if (tie == true) { data.winners.av = [{CandidateName: "Tied Result", CandidateID: 0, PartyColor: "#444", PathToLogo: "/logos/tie.png"}]}
         return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt, winners: data.winners};
       };
       $rootScope.countSTVs = function(numSeats,data) {
         var stvVotes = {length: 0}
         var votes = data.votes;
+        data.winners.stv = []
         if (votes.length == 0) {
-          data.winners.stv = []
           return data
         }
         var candidates = data.candidates;
@@ -352,7 +355,7 @@
               lowest = {IDs:[i],votes:total[i]};
             }
           }
-          return lowest //[CandidateID, numVotes]
+          return lowest || {IDs:[],votes:0} //[CandidateID, numVotes]
         }
         function findBest(total,quota) { //totalList => {IDs:CandidateID (int), votes: numVotes (int)}
           for (i in total) {
@@ -364,9 +367,12 @@
               highest = {IDs:[i],votes:total[i]};
             }
           }
-          highest.ID = highest.IDs[0]
-          delete highest.IDs
-          if (highest.votes > quota) {
+          console.log(total,highest)
+          if (highest) {
+            highest.ID = highest.IDs[0]
+            delete highest.IDs
+          }
+          if (highest && highest.votes > quota) {
             return highest //[CandidateID, numVotes]
           } else return {ID: null, votes: 0}
         }
@@ -409,8 +415,10 @@
         var out = []
         var electedCandidates = []
         var quota
+        var tie = false
         var numSeatsFree = numSeats
         while (!finished) {
+          console.log(roundResults[j],out)
           roundResults[j] = count(stvVotes)
           quota=findQuota(roundResults[0],numSeats)
           var originalQuota = originalQuota || findQuota(roundResults[0],numSeats)
@@ -418,11 +426,13 @@
           else {
             var best = findBest(roundResults[j],quota)
             if (best.votes !== 0) {
+              console.log("winner")
               stvVotes = reassignWinner(stvVotes,out,best.ID,best.votes,quota)
               electedCandidates.push(best.ID)
               numSeatsFree --
               out.push(best.ID)
             } else {
+              console.log("loser")
               out = out.concat(findWorst(roundResults[j]).IDs)
               electedCandidates.push(null)
               stvVotes = reassignLosers(stvVotes,out)
@@ -458,6 +468,7 @@
           }
           data.winners.stv.push(candidates[electedCandidates[c]])
         }
+        if (tie == true) { data.winners.av = [{CandidateName: "Tied Result", CandidateID: 0, PartyColor: "#444", PathToLogo: "/logos/tie.png"}]}
         return {votes: votes, candidates: candidates, parties: parties, spoilt: spoilt, winners: data.winners};
       };
       $rootScope.countSVs = function(data) {
@@ -540,6 +551,7 @@
             out = out.concat(findWorst(roundResults[j]).IDs)
             svVotes = reassign(svVotes,out)
           }
+          if (candidates.length == out.length) {finished = true; tie = true}
           j++
           if (j > candidates.length) {console.log("too many loops");finished = true;} // stop loop overflows. If this happens, something is wrong anyway
         }
