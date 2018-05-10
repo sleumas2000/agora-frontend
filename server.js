@@ -15,7 +15,7 @@ app.use(express.static(__dirname+'/www/'));
 
 app.use(function(req,res){
   console.log(404,req.originalUrl)
-  res.sendfile(__dirname+'/www/agora.html');
+  res.sendFile(__dirname+'/www/agora.html');
 })
 
 app.listen(PORT);
