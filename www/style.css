@@ -2,16 +2,6 @@
     font-family: marker;
     src: url(/fonts/marker.ttf);
 }
-
-/* TEAL:
-#topBar {
-    background-color: #00897b;
-}
-h2, h3, h4 {
-  color: #00897b;
-}
-*/
-
 .admin td {
   max-width: 150px;
   white-space: nowrap;
@@ -38,10 +28,6 @@ h1 {
   text-align: center;
   margin-top: 40px;
 }
-/*.containerWing {
-  min-height: 20px;
-  background-color: red;
-}*/
 .partyLogo {
   max-height: 100px;
   max-width: 100px;

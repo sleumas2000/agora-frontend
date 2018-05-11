@@ -38,12 +38,7 @@
          setPassword: {
            url: apiRoot+"/users/:id/password",
            method: 'POST'
-         }/*,
-         authQuery: {
-           url: authRoot+'/users',
-           method: 'GET',
-           isArray: true
-         }*/
+         }
        });
     }])
     .factory('Group', function($resource,$rootScope){
@@ -92,22 +87,6 @@
          }
        });
     })
-    /*.factory('GroupUserList', function($resource,$rootScope){
-       return $resource(apiRoot+"/users/bygroup/:id", {id: '@id', token: '@token'}, {
-         update: {
-           method: 'PUT',
-
-         }
-       });
-    })
-    .factory('GroupTypeGroupList', function($resource,$rootScope){
-       return $resource(apiRoot+"/users/groups/bygrouptype/:id", {id: '@id', token: '@token'}, {
-         update: {
-           method: 'PUT',
-
-         }
-       });
-    })*/
     .factory('Election', function($resource,$rootScope){
        return $resource(apiRoot+"/elections/:id", {id: '@id', systemIDs: '@systemIDs', token: '@token'}, {
          query: {
@@ -299,16 +278,10 @@
 			var jwtInjector = {
 				'request': function(config) {
 					if(authService.getToken()){
-							config.headers['x-access-token'] = authService.getToken();
+						config.headers['x-access-token'] = authService.getToken();
 					}
 					return config;
-				}/*,
-				'responseError' : function(response) {
-					if (response.status === 401 || response.status === 403) {
-							$location.path('/login');
-					}
-					return $q.reject(response);
-				}*/
+				}
 			};
 			return jwtInjector;
 		}]).config(['$httpProvider', function($httpProvider) {
@@ -317,24 +290,3 @@
 
     ;
 })();
-
-// (function(){
-//   angular
-//     .module('example', ['ngresource'])
-//
-//     .factory('User', userFactory)
-//   ;
-//
-//   var userFactory = function($resource,$rootScope){
-//     return $resource('http://localhost:7234/users/:user_id',
-//       {user_id: '@user_id'},
-//       {
-//         get: {
-//           method: 'GET',
-//           isArray: true
-//         }
-//       }
-//     );
-//   };
-//
-// })();

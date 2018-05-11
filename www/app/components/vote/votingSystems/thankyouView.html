@@ -3,9 +3,29 @@
 <p>The following were your votes:</p>
 
 <table>
-  <tr ng-show="isUsed('fptp')"><td>FPTP:</td><td>{{fptpChoice.CandidateName}}</td></tr>
-  <tr ng-show="isUsed('av')"><td>AV:</td><td><ol><li ng-repeat="avChoice in avChoices">{{avChoice.CandidateName}}</li></ol></td></tr>
-  <tr ng-show="isUsed('stv')"><td>STV:</td><td><ol><li ng-repeat="stvChoice in stvChoices">{{stvChoice.CandidateName}}</li></ol></td></tr>
-  <tr ng-show="isUsed('pr')"><td>PR:</td><td>{{prChoice.CandidateName}}</tr>
-  <tr ng-show="isUsed('sv')"><td>SV:</td><td><ol><li ng-repeat="svChoice in svChoices">{{svChoice.CandidateName}}</li></ol></td></tr>
+  <tr ng-show="isUsed('fptp')">
+    <td>FPTP:</td>
+    <td>{{fptpChoice.CandidateName}}</td>
+  </tr>
+  <tr ng-show="isUsed('av')">
+    <td>AV:</td>
+    <td>
+      <ol><li ng-repeat="avChoice in avChoices">{{avChoice.CandidateName}}</li></ol>
+    </td>
+  </tr>
+  <tr ng-show="isUsed('stv')"><td>STV:</td>
+    <td>
+      <ol><li ng-repeat="stvChoice in stvChoices">{{stvChoice.CandidateName}}</li></ol>
+    </td>
+  </tr>
+  <tr ng-show="isUsed('pr')">
+    <td>PR:</td>
+    <td>{{prChoice.CandidateName}}</td>
+  </tr>
+  <tr ng-show="isUsed('sv')">
+    <td>SV:</td>
+    <td>
+      <ol><li ng-repeat="svChoice in svChoices">{{svChoice.CandidateName}}</li></ol>
+    </td>
+  </tr>
 </table>

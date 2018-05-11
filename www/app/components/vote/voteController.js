@@ -28,17 +28,12 @@
         };
         if (!$rootScope.election) {$rootScope.election = $rootScope.elections[0];}
         if (!$scope.selectedElection) {$scope.selectedElection = $rootScope.elections[0];}
-        //localStorage.setItem('election', JSON.stringify($rootScope.election));
         var afterSystems = function(){
           $scope.$broadcast('systemsLoaded');
-        //  $rootScope.nextPage = $rootScope.election.systems[currentPage+1 || 0]
-        //  localStorage.setItem('election', JSON.stringify($rootScope.election));
-        //  console.log($rootScope.nextPage)
       };
         $rootScope.election.systems = Election.getSystems({id:$rootScope.election.ElectionID}, afterSystems);
         $rootScope.election.candidates = Candidate.getByElection({electionID:$rootScope.election.ElectionID}/*, function() { localStorage.setItem('election', JSON.stringify($rootScope.election)); }*/);
         $rootScope.voteViewGoTo = function(page) {
-        //  $state.go('vote.fptp');
         };
         $rootScope.sortNextPage = function(scope) {
           scope.$on('systemsLoaded', function() {

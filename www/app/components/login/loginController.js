@@ -2,15 +2,6 @@
   'use strict';
   angular.module('agora')
     .controller('loginController', function($scope, $rootScope, $state, User, authService){
-      /*var id = Math.floor(Math.random() * (55)) + 3
-      $rootScope.currentUser = $rootScope.currentUser || User.authGet({id: id});
-      console.log($rootScope.currentUser)
-      $rootScope.currentUser.$promise.then(function(user) {
-        User.authenticateToken(user).$promise.then(function(token) {
-          $rootScope.token = token.token
-          console.log(token.token)
-        })
-      })*/
       function catchError(error) {
         if (error.status == 404) {
           $scope.error="Authentication Error. No Username Specified"
