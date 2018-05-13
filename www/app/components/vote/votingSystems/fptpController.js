@@ -19,4 +19,5 @@
       }
       $scope.setChoice(0)
       $rootScope.sortNextPage($scope)
+    });
 })();
