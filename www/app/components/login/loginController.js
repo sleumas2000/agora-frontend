@@ -14,6 +14,11 @@
         $rootScope.currentUser = User.authGet({UserName: $scope.username});
         $rootScope.currentUser.UserName = $scope.username
         $rootScope.currentUser.$promise.then(function(user) {
+          console.log("%%",$rootScope.currentUser.IsAdmin)
+          console.log("%%",$rootScope.currentUser.IsAdmin.data)
+          console.log("%%",$rootScope.currentUser.IsAdmin.data[0])
+          console.log(!!$rootScope.currentUser.IsAdmin.data[0])
+          $rootScope.currentUser.IsAdmin = !!$rootScope.currentUser.IsAdmin.data[0]
           user.Password=$scope.password
           User.authenticateToken(user).$promise.then(function(token) {
             console.log(token)

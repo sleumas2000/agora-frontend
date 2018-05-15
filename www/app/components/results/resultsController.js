@@ -3,10 +3,11 @@
   angular.module('agora')
     .controller('resultsController', function($scope, $rootScope, $state, $q, $timeout, User, Election, Candidate, Party, Vote, Group){
       if (!$rootScope.currentUser) $state.go('login')
+      $scope.showAdmin = $rootScope.currentUser ? $rootScope.currentUser.IsAdmin : false
       $scope.navBar = function(state) {
         $state.transitionTo(state, {}, {reload: true, inherit: false, notify: true})
         for (var prop in $rootScope) {
-          if (typeof $rootScope[prop] !== 'function' && prop !== "currentUser" && prop !== "token" && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1 && prop !== 'api'/* to keep d3 happy */) {delete $rootScope[prop];}
+          if (typeof $rootScope[prop] !== 'function' && prop !== "currentUser" && prop !== "token" && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1 && prop !== 'api'/* to keep d3 happy */ && prop.indexOf('graph')==-1) {delete $rootScope[prop];}
         }
         for (var prop in $scope) {
           if (typeof $scope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1 && prop !== 'api'/* to keep d3 happy */) {delete $scope[prop];}
@@ -543,6 +544,7 @@
         var j = 0
         var roundResults = []
         var out = []
+        var tie = false
         while (!finished) {
           roundResults[j] = count(svVotes)
           spoilt.sv.push(roundResults[j].undefined)

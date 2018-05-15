@@ -5,27 +5,27 @@
 <table>
   <tr ng-show="isUsed('fptp')">
     <td>FPTP:</td>
-    <td>{{fptpChoice.CandidateName}}</td>
+    <td>{{fptpChoice.CandidateName || "None"}}</td>
   </tr>
   <tr ng-show="isUsed('av')">
     <td>AV:</td>
     <td>
-      <ol><li ng-repeat="avChoice in avChoices">{{avChoice.CandidateName}}</li></ol>
+      <ol><li ng-repeat="avChoice in avChoices">{{avChoice.CandidateName}}</li></ol><span ng-hide="stvChoices">None</span>
     </td>
   </tr>
   <tr ng-show="isUsed('stv')"><td>STV:</td>
     <td>
-      <ol><li ng-repeat="stvChoice in stvChoices">{{stvChoice.CandidateName}}</li></ol>
+      <ol><li ng-repeat="stvChoice in stvChoices">{{stvChoice.CandidateName}}</li></ol><span ng-hide="stvChoices">None</span>
     </td>
   </tr>
   <tr ng-show="isUsed('pr')">
     <td>PR:</td>
-    <td>{{prChoice.CandidateName}}</td>
+    <td>{{prChoice.CandidateName || "None"}}</td>
   </tr>
   <tr ng-show="isUsed('sv')">
     <td>SV:</td>
     <td>
-      <ol><li ng-repeat="svChoice in svChoices">{{svChoice.CandidateName}}</li></ol>
+      <ol><li ng-repeat="svChoice in svChoices">{{svChoice.CandidateName}}</li></ol><span ng-hide="stvChoices">None</span>
     </td>
   </tr>
 </table>

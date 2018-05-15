@@ -4,7 +4,7 @@
   angular.module('agora')
     .controller('candidateAdminController', function($scope, $rootScope, $state, Candidate, Party){
       if (!$rootScope.currentUser) $state.go('login')
-      $scope.showAdmin = true
+      $scope.showAdmin = $rootScope.currentUser ? $rootScope.currentUser.IsAdmin : false
       $scope.navBar = function(state) {
         for (var prop in $rootScope) {
           if (typeof $rootScope[prop] !== 'function' && prop !== "currentUser" && prop !== "token" && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $rootScope[prop];}

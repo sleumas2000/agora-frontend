@@ -5,7 +5,7 @@
     .controller('electionCandidateAdminController', function($scope, $rootScope, $state, Candidate, Party, Election, ElectionCandidateLink){
       if (!$rootScope.currentUser) $state.go('login')
       if (!$rootScope.election) {$state.go('electionAdmin')}
-      $scope.showAdmin = true
+      $scope.showAdmin = $rootScope.currentUser ? $rootScope.currentUser.IsAdmin : false
       $scope.navBar = function(state) {
         for (var prop in $rootScope) {
           if (typeof $rootScope[prop] !== 'function' && prop !== "currentUser" && prop !== "token" && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {delete $rootScope[prop];}

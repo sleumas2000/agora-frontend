@@ -4,7 +4,7 @@
   angular.module('agora')
     .controller('memberAdminController', function($scope, $rootScope, $state, Group, User, Membership){
       if (!$rootScope.currentUser) $state.go('login')
-      $scope.showAdmin = true
+      $scope.showAdmin = $rootScope.currentUser ? $rootScope.currentUser.IsAdmin : false
       if (!$rootScope.group) {$state.go('groupAdmin')}
       $scope.navBar = function(state) {
         for (var prop in $rootScope) {
